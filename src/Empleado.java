@@ -1,0 +1,26 @@
+public class Empleado {
+    public int id;
+    public String nombre;
+    public String apellido;
+    public String direccion;
+    public int telefono;
+    public int cuenta_bancaria;
+    public int salario;
+    public Encargo encargo;
+    public boolean disponibilidad;
+    
+    
+
+    public Empleado(int id, String nombre,String apellido, String direccion, int telefono, int cuenta_bancaria, int salario, Encargo encargo, boolean disponibilidad){
+
+        this.id = id;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.direccion = direccion;
+        this.telefono = telefono;
+        this.cuenta_bancaria = cuenta_bancaria;
+        this.salario = salario;
+        this.encargo = encargo;
+        this.disponibilidad = disponibilidad;
+    }
+}
