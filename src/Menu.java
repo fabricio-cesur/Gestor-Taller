@@ -1,5 +1,7 @@
+
 import java.io.IOException;
 import java.util.Scanner;
+import java.sql.Connection;
 
 public class Menu {
     public static boolean vaciar = true;
@@ -7,14 +9,12 @@ public class Menu {
 
     public static void main(String[] args) throws Exception {
 
-
-
-
-
-
-
-
-
+        Connection conexion = ConexionDB.conectar();
+          if (conexion != null) {
+             System.out.println("Conexion establecida correctamente.");
+          } else{
+             System.out.println("No se pudo establecer la conexión");
+          }
 
         String opcion;
         vaciarConsola();
@@ -55,9 +55,9 @@ public class Menu {
         } while (!opcion.equalsIgnoreCase("0"));
     }
 
+  
+  
     
-
-
     public static void vaciarConsola() {
         String os = System.getProperty("os.name");
 
