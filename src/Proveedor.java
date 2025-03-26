@@ -1,18 +1,18 @@
 import java.util.ArrayList;
 
-public class Proovedor {
+public class Proveedor {
     public int id;
     public String nombre;
     public String direccion;
     public int cuenta;
     public ArrayList<Item> items;
 
-    public Proovedor(int id, String nom, String dir, int cue, ArrayList<Item> ite) {
+    public Proveedor(int id, String nombre, String direccion, int cuenta, ArrayList<Item> items) {
         this.id = id;
-        this.nombre = nom;
-        this.direccion = dir;
-        this.cuenta = cue;
-        this.items = ite;
+        this.nombre = nombre;
+        this.direccion = direccion;
+        this.cuenta = cuenta;
+        this.items = items;
     }
 
     public int getId() { return this.id; }

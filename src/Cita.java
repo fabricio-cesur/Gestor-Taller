@@ -3,20 +3,20 @@ public class Cita {
     public String fecha; //Hacerlo Arrays de int?
     public String hora;
     public Vehiculo vehiculo;
-    // public Encargo encargo;
+    public Encargo encargo;
 
-    public Cita(int id, String fec, String hor, Vehiculo veh /*, Encargo enc*/) {
+    public Cita(int id, String fecha, String hora, Vehiculo vehiculo, Encargo encargo) {
         this.id = id;
-        this.fecha = fec;
-        this.hora = hor;
-        this.vehiculo = veh;
-        // this.encargo = enc;
+        this.fecha = fecha;
+        this.hora = hora;
+        this.vehiculo = vehiculo;
+        this.encargo = encargo;
     }
 
     public int getId() { return this.id; }
-    public String getFecha() { return this.fecha; } //Hacerlo Arrays de int?
+    public String getFecha() { return this.fecha; }
     public String getHora() { return this.hora; }
     public Vehiculo getVehiculo() { return this.vehiculo; }
-    // public Encargo getEncargo() { return this.encargo; }
+    public Encargo getEncargo() { return this.encargo; }
 
 }
