@@ -1,4 +1,4 @@
-CREATE TABLE cliente (
+CREATE TABLE Cliente (
     dni VARCHAR(20) PRIMARY KEY,
     nombre VARCHAR(40),
     apelldios VARCHAR (100),
@@ -7,7 +7,7 @@ CREATE TABLE cliente (
     cuenta_bancaria VARCHAR(50)
 );
 
-CREATE TABLE vehiculo (
+CREATE TABLE Vehiculo (
     matricula VARCHAR(20) PRIMARY KEY,
     modelo VARCHAR(40),
     marca VARCHAR (100),
@@ -16,7 +16,7 @@ CREATE TABLE vehiculo (
     FOREIGN KEY (dni_cliente) REFERENCES cliente(dni) 
 );
 
-CREATE TABLE empleado (
+CREATE TABLE Empleado (
     dni VARCHAR(20) PRIMARY KEY,
     nombre VARCHAR(40),
     apelldios VARCHAR (100),
@@ -28,14 +28,14 @@ CREATE TABLE empleado (
     cuenta_bancaria VARCHAR(50) 
 );
 
-CREATE TABLE proveedor (
+CREATE TABLE Proveedor (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(40),
     direccion VARCHAR (100),
     cuenta_bancaria VARCHAR(50)
 );
 
-CREATE TABLE item (
+CREATE TABLE Item (
     codigo INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100),
     proveedor_id INT, 
@@ -45,7 +45,7 @@ CREATE TABLE item (
     FOREIGN KEY (proveedor_id) REFERENCES proveedor(id)
 );
 
-CREATE TABLE servicio (
+CREATE TABLE Servicio (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(40),
     descripcion VARCHAR(200),
@@ -54,7 +54,7 @@ CREATE TABLE servicio (
     FOREIGN KEY (id_item) REFERENCES item(codigo) 
 );
 
-CREATE TABLE pedido (
+CREATE TABLE Pedido (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_proveedor INT, 
     fecha_pedido DATE,
@@ -64,7 +64,7 @@ CREATE TABLE pedido (
     FOREIGN KEY (id_proveedor) REFERENCES proveedor(id)
 );
 
-CREATE TABLE pedido_item (
+CREATE TABLE Pedido_item (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_pedido INT,
     id_item INT,
@@ -73,7 +73,7 @@ CREATE TABLE pedido_item (
     FOREIGN KEY (id_item) REFERENCES item(codigo)
 );
 
-CREATE TABLE encargo (
+CREATE TABLE Encargo (
     id INT AUTO_INCREMENT PRIMARY KEY,
     matricula_coche VARCHAR(20),
     id_servicio INT,
@@ -85,7 +85,7 @@ CREATE TABLE encargo (
     FOREIGN KEY (id_servicio) REFERENCES servicio(id) 
 );
 
-CREATE TABLE asignacion (
+CREATE TABLE Asignacion (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_empleado VARCHAR (20),
     id_encargo INT,
@@ -93,7 +93,7 @@ CREATE TABLE asignacion (
     FOREIGN KEY (id_encargo) REFERENCES encargo(id) 
 );
 
-CREATE TABLE citas (
+CREATE TABLE Citas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     fecha DATE,
     hora TIME,
