@@ -156,7 +156,16 @@ public class Taller {
             } while (!opcion.equals("2"));
         }
     }
-    public void mostrarClientes() {}
+    public void mostrarClientes() {
+        if (array_clientes.isEmpty()) {
+            System.out.println("No hay clientes registrados");
+        } else {
+            System.out.println("Clientes: ");
+            for (Cliente cliente : array_clientes) {
+                System.out.println(cliente.toString());
+            }
+        }
+    }
 
 
     public void registrarVehiculo() {
@@ -262,8 +271,60 @@ public class Taller {
 
         } while (!opcion.equalsIgnoreCase("0"));
     }
-    public void eliminarVehiculo() {}
-    public void mostrarVehiculos() {}
+    public void eliminarVehiculo() {
+        String matricula;
+        Vehiculo vehiculo = null;
+        System.out.print("Ingrese la matrícula del vehiculo que quiere eliminar: ");
+        matricula = sc.next();
+        for (Vehiculo veh : array_vehiculos) {
+            if (matricula.equalsIgnoreCase(veh.getMatricula())) {
+                vehiculo = veh;
+                break;
+            }
+        }
+        if (vehiculo == null) {
+            System.out.println("ERR0R: No se encontró al vehiculo con esa matrícula");
+        } else {
+            System.out.println("Está por eliminar al siguiente vehiculo: ");
+            System.out.println(vehiculo.getMarca() + " " + vehiculo.getModelo());
+            System.out.println("Año: " + vehiculo.getAño());
+            System.out.println("Propietario: " + vehiculo.getPropietarioNombreApellido());
+            System.out.println("---¿Está seguro?---");
+            String opcion;
+            do { 
+                System.out.println("1. SI / 2. NO");
+                opcion = sc.next();
+                switch (opcion) {
+                    case "1", "si", "SI" -> {
+                        for (int i = 0; i < array_vehiculos.size(); i++) {
+                            if (array_vehiculos.get(i).getMatricula().equals(vehiculo.getMatricula())) {
+                                array_vehiculos.remove(i);
+                                System.out.println("Cliente eliminado");
+                                break;
+                            }
+                        }
+                    }
+                    case "2", "no", "NO" -> {
+                        System.out.println("Abortando...");
+                    }
+                
+                    default -> {
+                        System.out.println("No se reconoció esa opción.");
+                    }
+                }
+            } while (!opcion.equals("2"));
+        }
+    }
+    public void mostrarVehiculos() {
+        if (array_vehiculos.isEmpty()) {
+            System.out.println("No hay vehículos registrados");
+        } else {
+            System.out.println("Vehículos: ");
+            for (Vehiculo vehiculo : array_vehiculos) {
+                System.out.println(vehiculo.toString());
+            }
+        }
+    }
 
 
     public void asignarCita() {}
