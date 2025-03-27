@@ -34,5 +34,8 @@ public class Cliente {
 
 
     @Override
-    public String toString() { return this.getDni() + ": " + this.getNombre() + " " + this.getApellido() + " - cuenta: " + this.getCuentaBancaria();}
+    public String toString() { 
+        return this.getDni() + ": " + this.getNombre() + " " + this.getApellido() 
+        + " - cuenta: " + this.getCuentaBancaria();
+    }
 }
