@@ -1,5 +1,5 @@
 public class Cliente {
-    public int id;
+    public int dni;
     public String nombre;
     public String apellido;
     public String direccion;
@@ -7,9 +7,9 @@ public class Cliente {
     public int cuenta_bancaria;
     
 
-    public Cliente(int id, String nombre, String apellido, String direccion, int telefono, int cuenta_bancaria){
+    public Cliente(int dni, String nombre, String apellido, String direccion, int telefono, int cuenta_bancaria){
 
-        this.id = id;
+        this.dni = dni;
         this.nombre = nombre;
         this.direccion = direccion;
         this.telefono = telefono;
