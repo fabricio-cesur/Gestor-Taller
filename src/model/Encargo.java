@@ -12,7 +12,6 @@ public class Encargo {
     public Item item;
 
     public Encargo(int id, Vehiculo vehiculo, Servicio servicio, Double precio_total, Asignacion asignacion, String fecha_inicio, String fecha_finalizado, boolean completado, Item item){
-
         this.id = id;
         this.vehiculo = vehiculo;
         this.servicio = servicio;
@@ -23,4 +22,14 @@ public class Encargo {
         this.completado = completado;
         this.item = item;
     }
+
+    public int getId() { return this.id; }
+    public Vehiculo getVehiculo() { return this.vehiculo; }
+    public Servicio getServicio() { return this.servicio; }
+    public Double getPrecio_total() { return this.precio_total; }
+    public Asignacion getAsignacion() { return this.asignacion; }
+    public String getFechaInicio() { return this.fecha_inicio; }
+    public String getFechaFinalizado() { return this.fecha_finalizado; }
+    public boolean getCompletado() { return this.completado; }
+    public Item getItem() { return this.item; }
 }
