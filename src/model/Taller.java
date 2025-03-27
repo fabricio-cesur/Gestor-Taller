@@ -1,5 +1,7 @@
 package model;
 
+
+import dao.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -39,7 +41,9 @@ public class Taller {
         cuenta_bancaria = sc.nextLine();
  
         cliente = new Cliente(dni, nombre, apellido, direccion, telefono, cuenta_bancaria);
-        array_clientes.add(cliente);
+       // array_clientes.add(cliente);
+        ClienteDAO clienteDAO = new ClienteDAO();
+        clienteDAO.insertarClienteDAO(cliente);
     }
     public void modificarCliente() {
         String opcion;

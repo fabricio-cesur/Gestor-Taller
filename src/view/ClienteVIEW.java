@@ -5,23 +5,18 @@ import java.util.Scanner;
 public class ClienteVIEW {
 
     Scanner sc = new Scanner(System.in);
-
-    String dni;
-    String columna;
-    String valor;
     
-    public void modificarClienteDAO() {
+    public String[] modificarClienteDAO() {
         
-
         System.out.print("¿Qué desea modificar? ");
-        columna = sc.next();
+        String columna = sc.next();
         System.out.print("Ingrese el nuevo dato: ");
-        valor = sc.next();
+        String valor = sc.next();
         System.out.print("Ingrese el dni: ");
-        dni = sc.next();
+        String dni = sc.next();
+
+        return new String[]{columna, valor, dni};
     }
 
-    public String getDni() { return this.dni; }
-    public String getColumna() { return this.columna; }
-    public String getValor() { return this.valor; }
+    
 }
