@@ -156,7 +156,15 @@ public class Taller {
             } while (!opcion.equals("2"));
         }
     }
-    public void mostrarClientes() {}
+    public void mostrarClientes() {
+        if (array_clientes.isEmpty()) {
+            System.out.println("No hay clientes registrados");
+        } else {
+            for (Cliente cliente : array_clientes) {
+                System.out.println(cliente.toString());
+            }
+        }
+    }
 
 
     public void registrarVehiculo() {

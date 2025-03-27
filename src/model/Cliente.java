@@ -25,7 +25,6 @@ public class Cliente {
     public int getTelefono() { return this.telefono; }
     public String getCuentaBancaria() { return this.cuenta_bancaria; }
 
-
     public void setDni(String dni) { this.dni = dni; }
     public void setNombre(String nombre) { this.nombre = nombre; }
     public void setApellido(String apellido) { this.apellido = apellido; }
@@ -33,4 +32,7 @@ public class Cliente {
     public void setTelefono(int telefono) { this.telefono = telefono; }
     public void setCuentaBancaria(String cuenta_bancaria) { this.cuenta_bancaria = cuenta_bancaria; }
 
+
+    @Override
+    public String toString() { return this.getDni() + ": " + this.getNombre() + " " + this.getApellido() + " - cuenta: " + this.getCuentaBancaria();}
 }
