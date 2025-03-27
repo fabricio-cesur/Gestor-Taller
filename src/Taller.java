@@ -1,5 +1,17 @@
+import java.util.ArrayList;
+
 public class Taller {
     
+    public ArrayList<Cliente> array_clientes = new ArrayList<>();
+    public ArrayList<Vehiculo> array_vehiculos = new ArrayList<>();
+    public ArrayList<Cita> array_citas = new ArrayList<>();
+    public ArrayList<Encargo> array_encargos = new ArrayList<>();
+    public ArrayList<Empleado> array_empleados = new ArrayList<>();
+    public ArrayList<Servicio> array_servicios = new ArrayList<>();
+    public ArrayList<Item> array_items = new ArrayList<>();
+    public ArrayList<Pedido> array_pedido = new ArrayList<>();
+    public ArrayList<Proveedor> array_proveedores = new ArrayList<>();
+
     public void registrarCliente() {}
     public void modificarCliente() {}
     public void eliminarCliente() {}
