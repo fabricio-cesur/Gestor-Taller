@@ -21,4 +21,10 @@ public class Vehiculo {
     public int getAño() { return this.año; }
     public Cliente getPropietario() { return this.propietario; }
 
+    public void setMatricula(String matricula) { this.matricula = matricula; }
+    public void setModelo(String modelo) { this.modelo = modelo; }
+    public void setMarca(String marca) { this.marca = marca; }
+    public void setAño(int año) { this.año = año; }
+    public void setPropietario(Cliente propietario) { this.propietario = propietario; }
+
 }
