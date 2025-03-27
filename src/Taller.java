@@ -14,7 +14,31 @@ public class Taller {
     public ArrayList<Pedido> array_pedido = new ArrayList<>();
     public ArrayList<Proveedor> array_proveedores = new ArrayList<>();
 
-    public void registrarCliente() {}
+    public void registrarCliente() {
+        String dni;
+        String nombre;
+        String apellido;
+        String direccion;
+        int telefono;
+        String cuenta_bancaria;
+       
+        Cliente cliente;
+        System.out.print("Ingrese el DNI: ");
+        dni = sc.next();
+        System.out.print("Ingrese el nombre: ");
+        nombre = sc.next();
+        System.out.print("Ingrese el apelldio: ");
+        apellido = sc.next();
+        System.out.print("Ingrese la dirección: ");
+        direccion = sc.nextLine();
+        System.out.print("Ingrese el telefono: ");
+        telefono = sc.nextInt();
+        System.out.print("Ingrese el número de cuenta bancaria: ");
+        cuenta_bancaria = sc.nextLine();
+ 
+        cliente = new Cliente(dni, nombre, apellido, direccion, telefono, cuenta_bancaria);
+        array_clientes.add(cliente);
+    }
     public void modificarCliente() {}
     public void eliminarCliente() {}
     public void mostrarClientes() {}
@@ -49,7 +73,80 @@ public class Taller {
         vehiculo = new Vehiculo(matricula, modelo, marca, año, propietario);
         array_vehiculos.add(vehiculo);
     }
-    public void modificarVehiculo() {}
+    public void modificarVehiculo() {
+        String opcion;
+        String matricula;
+
+        Vehiculo vehiculo_modificar = null;
+        do {
+            System.out.println("Qué desea modificar?");
+            System.out.println("1. Matricula");
+            System.out.println("2. Modelo");
+            System.out.println("3. Marca");
+            System.out.println("4. Año");
+            System.out.println("5. Propietario");
+            System.out.println("0. Atrás");
+            System.out.print(">>> ");
+            opcion = sc.next();
+
+            System.out.println("Ingrese la matrícula del vehículo a modificar: ");
+            System.out.print("--> ");
+            matricula = sc.next();
+            for (Vehiculo vehiculo : array_vehiculos) {
+                if (matricula.equalsIgnoreCase(vehiculo.getMatricula())) {
+                    vehiculo_modificar = vehiculo;
+                    break;
+                }
+            }
+            if (vehiculo_modificar == null) {
+                System.out.println("ERR0R: No se encontró esa matrícula");
+            } else {
+                switch (opcion) {
+                    case "1", "matricula" -> {
+                        System.out.print("Ingrese la nueva matrícula: ");
+                        String matricula_nueva = sc.next();
+                        vehiculo_modificar.setMatricula(matricula_nueva);
+                    }
+                    case "2", "modelo" -> {
+                        System.out.print("Ingrese el nuevo modelo: ");
+                        String modelo_nuevo = sc.next();
+                        vehiculo_modificar.setModelo(modelo_nuevo);
+                    }
+                    case "3", "marca" -> {
+                        System.out.print("Ingrese la nueva marca: ");
+                        String marca_nueva = sc.next();
+                        vehiculo_modificar.setMarca(marca_nueva);
+                    }
+                    case "4", "año" -> {
+                        System.out.print("Ingrese el nuevo año: ");
+                        int año_nuevo = sc.nextInt();
+                        sc.nextLine();
+                        vehiculo_modificar.setAño(año_nuevo);
+                    }
+                    case "5", "propietario" -> {
+                        System.out.print("Ingrese el DNI nuevo propietario: ");
+                        String dni_propietario_nuevo = sc.next();
+                        Cliente propietario_nuevo = null;
+                        for (Cliente cliente : array_clientes) {
+                            if (dni_propietario_nuevo.equalsIgnoreCase(cliente.getDni())) {
+                                propietario_nuevo = cliente;
+                                break;
+                            }
+                        }
+                        if (propietario_nuevo == null) {
+                            System.out.println("ERR0R: No se encontró el cliente");
+                        } else {
+                            vehiculo_modificar.setPropietario(propietario_nuevo);
+                        }
+                    }
+                    default -> {
+                        System.out.println("ERR0R: No se reconoció esa opción");
+                    }
+                }
+            }
+
+        } while (!opcion.equalsIgnoreCase("0"));
+    }
     public void eliminarVehiculo() {}
     public void mostrarVehiculos() {}
 

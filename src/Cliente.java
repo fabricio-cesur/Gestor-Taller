@@ -4,10 +4,10 @@ public class Cliente {
     public String apellido;
     public String direccion;
     public int telefono;
-    public int cuenta_bancaria;
+    public String cuenta_bancaria;
     
 
-    public Cliente(String dni, String nombre, String apellido, String direccion, int telefono, int cuenta_bancaria){
+    public Cliente(String dni, String nombre, String apellido, String direccion, int telefono, String cuenta_bancaria){
         this.dni = dni;
         this.nombre = nombre;
         this.direccion = direccion;
