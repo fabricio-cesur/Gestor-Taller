@@ -1,3 +1,5 @@
+package model;
+
 public class Cliente {
     public String dni;
     public String nombre;

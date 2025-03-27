@@ -1,3 +1,5 @@
+package model;
+
 public class Cita {
     public int id;
     public String fecha; //Hacerlo Arrays de int?

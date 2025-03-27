@@ -1,3 +1,5 @@
+package model;
+
 public class Pedido {
 
     public int id;

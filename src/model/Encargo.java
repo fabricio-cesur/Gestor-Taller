@@ -1,3 +1,5 @@
+package model;
+
 public class Encargo {
     public int id;
     public Vehiculo vehiculo;
