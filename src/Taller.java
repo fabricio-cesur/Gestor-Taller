@@ -1,6 +1,8 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Taller {
+    Scanner sc = new Scanner(System.in);
     
     public ArrayList<Cliente> array_clientes = new ArrayList<>();
     public ArrayList<Vehiculo> array_vehiculos = new ArrayList<>();
@@ -18,7 +20,35 @@ public class Taller {
     public void mostrarClientes() {}
 
 
-    public void registrarVehiculo() {}
+    public void registrarVehiculo() {
+        String matricula;
+        String modelo;
+        String marca;
+        int año;
+        String dni_propietario;
+        Cliente propietario = null;
+
+        Vehiculo vehiculo;
+        System.out.print("Ingrese la matrícula: ");
+        matricula = sc.next();
+        System.out.print("Ingrese el modelo: ");
+        modelo = sc.nextLine();
+        System.out.print("Ingrese la marca: ");
+        marca = sc.nextLine();
+        System.out.print("Ingrese el año: ");
+        año = sc.nextInt();
+        System.out.print("Ingrese el dni del propietario: ");
+        dni_propietario = sc.next();
+
+        for (Cliente cliente : array_clientes) {
+            if (dni_propietario.equals(cliente.getDni())) {
+                propietario = cliente;
+                break;
+            }
+        }
+        vehiculo = new Vehiculo(matricula, modelo, marca, año, propietario);
+        array_vehiculos.add(vehiculo);
+    }
     public void modificarVehiculo() {}
     public void eliminarVehiculo() {}
     public void mostrarVehiculos() {}
