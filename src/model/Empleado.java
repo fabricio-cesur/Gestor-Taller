@@ -1,7 +1,7 @@
 package model;
 
 public class Empleado {
-    public int id;
+    public String dni;
     public String nombre;
     public String apellido;
     public String direccion;
@@ -13,9 +13,9 @@ public class Empleado {
     
     
 
-    public Empleado(int id, String nombre,String apellido, String direccion, int telefono, int cuenta_bancaria, int salario, Encargo encargo, boolean disponibilidad){
+    public Empleado(String dni, String nombre,String apellido, String direccion, int telefono, int cuenta_bancaria, int salario, Encargo encargo, boolean disponibilidad){
 
-        this.id = id;
+        this.dni = dni;
         this.nombre = nombre;
         this.apellido = apellido;
         this.direccion = direccion;
