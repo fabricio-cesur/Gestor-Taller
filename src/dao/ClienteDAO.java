@@ -9,28 +9,24 @@ import model.Cliente;
 
 public class ClienteDAO {
 
-    public void insertarClienteDAO(Cliente cliente) {
+    public boolean  insertar(Cliente cliente) {
         Connection conexion = ConexionDB.conectar(); 
         if (conexion != null) { 
-            String query = "INSERT INTO clientes (dni, nombre, apellido, direccion, telefono, cuenta_bancaria) VALUES (?, ?, ?, ?, ?, ?)"; 
+            String query = "INSERT INTO clientes (dni, nombre, apellido, direccion, telefono, cuenta_bancaria) VALUES (" + cliente.getDni() + ", " + cliente.getNombre() + ", " + cliente.getApellido() + ", " +
+            cliente.getDireccion() + ", " + cliente.getTelefono() + ", " + cliente.getCuentaBancaria() + ");" ; 
             try (PreparedStatement stmt = conexion.prepareStatement(query)) { 
-                stmt.setString(1, cliente.getDni());  
-                stmt.setString(2, cliente.getNombre()); 
-                stmt.setString(3, cliente.getApellido()); 
-                stmt.setString(4, cliente.getDireccion()); 
-                stmt.setInt(5, cliente.getTelefono()); 
-                stmt.setString(6, cliente.getCuentaBancaria()); 
-
+               
                 stmt.executeUpdate(); // Ejecuta la consulta de inserción 
 
-                System.out.println("Cliente agregado exitosamente."); 
+                return true; 
             } catch (SQLException e) { 
                 System.out.println("Error al agregar cliente: " + e.getMessage()); 
             } 
         }
+        return false;
     }
 
-    public void actualizarClienteDAO(String columna, String dni, String valor ) {
+    public boolean actualizar(String columna, String dni, String valor ) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
             String query = "UPDATE Clientes SET " + columna + "=" + valor + " WHERE dni = " + dni; 
@@ -40,17 +36,18 @@ public class ClienteDAO {
                 int filasAfectadas = stmt.executeUpdate();
 
                 if (filasAfectadas == 1) {
-                    System.out.println("Cliente actualizado correctamente.");
+                    return true;
                 } else {
-                    System.out.println("No se encontró el cliente con DNI: " + dni);
+                    return false;
                 }
             } catch (SQLException e) {
                 System.out.println("Error al actualizar cliente: " + e.getMessage());
             } 
         }
+        return false;
     }
 
-    public void eliminar(String dni) {
+    public boolean  eliminar(String dni) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
             String query = "DELETE FROM Clientes WHERE dni = " + dni;
@@ -60,17 +57,18 @@ public class ClienteDAO {
                 int filasAfectadas = stmt.executeUpdate();
                 
                 if (filasAfectadas == 1) {
-                    System.out.println("Cliente eliminado correctamente.");
+                    return true;
                 } else {
-                    System.out.println("No se encontró el cliente con DNI: " + dni);
+                    return false;
                 }
             } catch (SQLException e) {
                 System.out.println("Error al eliminar cliente: " + e.getMessage());
             }
         }
+        return false;
     }
 
-    public Cliente buscarPorDNI(String dni) {
+    public Cliente buscar(String dni) {
         Connection conexion = ConexionDB.conectar();
 
         if (conexion != null) {
