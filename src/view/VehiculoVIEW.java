@@ -8,36 +8,51 @@ import dao.*;
 public class VehiculoVIEW {
     public ArrayList<Vehiculo> array_vehiculos = new ArrayList<>();
     public ArrayList<Cliente> array_clientes = new ArrayList<>();
+
+    VehiculoDAO VehiculoDAO = new VehiculoDAO();
     Scanner sc = new Scanner(System.in);
 
-    public void registrarVehiculo() {
-        String matricula;
-        String modelo;
-        String marca;
-        int año;
-        String dni_propietario;
-        Cliente propietario = null;
-        //TODO: Añadir validaciones al registrar vehiculo
-        Vehiculo vehiculo;
-        System.out.print("Ingrese la matrícula: ");
-        matricula = sc.next();
-        System.out.print("Ingrese el modelo: ");
-        modelo = sc.nextLine();
-        System.out.print("Ingrese la marca: ");
-        marca = sc.nextLine();
-        System.out.print("Ingrese el año: ");
-        año = sc.nextInt();
-        System.out.print("Ingrese el dni del propietario: ");
-        dni_propietario = sc.next();
-
-        for (Cliente cliente : array_clientes) {
-            if (cliente.getDni().equals(dni_propietario)) {
-                propietario = cliente;
-                break;
+    public void menu() {
+        String opcion;
+        do { 
+            System.out.println("Qué desea hacer con los vehículos?");
+            System.out.println("1. Registrar Vehiculo");
+            System.out.println("2. Modificar Vehiculo");
+            System.out.println("3. Eliminar Vehiculo");
+            System.out.println("4. Mostrar Vehiculos");
+            System.out.println("0. Atrás");
+            System.out.print(">>> ");
+            opcion = sc.next();
+            opcion = opcion.toLowerCase();
+            switch (opcion) {
+                case "1", "registrar" -> { /*registrar() */ }
+                case "2", "modificar" -> { /*modificar() */ }
+                case "3", "eliminar" -> { /*eliminar() */ }
+                case "4", "servicios" -> { /*mostrarServicios() */ }
+                case "5", "disponibilidad" -> { /*revisarDisponibilidad() */ }
+                case "6", "mostrar" -> { /*mostrar() */ }
+                default -> {
+                    System.out.println("ERR0R: No se reconoció esa opción");
+                }
             }
-        }
-        vehiculo = new Vehiculo(matricula, modelo, marca, año, propietario);
-        array_vehiculos.add(vehiculo);
+        } while (!opcion.equalsIgnoreCase("0"));
+    }
+
+    public void registrar() {
+        //TODO: Añadir validaciones al registrar vehiculo
+        System.out.print("Ingrese la matrícula: ");
+        String matricula = sc.next();
+        System.out.print("Ingrese el modelo: ");
+        String modelo = sc.next();
+        System.out.print("Ingrese el marca: ");
+        String marca = sc.next();
+        System.out.print("Ingrese el año: ");
+        int año = sc.nextInt();
+        sc.nextLine();
+        System.out.print("Ingrese el DNI del propietario: ");
+        String dni = sc.next();
+
+        VehiculoDAO.insertar(new Vehiculo(matricula, modelo, marca, año, dni));
     }
     public void modificarVehiculo() {
         String opcion;
