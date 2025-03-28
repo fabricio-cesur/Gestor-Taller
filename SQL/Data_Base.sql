@@ -13,7 +13,7 @@ CREATE TABLE Vehiculo (
     marca VARCHAR (100),
     ano YEAR,
     dni_cliente VARCHAR(20),
-    FOREIGN KEY (dni_cliente) REFERENCES cliente(dni) 
+    FOREIGN KEY (dni_cliente) REFERENCES Cliente(dni) 
 );
 
 CREATE TABLE Empleado (
@@ -42,7 +42,7 @@ CREATE TABLE Item (
     cantidad INT,
     minimo INT,
     restock BOOLEAN DEFAULT FALSE,
-    FOREIGN KEY (proveedor_id) REFERENCES proveedor(id)
+    FOREIGN KEY (proveedor_id) REFERENCES Proveedor(id)
 );
 
 CREATE TABLE Servicio (
@@ -51,7 +51,7 @@ CREATE TABLE Servicio (
     descripcion VARCHAR(200),
     id_item INT,
     precio DECIMAL(8,2),
-    FOREIGN KEY (id_item) REFERENCES item(codigo) 
+    FOREIGN KEY (id_item) REFERENCES Item(codigo) 
 );
 
 CREATE TABLE Pedido (
@@ -61,7 +61,7 @@ CREATE TABLE Pedido (
     fecha_entrega_aproximada DATE,
     fecha_recibido DATE,
     completado BOOLEAN DEFAULT FALSE,
-    FOREIGN KEY (id_proveedor) REFERENCES proveedor(id)
+    FOREIGN KEY (id_proveedor) REFERENCES Proveedor(id)
 );
 
 CREATE TABLE Pedido_item (
@@ -69,8 +69,8 @@ CREATE TABLE Pedido_item (
     id_pedido INT,
     id_item INT,
     cantidad INT,
-    FOREIGN KEY (id_pedido) REFERENCES pedido(id),
-    FOREIGN KEY (id_item) REFERENCES item(codigo)
+    FOREIGN KEY (id_pedido) REFERENCES Pedido(id),
+    FOREIGN KEY (id_item) REFERENCES Item(codigo)
 );
 
 CREATE TABLE Encargo (
@@ -81,17 +81,18 @@ CREATE TABLE Encargo (
     fecha_inicio DATE,
     fecha_finalizado DATE,
     completado BOOLEAN DEFAULT FALSE,
-    FOREIGN KEY (matricula_coche) REFERENCES vehiculo(matricula),  
-    FOREIGN KEY (id_servicio) REFERENCES servicio(id) 
+    FOREIGN KEY (matricula_coche) REFERENCES Vehiculo(matricula),  
+    FOREIGN KEY (id_servicio) REFERENCES Servicio(id) 
 );
 
 CREATE TABLE Asignacion (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_empleado VARCHAR (20),
     id_encargo INT,
-    FOREIGN KEY (id_empleado) REFERENCES empleado(dni), 
-    FOREIGN KEY (id_encargo) REFERENCES encargo(id) 
+    FOREIGN KEY (id_empleado) REFERENCES Empleado(dni), 
+    FOREIGN KEY (id_encargo) REFERENCES Encargo(id) 
 );
+
 
 CREATE TABLE Citas (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -99,6 +100,6 @@ CREATE TABLE Citas (
     hora TIME,
     matricula_coche VARCHAR(20),
     id_encargo INT, 
-    FOREIGN KEY (id_encargo) REFERENCES encargo(id)
+    FOREIGN KEY (id_encargo) REFERENCES Encargo(id)
 );
 

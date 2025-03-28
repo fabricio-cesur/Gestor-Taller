@@ -19,18 +19,18 @@ public class Vehiculo {
     public String getModelo() { return this.modelo; }
     public String getMarca() { return this.marca; }
     public int getAño() { return this.año; }
-    public String getDni_cliente() { return this.dni_cliente; }
+    public String getDniCliente() { return this.dni_cliente; }
    
     public void setMatricula(String matricula) { this.matricula = matricula; }
     public void setModelo(String modelo) { this.modelo = modelo; }
     public void setMarca(String marca) { this.marca = marca; }
     public void setAño(int año) { this.año = año; }
-    public void setDni_cliente(String dni_cliente) { this.dni_cliente = dni_cliente; }
+    public void setDniCliente(String dni_cliente) { this.dni_cliente = dni_cliente; }
 
     @Override
     public String toString() { 
         return this.getMatricula() + ": " 
         + this.getMarca() + " " + this.getModelo() + " " + this.getAño() 
-        + " de: " + this.getDni_cliente();
+        + " de: " + this.getDniCliente();
     }
 }

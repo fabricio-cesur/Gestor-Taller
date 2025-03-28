@@ -9,12 +9,12 @@ import model.Vehiculo;
 
 public class VehiculoDAO {
 
-    public boolean  insertar(Vehiculo vehiculo) {
+    public boolean insertar(Vehiculo vehiculo) {
         Connection conexion = ConexionDB.conectar(); 
         if (conexion != null) { 
              
             String query = "INSERT INTO Vehiculos (matricula, modelo, marca, ano, propietario) VALUES (" + vehiculo.getMatricula() + ", " + vehiculo.getModelo() + ", " 
-            + vehiculo.getMarca() + ", " + vehiculo.getAño() +", " +  vehiculo.getDni_cliente() +");"; 
+            + vehiculo.getMarca() + ", " + vehiculo.getAño() +", " +  vehiculo.getDniCliente() +");"; 
 
             try (PreparedStatement stmt = conexion.prepareStatement(query)) { 
                 
