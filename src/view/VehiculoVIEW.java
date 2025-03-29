@@ -36,7 +36,7 @@ public class VehiculoVIEW {
                 break;
             }
         }
-        vehiculo = new Vehiculo(matricula, modelo, marca, año, propietario);
+        vehiculo = new Vehiculo(matricula, modelo, marca, año, dni_propietario);
         array_vehiculos.add(vehiculo);
     }
     public void modificarVehiculo() {
@@ -102,7 +102,7 @@ public class VehiculoVIEW {
                         if (propietario_nuevo == null) {
                             System.out.println("ERR0R: No se encontró el cliente");
                         } else {
-                            vehiculo_modificar.setPropietario(propietario_nuevo);
+                            //vehiculo_modificar.setPropietario(propietario_nuevo);
                         }
                     }
                     default -> {
@@ -130,7 +130,7 @@ public class VehiculoVIEW {
             System.out.println("Está por eliminar al siguiente vehiculo: ");
             System.out.println(vehiculo.getMarca() + " " + vehiculo.getModelo());
             System.out.println("Año: " + vehiculo.getAño());
-            System.out.println("Propietario: " + vehiculo.getPropietarioNombreApellido());
+            //System.out.println("Propietario: " + vehiculo.getPropietarioNombreApellido());
             System.out.println("---¿Está seguro?---");
             String opcion;
             do { 

@@ -1,9 +1,9 @@
 
-import dao.ConexionDB;
+import dao.*;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.Scanner;
-import view.ClienteVIEW;
+import view.*;
 
 public class Menu {
     public static boolean vaciar = true;

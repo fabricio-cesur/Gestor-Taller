@@ -1,6 +1,6 @@
 package view;
 
-import java.util.ArrayList;
+import dao.EmpleadoDAO;
 import java.util.Scanner;
 import model.Empleado;
 
@@ -103,7 +103,7 @@ public class EmpleadoVIEW {
             String dni = sc.next();
             System.out.print("Ingrese el nuevo valor: ");
             String valor = sc.next();
-            EmpleadoDAO.modificar(columna, dni, valor);
+            EmpleadoDAO.actualizar(columna, dni, valor);
         } while (!opcion.equalsIgnoreCase("0"));
     }
 
@@ -116,7 +116,7 @@ public class EmpleadoVIEW {
         dni = sc.next();
         //TODO: Validar que el dni existe iterando en la base de datos
         System.out.println("Está por eliminar el siguiente Empleado");
-        EmpleadoDAO.buscar(dni).mostrar();
+        EmpleadoDAO.buscar(dni);
         System.out.println("---¿Está seguro?---");
         System.out.println("1. SI / 2. NO");
         do { 

@@ -13,8 +13,7 @@ public class Empleado {
     public String cargo;
     public boolean disponibilidad;
     
-    public Empleado(String dni, String nombre,String apellido, String direccion, int telefono, 
-    String cuenta_bancaria, int salario, String cargo, Boolean disponibilidad){
+    public Empleado(String dni, String nombre, String apellido, String direccion, int telefono, String cuenta_bancaria, int salario, String cargo){
         this.dni = dni;
         this.nombre = nombre;
         this.apellido = apellido;
