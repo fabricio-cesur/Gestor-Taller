@@ -35,13 +35,14 @@ public class ClienteVIEW {
         cliente = new Cliente(dni, nombre, apellido, direccion, telefono, cuenta_bancaria);
        // array_clientes.add(cliente);
         ClienteDAO clienteDAO = new ClienteDAO();
-        clienteDAO.insertarClienteDAO(cliente);
+        clienteDAO.insertar(cliente);
     }
     public void modificarCliente() {
         String opcion;
         String dni;
-
+        ClienteDAO clienteDAO = new ClienteDAO();
         Cliente cliente_modificar = null;
+
         do {
             System.out.println("Qué desea modificar?");
             System.out.println("1. Dni");
@@ -69,9 +70,10 @@ public class ClienteVIEW {
                 switch (opcion) {
                     //TODO: Añadir validaciones
                     case "1", "dni" -> {
+                        String columna = dni;
                         System.out.print("Ingrese el nuevo DNI: ");
-                        String dni_nuevo = sc.next();
-                        cliente_modificar.setDni(dni_nuevo);
+                        String valor = sc.next();
+                        clienteDAO.actualizar(columna, dni, valor);
                     }
                     case "2", "nombre" -> {
                         System.out.print("Ingrese el nuevo nombre: ");

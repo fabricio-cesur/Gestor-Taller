@@ -3,15 +3,17 @@ import dao.ConexionDB;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.Scanner;
+import view.ClienteVIEW;
 
 public class Menu {
     public static boolean vaciar = true;
     public static Scanner sc = new Scanner(System.in);
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
 
         vaciarConsola();
         Connection conexion = ConexionDB.conectar();
+        
 
         if (conexion != null) {
             System.out.println("Conexion establecida correctamente.");
@@ -58,6 +60,7 @@ public class Menu {
     }
 
     public static void menuClientes() {
+        ClienteVIEW clienteVIEW = new ClienteVIEW();
         String opcion;
         do { 
             System.out.println("Qué desea hacer con los clientes?");
@@ -70,8 +73,8 @@ public class Menu {
             opcion = sc.next();
     
             switch (opcion) {
-                case "1", "registrar" -> { /*taller.registrarCliente() */ }
-                case "2", "modificar" -> { /*taller.modificarCliente() */ }
+                case "1", "registrar" -> { clienteVIEW.registrarCliente(); }
+                case "2", "modificar" -> { clienteVIEW.modificarCliente(); }
                 case "3", "eliminar" -> { /*taller.eliminarCliente() */ }
                 case "4", "mostrar" -> { /*taller.mostrarClientes() */ }
                 default -> {
