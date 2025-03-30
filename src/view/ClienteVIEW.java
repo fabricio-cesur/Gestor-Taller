@@ -15,31 +15,35 @@ public class ClienteVIEW {
         String nombre;
         String apellido;
         String direccion;
-        int telefono;
+        String phone;
         String cuenta_bancaria;
        //TODO: Añadir validaciones al registrar cliente
         Cliente cliente;
         System.out.print("Ingrese el DNI: ");
-        dni = sc.next();
+        dni = sc.nextLine();
         System.out.print("Ingrese el nombre: ");
-        nombre = sc.next();
+        nombre = sc.nextLine();
         System.out.print("Ingrese el apellido: ");
-        apellido = sc.next();
+        apellido = sc.nextLine();
         System.out.print("Ingrese la dirección: ");
         direccion = sc.nextLine();
         System.out.print("Ingrese el telefono: ");
-        telefono = sc.nextInt();
+        phone = sc.nextLine();
         System.out.print("Ingrese el número de cuenta bancaria: ");
         cuenta_bancaria = sc.nextLine();
+
+        int telefono = Integer.parseInt(phone);
  
         cliente = new Cliente(dni, nombre, apellido, direccion, telefono, cuenta_bancaria);
-       // array_clientes.add(cliente);
+       
         ClienteDAO clienteDAO = new ClienteDAO();
-        clienteDAO.insertarClienteDAO(cliente);
+        clienteDAO.insertar(cliente);
     }
     public void modificarCliente() {
         String opcion;
         String dni;
+        String columna;
+        String valor;
 
         Cliente cliente_modificar = null;
         do {
@@ -56,47 +60,90 @@ public class ClienteVIEW {
             //TODO: Validar que el DNI exista
             System.out.println("Ingrese el DNI del cliente a modificar: ");
             System.out.print("--> ");
-            dni = sc.next();
-            for (Cliente cliente : array_clientes) {
-                if (dni.equalsIgnoreCase(cliente.getDni())) {
-                    cliente_modificar = cliente;
-                    break;
-                }
-            }
+            dni = sc.nextLine();
+
+            ClienteDAO clienteDAO = new ClienteDAO();
+            cliente_modificar = clienteDAO.buscar(dni);
+            
+            
             if (cliente_modificar == null) {
-                System.out.println("ERR0R: No se encontró esa matrícula");
+                System.out.println("ERR0R: No se encontró el cliente");
             } else {
                 switch (opcion) {
                     //TODO: Añadir validaciones
                     case "1", "dni" -> {
                         System.out.print("Ingrese el nuevo DNI: ");
                         String dni_nuevo = sc.next();
-                        cliente_modificar.setDni(dni_nuevo);
+                        valor = dni_nuevo;
+                        columna = "dni";
+                        
+                        boolean actualizado = clienteDAO.actualizar(columna, dni, valor);
+                        if (actualizado) {
+                        System.out.println("DNI actualizado correctamente.");
+                        } else {
+                        System.out.println("Error al actualizar el DNI.");
+                        }
+
                     }
                     case "2", "nombre" -> {
                         System.out.print("Ingrese el nuevo nombre: ");
                         String nombre_nuevo = sc.next();
-                        cliente_modificar.setNombre(nombre_nuevo);
+                        columna = "nombre";
+                        valor = nombre_nuevo;
+                        boolean actualizado = clienteDAO.actualizar(columna, dni, valor);
+                        if (actualizado) {
+                            System.out.println("Nombre actualizado correctamente.");
+                        } else {
+                            System.out.println("Error al actualizar el nombre.");
+                        }
                     }
                     case "3", "apellido" -> {
                         System.out.print("Ingrese el nuevo apellido: ");
                         String apellido_nuevo = sc.next();
-                        cliente_modificar.setApellido(apellido_nuevo);
+                        columna = "apellido";
+                        valor = apellido_nuevo;
+                        boolean actualizado = clienteDAO.actualizar(columna, dni, valor);
+                        if (actualizado) {
+                            System.out.println("Apellido actualizado correctamente.");
+                        } else {
+                            System.out.println("Error al actualizar el apellido.");
+                        }
                     }
                     case "4", "direccion" -> {
                         System.out.print("Ingrese la nueva dirección: ");
                         String direccion_nueva = sc.nextLine();
-                        cliente_modificar.setDireccion(direccion_nueva);
+                        columna = "direccion";
+                        valor = direccion_nueva;
+                        boolean actualizado = clienteDAO.actualizar(columna, dni, valor);
+                        if (actualizado) {
+                            System.out.println("Dirección actualizada correctamente.");
+                        } else {
+                            System.out.println("Error al actualizar la dirección.");
+                        }
                     }
                     case "5", "telefono" -> {
                         System.out.print("Ingrese el nuevo teléfono: ");
                         int telefono_nuevo = sc.nextInt();
-                        cliente_modificar.setTelefono(telefono_nuevo);
+                        columna = "telefono";
+                        valor = Integer.toString(telefono_nuevo); //paso el valor a String
+                        boolean actualizado = clienteDAO.actualizar(columna, dni, valor);
+                        if (actualizado) {
+                            System.out.println("Teléfono actualizado correctamente.");
+                        } else {
+                            System.out.println("Error al actualizar el teléfono.");
+                        }
                     }
                     case "6", "cuenta bancaria" -> {
                         System.out.print("Ingrese la nueva cuenta bancaria: ");
                         String cuenta_nueva = sc.nextLine();
-                        cliente_modificar.setCuentaBancaria(cuenta_nueva);
+                        columna = "cuenta_bancaria";
+                        valor = cuenta_nueva;
+                        boolean actualizado = clienteDAO.actualizar(columna, dni, valor);
+                        if (actualizado) {
+                            System.out.println("Cuenta bancaria actualizada correctamente.");
+                        } else {
+                            System.out.println("Error al actualizar la cuenta bancaria.");
+                        }
                     }
                     default -> {
                         System.out.println("ERR0R: No se reconoció esa opción");
@@ -112,12 +159,9 @@ public class ClienteVIEW {
         Cliente cliente = null;
         System.out.print("Ingrese el DNI del cliente que quiere eliminar: ");
         dni = sc.next();
-        for (Cliente cli : array_clientes) {
-            if (dni.equalsIgnoreCase(cli.getDni())) {
-                cliente = cli;
-                break;
-            }
-        }
+        ClienteDAO clienteDAO = new ClienteDAO();
+        cliente = clienteDAO.buscar(dni);
+
         if (cliente == null) {
             System.out.println("ERR0R: No se encontró al cliente con ese DNI");
         } else {
@@ -133,13 +177,13 @@ public class ClienteVIEW {
                 opcion = sc.next();
                 switch (opcion) {
                     case "1", "si", "SI" -> {
-                        for (int i = 0; i < array_clientes.size(); i++) {
-                            if (array_clientes.get(i).getDni().equals(cliente.getDni())) {
-                                array_clientes.remove(i);
-                                System.out.println("Cliente eliminado");
-                                break;
-                            }
+                        
+                        if (clienteDAO.buscar(dni).equals(dni)) {
+                            clienteDAO.eliminar(dni);
+                            System.out.println("Cliente eliminado");
+                            break;
                         }
+                        
                     }
                     case "2", "no", "NO" -> {
                         System.out.println("Abortando...");
@@ -153,26 +197,20 @@ public class ClienteVIEW {
         }
     }
     public void mostrarClientes() {
+        ClienteDAO clienteDAO = new ClienteDAO();
+        array_clientes = clienteDAO.obtenerTodos(); // Llenar la lista con los clientes de la BD
+
+        if (array_clientes == null) {
+         array_clientes = new ArrayList<>(); // Evitar que sea null en caso de error
+        }
+
         if (array_clientes.isEmpty()) {
             System.out.println("No hay clientes registrados");
         } else {
             System.out.println("Clientes: ");
             for (Cliente cliente : array_clientes) {
-                System.out.println(cliente.toString());
+                System.out.println(cliente); // `toString()
             }
         }
-    }
-    public String[] modificarClienteDAO() {
-        
-        System.out.print("¿Qué desea modificar? ");
-        String columna = sc.next();
-        System.out.print("Ingrese el nuevo dato: ");
-        String valor = sc.next();
-        System.out.print("Ingrese el dni: ");
-        String dni = sc.next();
-
-        return new String[]{columna, valor, dni};
-    }
-
-    
+    }    
 }
