@@ -29,12 +29,12 @@ public class EmpleadoVIEW {
             opcion = sc.next();
             opcion = opcion.toLowerCase();
             switch (opcion) {
-                case "1", "registrar" -> { /*registrar() */ }
-                case "2", "modificar" -> { /*modificar() */ }
-                case "3", "eliminar" -> { /*eliminar() */ }
-                case "4", "servicios" -> { /*mostrarServicios() */ }
-                case "5", "disponibilidad" -> { /*revisarDisponibilidad() */ }
-                case "6", "mostrar" -> { /*mostrar() */ }
+                case "1", "registrar" -> { registrar(); }
+                case "2", "modificar" -> { modificar(); }
+                case "3", "eliminar" -> { eliminar(); }
+                case "4", "servicios" -> { /*mostrarServicios(); */ }
+                case "5", "disponibilidad" -> { /*revisarDisponibilidad(); */ }
+                case "6", "mostrar" -> { /*mostrar(); */ }
                 default -> {
                     System.out.println("ERR0R: No se reconoció esa opción");
                 }
@@ -65,7 +65,6 @@ public class EmpleadoVIEW {
 
         EmpleadoDAO.insertar(new Empleado(dni, nombre, apellido, direccion, telefono, cuenta_bancaria, salario, cargo));
     }
-
     public void modificar() {
         String opcion;
         boolean terminar;
@@ -103,10 +102,9 @@ public class EmpleadoVIEW {
             String dni = sc.next();
             System.out.print("Ingrese el nuevo valor: ");
             String valor = sc.next();
-            EmpleadoDAO.modificar(columna, dni, valor);
+            EmpleadoDAO.actualizar(columna, dni, valor);
         } while (!opcion.equalsIgnoreCase("0"));
     }
-
     public void eliminar() {
         String dni;
         String opcion;
@@ -141,7 +139,6 @@ public class EmpleadoVIEW {
             } 
         } while (!opcion.equals("2"));
     }
-
     //TODO: mostrarServicios()
     public void mostrarServicios() {
         String dni;
@@ -150,7 +147,6 @@ public class EmpleadoVIEW {
         dni = sc.next();
 
     }
-
     //TODO: mostrarEmpleados()
 
 }

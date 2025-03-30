@@ -99,9 +99,10 @@ public class ClienteDAO {
 
     public ArrayList<Cliente> obtenerTodos() {
         Connection conexion = ConexionDB.conectar();
+        ArrayList<Cliente> clientes = new ArrayList<>();
 
         if (conexion != null) {
-            ArrayList<Cliente> clientes = new ArrayList<>();
+            
             String query = "SELECT * FROM clientes";
 
             try (
@@ -122,9 +123,8 @@ public class ClienteDAO {
             } catch (SQLException e) {
                 System.out.println("Error al obtener todos los clientes: " + e.getMessage());
             }
-            return clientes;
         }
-        return null;
+        return clientes;
     }
 }
 
