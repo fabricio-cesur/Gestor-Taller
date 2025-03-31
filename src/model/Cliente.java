@@ -35,8 +35,8 @@ public class Cliente {
 
     @Override
     public String toString() { 
-        return this.getDni() + ": " + this.getNombre() + " " + this.getApellido() 
+        return "DNI: " + this.getDni() + ", Nombre: " + this.getNombre() + ", Apellidos: " + this.getApellido() 
         + ", telefono: " + this.getTelefono() + ", dirección: " + this.getDireccion()
-        + " - cuenta: " + this.getCuentaBancaria();
+        + ", número de cuenta: " + this.getCuentaBancaria();
     }
 }
