@@ -8,11 +8,11 @@ import model.Cita;
 import model.Cliente;
 
 public class CitaDAO {
-   public boolean  insertar(Cita cita) {
+    public boolean  insertar(Cita cita) {
         Connection conexion = ConexionDB.conectar(); 
         if (conexion != null) { 
-            String query = "INSERT INTO Cita (fecha, hora, matricula_coche, id_encargo) VALUES (" + cita.getFecha() + ", " + cita.getHora() + ", " +
-            cita.getVehiculoMatricula() + ", " + cita.getIdEncargo() + ");" ; 
+            String query = "INSERT INTO Cita (fecha, hora, matricula_coche) VALUES ('" + cita.getFecha() + "', '" + cita.getHora() + ":00' " +
+            cita.getVehiculoMatricula() + ");" ; 
             try (PreparedStatement stmt = conexion.prepareStatement(query)) { 
                
                 stmt.executeUpdate(); // Ejecuta la consulta de inserción 
@@ -28,7 +28,7 @@ public class CitaDAO {
     public boolean actualizar(String columna, String matricula_coche, String valor ) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
-            String query = "UPDATE Cita SET " + columna + "=" + valor + " WHERE matricula_coche = " + matricula_coche; 
+            String query = "UPDATE Cita SET " + columna + "= '" + valor + "' WHERE matricula_coche = " + matricula_coche; 
             try (PreparedStatement stmt = conexion.prepareStatement(query)) {
                                 
                 int filasAfectadas = stmt.executeUpdate();
@@ -64,32 +64,32 @@ public class CitaDAO {
         }
         return false;
     }
-/* 
-    public String buscar(String matricula_coche) {
+
+     public String buscar(String matricula) {
         Connection conexion = ConexionDB.conectar();
-        String cita_busqueda = null;
+        String matricula_busqueda = null;
 
         if (conexion != null) {
             
-            String query = "SELECT * FROM Cita WHERE matricula_coche = " + matricula_coche;
+            String query = "SELECT * FROM Cita WHERE matricula_coche = " + matricula;
             try ( PreparedStatement stmt = conexion.prepareStatement(query)) {
                 
                 ResultSet rs = stmt.executeQuery();
 
                 if (rs.next()) {
-                    cita_busqueda =  rs.getString("dni");
+                    matricula_busqueda =  rs.getString("matricula_coche");
                     
                 }
             } catch (SQLException e) {
                 System.out.println("Error al buscar cliente por DNI: " + e.getMessage());
             }
             
-            return dni_busqueda; 
+            return matricula_busqueda; 
         }
         return null; 
     }
-*/
-    public Cliente buscarMostrar(String matricula_coche) {
+
+    public Cita buscarMostrar(String matricula_coche) {
         Connection conexion = ConexionDB.conectar();
 
         if (conexion != null) {
@@ -102,50 +102,46 @@ public class CitaDAO {
 
                 if (rs.next()) {
                     cita = new Cita(
-                        rs.getString("id"),
                         rs.getString("fecha"),
                         rs.getString("hora"),
-                        rs.getString("matricula_coche"),
-                        rs.getString("id_encargo")
+                        rs.getString("matricula_coche")
                     );
                 }
             } catch (SQLException e) {
-                System.out.println("Error al buscar cliente por DNI: " + e.getMessage());
+                System.out.println("Error al buscar cita por la matrícula del coche: " + e.getMessage());
             }
-            return cliente; 
+            return cita; 
         }
         return null; 
     }
 
-    public ArrayList<Cliente> obtenerTodos() {
+    public ArrayList<Cita> obtenerTodos() {
         Connection conexion = ConexionDB.conectar();
-        ArrayList<Cliente> clientes = new ArrayList<>();
+        ArrayList<Cita> citas = new ArrayList<>();
 
         if (conexion != null) {
             
-            String query = "SELECT * FROM Cliente";
+            String query = "SELECT * FROM Cita";
 
             try (
                 PreparedStatement stmt = conexion.prepareStatement(query);
                 ResultSet rs = stmt.executeQuery()) {
                 
                 while (rs.next()) {
-                    Cliente cliente = new Cliente(
-                        rs.getString("dni"),
-                        rs.getString("nombre"),
-                        rs.getString("apellidos"),
-                        rs.getString("direccion"),
-                        rs.getInt("telefono"),
-                        rs.getString("cuenta_bancaria")
+                    Cita cita = new Cita(
+                        
+                        rs.getString("fecha"),
+                        rs.getString("hora"),
+                        rs.getString("matricula_coche")
                     );
-                    clientes.add(cliente);
+                    citas.add(cita);
                 }
             } catch (SQLException e) {
                 System.out.println("Error al obtener todos los clientes: " + e.getMessage());
             }
         }
-        return clientes;
+        return citas;
     }
 }
  
-}
+
