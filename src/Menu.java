@@ -3,6 +3,7 @@ import dao.ConexionDB;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.Scanner;
+import view.ClienteVIEW;
 
 public class Menu {
     public static boolean vaciar = true;
@@ -59,6 +60,7 @@ public class Menu {
 
     public static void menuClientes() {
         String opcion;
+        ClienteVIEW clienteVIEW = new ClienteVIEW();
         do { 
             System.out.println("Qué desea hacer con los clientes?");
             System.out.println("1. Registrar Cliente");
@@ -70,10 +72,10 @@ public class Menu {
             opcion = sc.next();
     
             switch (opcion) {
-                case "1", "registrar" -> { /*taller.registrarCliente() */ }
-                case "2", "modificar" -> { /*taller.modificarCliente() */ }
-                case "3", "eliminar" -> { /*taller.eliminarCliente() */ }
-                case "4", "mostrar" -> { /*taller.mostrarClientes() */ }
+                case "1", "registrar" -> { clienteVIEW.registrarCliente(); }
+                case "2", "modificar" -> { clienteVIEW.modificarCliente(); }
+                case "3", "eliminar" -> { clienteVIEW.eliminarCliente(); }
+                case "4", "mostrar" -> { clienteVIEW.mostrarClientes(); }
                 default -> {
                     System.out.println("ERR0R: No se reconoció esa opción");
                 }
