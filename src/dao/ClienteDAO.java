@@ -31,8 +31,7 @@ public class ClienteDAO {
         if (conexion != null) {
             String query = "UPDATE Cliente SET " + columna + "=" + valor + " WHERE dni = " + dni; 
             try (PreparedStatement stmt = conexion.prepareStatement(query)) {
-                stmt.setString(1, valor);
-                
+                                
                 int filasAfectadas = stmt.executeUpdate();
 
                 if (filasAfectadas == 1) {
@@ -76,14 +75,14 @@ public class ClienteDAO {
             String query = "SELECT * FROM Cliente WHERE dni = " + dni;
 
             try ( PreparedStatement stmt = conexion.prepareStatement(query)) {
-                stmt.setString(1, dni);
+                
                 ResultSet rs = stmt.executeQuery();
 
                 if (rs.next()) {
                     cliente = new Cliente(
                         rs.getString("dni"),
                         rs.getString("nombre"),
-                        rs.getString("apellido"),
+                        rs.getString("apellidos"),
                         rs.getString("direccion"),
                         rs.getInt("telefono"),
                         rs.getString("cuenta_bancaria")
