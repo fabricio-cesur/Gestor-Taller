@@ -94,7 +94,7 @@ CREATE TABLE Asignacion (
 );
 
 
-CREATE TABLE Citas (
+CREATE TABLE Cita (
     id INT AUTO_INCREMENT PRIMARY KEY,
     fecha DATE,
     hora TIME,
