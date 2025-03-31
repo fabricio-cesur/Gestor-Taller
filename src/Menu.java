@@ -6,7 +6,7 @@ import java.util.Scanner;
 import view.ClienteVIEW;
 
 public class Menu {
-    public static boolean vaciar = true;
+    public static boolean vaciar = false;
     public static Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) throws Exception {
@@ -70,6 +70,7 @@ public class Menu {
             System.out.println("0. Atrás");
             System.out.print(">>> ");
             opcion = sc.next();
+            vaciarConsola();
     
             switch (opcion) {
                 case "1", "registrar" -> { clienteVIEW.registrarCliente(); }
@@ -81,7 +82,6 @@ public class Menu {
                 }
             }
 
-            vaciarConsola();
         } while (!opcion.equalsIgnoreCase("0"));
     }
 
@@ -96,6 +96,7 @@ public class Menu {
             System.out.println("0. Atrás");
             System.out.print(">>> ");
             opcion = sc.next();
+            vaciarConsola();
     
             switch (opcion) {
                 case "1", "registrar" -> { /*taller.registrarVehiculo() */ }
@@ -107,7 +108,6 @@ public class Menu {
                 }
             }
 
-            vaciarConsola();
         } while (!opcion.equalsIgnoreCase("0"));
     }
 
@@ -122,6 +122,7 @@ public class Menu {
             System.out.println("0. Atrás");
             System.out.print(">>> ");
             opcion = sc.next();
+            vaciarConsola();
     
             switch (opcion) {
                 case "1", "registrar" -> { /*taller.asignarCita() */ }
@@ -133,7 +134,6 @@ public class Menu {
                 }
             }
 
-            vaciarConsola();
         } while (!opcion.equalsIgnoreCase("0"));
     }
 
@@ -149,6 +149,7 @@ public class Menu {
             System.out.println("0. Atrás");
             System.out.print(">>> ");
             opcion = sc.next();
+            vaciarConsola();
     
             switch (opcion) {
                 case "1", "registrar" -> { /*taller.registrarEncargo() */ }
@@ -161,7 +162,6 @@ public class Menu {
                 }
             }
 
-            vaciarConsola();
         } while (!opcion.equalsIgnoreCase("0"));
     }
 
@@ -177,6 +177,7 @@ public class Menu {
             System.out.println("0. Atrás");
             System.out.print(">>> ");
             opcion = sc.next();
+            vaciarConsola();
     
             switch (opcion) {
                 case "1", "registrar" -> { /*taller.registrarEmpleado() */ }
@@ -190,7 +191,6 @@ public class Menu {
                 }
             }
 
-            vaciarConsola();
         } while (!opcion.equalsIgnoreCase("0"));
     }
 
@@ -205,6 +205,7 @@ public class Menu {
             System.out.println("0. Atrás");
             System.out.print(">>> ");
             opcion = sc.next();
+            vaciarConsola();
     
             switch (opcion) {
                 case "1", "registrar" -> { /*taller.asignarEmpleados() */ }
@@ -216,7 +217,6 @@ public class Menu {
                 }
             }
 
-            vaciarConsola();
         } while (!opcion.equalsIgnoreCase("0"));
     }
 
@@ -231,6 +231,7 @@ public class Menu {
             System.out.println("0. Atrás");
             System.out.print(">>> ");
             opcion = sc.next();
+            vaciarConsola();
     
             switch (opcion) {
                 case "1", "registrar" -> { /*taller.registrarServicio() */ }
@@ -242,7 +243,6 @@ public class Menu {
                 }
             }
 
-            vaciarConsola();
         } while (!opcion.equalsIgnoreCase("0"));
     }
 
@@ -257,6 +257,7 @@ public class Menu {
             System.out.println("0. Atrás");
             System.out.print(">>> ");
             opcion = sc.next();
+            vaciarConsola();
             //TODO: Añadir opciones de Restock
             switch (opcion) {
                 case "1", "registrar" -> { /*taller.registrarItem() */ }
@@ -268,7 +269,6 @@ public class Menu {
                 }
             }
 
-            vaciarConsola();
         } while (!opcion.equalsIgnoreCase("0"));
     }
 
@@ -283,6 +283,7 @@ public class Menu {
             System.out.println("0. Atrás");
             System.out.print(">>> ");
             opcion = sc.next();
+            vaciarConsola();
     
             switch (opcion) {
                 case "1", "registrar" -> { /*taller.registrarPedido() */ }
@@ -294,7 +295,6 @@ public class Menu {
                 }
             }
 
-            vaciarConsola();
         } while (!opcion.equalsIgnoreCase("0"));
     }
 
@@ -309,6 +309,7 @@ public class Menu {
             System.out.println("0. Atrás");
             System.out.print(">>> ");
             opcion = sc.next();
+            vaciarConsola();
     
             switch (opcion) {
                 case "1", "registrar" -> { /*taller.registrarProveedor() */ }
@@ -320,7 +321,6 @@ public class Menu {
                 }
             }
 
-            vaciarConsola();
         } while (!opcion.equalsIgnoreCase("0"));
     }
 
