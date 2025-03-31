@@ -117,8 +117,7 @@ public class EmpleadoDAO {
                         rs.getInt("telefono"),
                         rs.getString("cuenta_bancaria"),
                         rs.getInt("salario"),
-                        rs.getString("cargo"),
-                        rs.getBoolean("disponibilidad")
+                        rs.getString("cargo")
                     );
                     empleados.add(empleado);
                 }

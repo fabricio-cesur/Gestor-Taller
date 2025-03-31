@@ -1,5 +1,6 @@
 package view;
 
+import dao.EmpleadoDAO;
 import java.util.ArrayList;
 import java.util.Scanner;
 import model.Empleado;
@@ -7,13 +8,7 @@ import model.Empleado;
 public class EmpleadoVIEW {
     public Scanner sc = new Scanner(System.in);
     public EmpleadoDAO EmpleadoDAO = new EmpleadoDAO();
-
-    public void registrarEmpleado() {}
-    public void modificarEmpleado() {}
-    public void eliminarEmpleado() {}
-    public void mostrarServiciosEmpleado() {}
-    public void revisarDisponibilidadEmpleado() {}
-    public void mostrarEmpleados() {}
+    public ArrayList<Empleado> array_empleados = new ArrayList<>();
 
     public void menu() {
         String opcion;
@@ -22,8 +17,7 @@ public class EmpleadoVIEW {
             System.out.println("1. Registrar Empleado");
             System.out.println("2. Modificar Empleado");
             System.out.println("3. Eliminar Empleado");
-            System.out.println("4. Mostrar Servicios");
-            System.out.println("5. Mostrar Empleados");
+            System.out.println("4. Mostrar Empleados");
             System.out.println("0. Atrás");
             System.out.print(">>> ");
             opcion = sc.next();
@@ -32,9 +26,7 @@ public class EmpleadoVIEW {
                 case "1", "registrar" -> { registrar(); }
                 case "2", "modificar" -> { modificar(); }
                 case "3", "eliminar" -> { eliminar(); }
-                case "4", "servicios" -> { /*mostrarServicios(); */ }
-                case "5", "disponibilidad" -> { /*revisarDisponibilidad(); */ }
-                case "6", "mostrar" -> { /*mostrar(); */ }
+                case "4", "mostrar" -> { mostrarEmpleados(); }
                 default -> {
                     System.out.println("ERR0R: No se reconoció esa opción");
                 }
@@ -114,7 +106,7 @@ public class EmpleadoVIEW {
         dni = sc.next();
         //TODO: Validar que el dni existe iterando en la base de datos
         System.out.println("Está por eliminar el siguiente Empleado");
-        EmpleadoDAO.buscar(dni).mostrar();
+        EmpleadoDAO.buscar(dni);
         System.out.println("---¿Está seguro?---");
         System.out.println("1. SI / 2. NO");
         do { 
@@ -123,12 +115,12 @@ public class EmpleadoVIEW {
             opcion = opcion.toLowerCase();
             switch (opcion) {
                 case "1", "si" -> {
-                    // if (EmpleadoDAO.eliminar(dni)) {
-                    //     System.out.println("Se eliminó correctamente");
-                    // } else {
-                    //     System.out.println("ERR0R: No se puedo eliminar al empleado");
-                    // }
-                    EmpleadoDAO.eliminar(dni);
+                    if (EmpleadoDAO.buscar(dni).equals(dni)) {
+                        EmpleadoDAO.eliminar(dni);
+                        System.out.println("Se eliminó correctamente");
+                    } else {
+                        System.out.println("ERR0R: No se encontró el DNI del empleado");
+                    }
                 }
                 case "2", "no" -> {
                     System.out.println("Abortando...");
@@ -139,14 +131,21 @@ public class EmpleadoVIEW {
             } 
         } while (!opcion.equals("2"));
     }
-    //TODO: mostrarServicios()
-    public void mostrarServicios() {
-        String dni;
+    public void mostrarEmpleados() {
+        EmpleadoDAO EmpleadoDAO = new EmpleadoDAO();
+        array_empleados = EmpleadoDAO.obtenerTodos(); // Llenar la lista con los empleados de la BD
 
-        System.out.print("Ingrese el dni: ");
-        dni = sc.next();
+        if (array_empleados == null) {
+            array_empleados = new ArrayList<>(); // Evitar que sea null en caso de error
+        }
 
+        if (array_empleados.isEmpty()) {
+            System.out.println("No hay empleados registrados");
+        } else {
+            System.out.println("Empleados: ");
+            for (Empleado empleado : array_empleados) {
+                System.out.println(empleado); // toString()
+            }
+        }
     }
-    //TODO: mostrarEmpleados()
-
 }

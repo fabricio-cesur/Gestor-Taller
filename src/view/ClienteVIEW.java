@@ -178,7 +178,6 @@ public class ClienteVIEW {
                 opcion = sc.next();
                 switch (opcion) {
                     case "1", "si", "SI" -> {
-                        
                         if (clienteDAO.buscar(dni).equals(dni)) {
                             clienteDAO.eliminar(dni);
                             System.out.println("Cliente eliminado");
