@@ -3,7 +3,7 @@ import dao.ConexionDB;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.Scanner;
-import view.ClienteVIEW;
+import view.*;
 
 public class Menu {
     public static boolean vaciar = false;
@@ -87,6 +87,7 @@ public class Menu {
 
     public static void menuVehiculos() {
         String opcion;
+        VehiculoVIEW vehiculoVIEW = new VehiculoVIEW();
         do { 
             System.out.println("Qué desea hacer con los vehiculos?");
             System.out.println("1. Registrar Vehiculo");
@@ -99,10 +100,10 @@ public class Menu {
             vaciarConsola();
     
             switch (opcion) {
-                case "1", "registrar" -> { /*taller.registrarVehiculo() */ }
-                case "2", "modificar" -> { /*taller.modificarVehiculo() */ }
-                case "3", "eliminar" -> { /*taller.eliminarVehiculo() */ }
-                case "4", "mostrar" -> { /*taller.mostrarVehiculos() */ }
+                case "1", "registrar" -> { vehiculoVIEW.registrarVehiculo(); }
+                case "2", "modificar" -> { vehiculoVIEW.modificarVehiculo(); }
+                case "3", "eliminar" -> { vehiculoVIEW.eliminarVehiculo(); }
+                case "4", "mostrar" -> { vehiculoVIEW.mostrarVehiculos(); }
                 default -> {
                     System.out.println("ERR0R: No se reconoció esa opción");
                 }

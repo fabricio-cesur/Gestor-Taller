@@ -13,8 +13,8 @@ public class VehiculoDAO {
         Connection conexion = ConexionDB.conectar(); 
         if (conexion != null) { 
              
-            String query = "INSERT INTO Vehiculos (matricula, modelo, marca, ano, propietario) VALUES (" + vehiculo.getMatricula() + ", " + vehiculo.getModelo() + ", " 
-            + vehiculo.getMarca() + ", " + vehiculo.getAño() +", " +  vehiculo.getDniCliente() +");"; 
+            String query = "INSERT INTO Vehiculo (matricula, modelo, marca, ano, dni_cliente) VALUES (" + vehiculo.getMatricula() + ", " + vehiculo.getModelo() + ", " 
+            + vehiculo.getMarca() + ", " + vehiculo.getAno() +", " +  vehiculo.getDniCliente() +");"; 
 
             try (PreparedStatement stmt = conexion.prepareStatement(query)) { 
                 
@@ -31,7 +31,7 @@ public class VehiculoDAO {
     public boolean actualizar(String columna, String matricula, String valor ) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
-            String query = "UPDATE vehiculos SET " + columna + "=" + valor + " WHERE matricula = " + matricula; 
+            String query = "UPDATE Vehiculo SET " + columna + "=" + valor + " WHERE matricula = " + matricula; 
             try (PreparedStatement stmt = conexion.prepareStatement(query)) {
                                 
                 int filasAfectadas = stmt.executeUpdate();
@@ -51,10 +51,9 @@ public class VehiculoDAO {
     public boolean eliminar(String matricula) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
-            String query = "DELETE FROM vehiculos WHERE dni = " + matricula ;
+            String query = "DELETE FROM Vehiculo WHERE matricula = " + matricula ;
             try (PreparedStatement stmt = conexion.prepareStatement(query)) {
-                stmt.setString(1, matricula);
-
+               
                 int filasAfectadas = stmt.executeUpdate();
                 
                 if (filasAfectadas == 1) {
@@ -69,15 +68,39 @@ public class VehiculoDAO {
         return false;
     }
 
-    public Vehiculo buscar(String matricula) {
+    public String buscar(String matricula) {
         Connection conexion = ConexionDB.conectar();
-
+        String matricula_busqueda = null;
         if (conexion != null) {
-            Vehiculo vehiculo = null;
-            String query = "SELECT * FROM vehiculos WHERE matricula = " + matricula;
+            
+            String query = "SELECT * FROM Vehiculo WHERE matricula = " + matricula;
 
             try ( PreparedStatement stmt = conexion.prepareStatement(query)) {
-                stmt.setString(1, matricula);
+                
+                ResultSet rs = stmt.executeQuery();
+
+                if (rs.next()) {
+                    matricula_busqueda = rs.getString("matricula");
+                        
+                    
+                }
+            } catch (SQLException e) {
+                System.out.println("Error al buscar vehiculo por DNI: " + e.getMessage());
+            }
+            return matricula_busqueda;
+        }
+        return null; 
+    }
+
+    public Vehiculo buscarMostrar(String matricula) {
+        Connection conexion = ConexionDB.conectar();
+        
+        if (conexion != null) {
+            Vehiculo vehiculo = null;
+            String query = "SELECT * FROM Vehiculo WHERE matricula = " + matricula;
+
+            try ( PreparedStatement stmt = conexion.prepareStatement(query)) {
+                
                 ResultSet rs = stmt.executeQuery();
 
                 if (rs.next()) {
@@ -88,22 +111,21 @@ public class VehiculoDAO {
                         rs.getInt("ano"),
                         rs.getString("dni_cliente")
                     );
-                    return vehiculo;
                 }
             } catch (SQLException e) {
                 System.out.println("Error al buscar vehiculo por DNI: " + e.getMessage());
             }
-             
+            return vehiculo;
         }
         return null; 
     }
 
     public ArrayList<Vehiculo> obtenerTodos() {
         Connection conexion = ConexionDB.conectar();
+        ArrayList<Vehiculo> vehiculos = new ArrayList<>();
 
         if (conexion != null) {
-            ArrayList<Vehiculo> vehiculos = new ArrayList<>();
-            String query = "SELECT * FROM vehiculos";
+            String query = "SELECT * FROM Vehiculo";
 
             try (
                 PreparedStatement stmt = conexion.prepareStatement(query);
@@ -120,11 +142,10 @@ public class VehiculoDAO {
                     vehiculos.add(vehiculo);
                 }
             } catch (SQLException e) {
-                System.out.println("Error al obtener todos los vehiculos: " + e.getMessage());
+                System.out.println("Error al obtener todos los vehículos: " + e.getMessage());
             }
-            return vehiculos;
-        }
-        return null;
+        }        
+        return vehiculos;
     }
 }
 

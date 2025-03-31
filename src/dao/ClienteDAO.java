@@ -78,7 +78,6 @@ public class ClienteDAO {
                 ResultSet rs = stmt.executeQuery();
 
                 if (rs.next()) {
-                    
                     dni_busqueda =  rs.getString("dni");
                     
                 }
@@ -150,16 +149,3 @@ public class ClienteDAO {
         return clientes;
     }
 }
-
-/*modificarCliente. En el main habria que insertar 
-public class Main {
-    public static void main(String[] args) {
-        ClienteVIEW vista = new ClienteVIEW();
-        ClienteDAO dao = new ClienteDAO();
-
-        String[] datos = ClienteVIEW.modificarClienteDAO();
-        dao.actualizar(datos[0], datos[2], datos[1]); // columna, dni, valor
-        System.out.println("Cliente actualizado correctamente");
-    }
-}
-*/
