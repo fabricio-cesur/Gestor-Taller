@@ -1,7 +1,7 @@
 CREATE TABLE Cliente (
     dni VARCHAR(20) PRIMARY KEY,
     nombre VARCHAR(40),
-    apelldios VARCHAR (100),
+    apellidos VARCHAR (100),
     direccion VARCHAR (100),
     telefono INT(20),
     cuenta_bancaria VARCHAR(50)

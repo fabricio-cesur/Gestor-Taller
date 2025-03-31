@@ -12,7 +12,7 @@ public class ClienteDAO {
     public boolean  insertar(Cliente cliente) {
         Connection conexion = ConexionDB.conectar(); 
         if (conexion != null) { 
-            String query = "INSERT INTO clientes (dni, nombre, apellido, direccion, telefono, cuenta_bancaria) VALUES (" + cliente.getDni() + ", " + cliente.getNombre() + ", " + cliente.getApellido() + ", " +
+            String query = "INSERT INTO Cliente (dni, nombre, apellidos, direccion, telefono, cuenta_bancaria) VALUES (" + cliente.getDni() + ", " + cliente.getNombre() + ", " + cliente.getApellido() + ", " +
             cliente.getDireccion() + ", " + cliente.getTelefono() + ", " + cliente.getCuentaBancaria() + ");" ; 
             try (PreparedStatement stmt = conexion.prepareStatement(query)) { 
                
@@ -29,7 +29,7 @@ public class ClienteDAO {
     public boolean actualizar(String columna, String dni, String valor ) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
-            String query = "UPDATE Clientes SET " + columna + "=" + valor + " WHERE dni = " + dni; 
+            String query = "UPDATE Cliente SET " + columna + "=" + valor + " WHERE dni = " + dni; 
             try (PreparedStatement stmt = conexion.prepareStatement(query)) {
                 stmt.setString(1, valor);
                 
@@ -50,7 +50,7 @@ public class ClienteDAO {
     public boolean  eliminar(String dni) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
-            String query = "DELETE FROM Clientes WHERE dni = " + dni;
+            String query = "DELETE FROM Cliente WHERE dni = " + dni;
             try (PreparedStatement stmt = conexion.prepareStatement(query)) {
                 stmt.setString(1, dni);
 
@@ -73,7 +73,7 @@ public class ClienteDAO {
 
         if (conexion != null) {
             Cliente cliente = null;
-            String query = "SELECT * FROM clientes WHERE dni = " + dni;
+            String query = "SELECT * FROM Cliente WHERE dni = " + dni;
 
             try ( PreparedStatement stmt = conexion.prepareStatement(query)) {
                 stmt.setString(1, dni);
@@ -103,7 +103,7 @@ public class ClienteDAO {
 
         if (conexion != null) {
             
-            String query = "SELECT * FROM clientes";
+            String query = "SELECT * FROM Cliente";
 
             try (
                 PreparedStatement stmt = conexion.prepareStatement(query);
