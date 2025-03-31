@@ -63,7 +63,7 @@ public class ClienteVIEW {
             dni = sc.nextLine();
 
             ClienteDAO clienteDAO = new ClienteDAO();
-            cliente_modificar = clienteDAO.buscar(dni);
+            cliente_modificar = clienteDAO.buscarMostrar(dni);
             
             
             if (cliente_modificar == null) {
@@ -160,18 +160,19 @@ public class ClienteVIEW {
         System.out.print("Ingrese el DNI del cliente que quiere eliminar: ");
         dni = sc.next();
         ClienteDAO clienteDAO = new ClienteDAO();
-        cliente = clienteDAO.buscar(dni);
+        cliente = clienteDAO.buscarMostrar(dni);
 
         if (cliente == null) {
             System.out.println("ERR0R: No se encontró al cliente con ese DNI");
         } else {
             System.out.println("Está por eliminar al siguiente cliente: ");
-            System.out.println(cliente.getNombre() + " " + cliente.getApellido());
+            System.out.println("Nombre: " + cliente.getNombre() + " " + cliente.getApellido());
             System.out.println("Dirección: " + cliente.getDireccion());
             System.out.println("Teléfono: " + cliente.getTelefono());
             System.out.println("Cuenta Bancaria: " + cliente.getCuentaBancaria());
             System.out.println("---¿Está seguro?---");
             String opcion;
+            boolean seguir = true;
             do { 
                 System.out.println("1. SI / 2. NO");
                 opcion = sc.next();
@@ -181,19 +182,22 @@ public class ClienteVIEW {
                         if (clienteDAO.buscar(dni).equals(dni)) {
                             clienteDAO.eliminar(dni);
                             System.out.println("Cliente eliminado");
-                            break;
+                            seguir = false;
+                            
+                        } else {
+                            System.out.println("No se encuentra dni");
                         }
-                        
                     }
                     case "2", "no", "NO" -> {
                         System.out.println("Abortando...");
+                        seguir = false;
                     }
                 
                     default -> {
                         System.out.println("No se reconoció esa opción.");
                     }
                 }
-            } while (!opcion.equals("2"));
+            } while (seguir);
         }
     }
     public void mostrarClientes() {

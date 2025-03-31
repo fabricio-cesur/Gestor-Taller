@@ -51,8 +51,7 @@ public class ClienteDAO {
         if (conexion != null) {
             String query = "DELETE FROM Cliente WHERE dni = " + dni;
             try (PreparedStatement stmt = conexion.prepareStatement(query)) {
-                stmt.setString(1, dni);
-
+                
                 int filasAfectadas = stmt.executeUpdate();
                 
                 if (filasAfectadas == 1) {
@@ -67,7 +66,32 @@ public class ClienteDAO {
         return false;
     }
 
-    public Cliente buscar(String dni) {
+    public String buscar(String dni) {
+        Connection conexion = ConexionDB.conectar();
+        String dni_busqueda = null;
+
+        if (conexion != null) {
+            Cliente cliente = null;
+            String query = "SELECT * FROM Cliente WHERE dni = " + dni;
+            try ( PreparedStatement stmt = conexion.prepareStatement(query)) {
+                
+                ResultSet rs = stmt.executeQuery();
+
+                if (rs.next()) {
+                    
+                    dni_busqueda =  rs.getString("dni");
+                    
+                }
+            } catch (SQLException e) {
+                System.out.println("Error al buscar cliente por DNI: " + e.getMessage());
+            }
+            
+            return dni_busqueda; 
+        }
+        return null; 
+    }
+
+    public Cliente buscarMostrar(String dni) {
         Connection conexion = ConexionDB.conectar();
 
         if (conexion != null) {
@@ -112,7 +136,7 @@ public class ClienteDAO {
                     Cliente cliente = new Cliente(
                         rs.getString("dni"),
                         rs.getString("nombre"),
-                        rs.getString("apellido"),
+                        rs.getString("apellidos"),
                         rs.getString("direccion"),
                         rs.getInt("telefono"),
                         rs.getString("cuenta_bancaria")
