@@ -3,15 +3,13 @@ package view;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import dao.*;
+import dao.CitaDAO;
 import model.Cita;
 import model.Encargo;
 import model.Vehiculo;
 
 public class CitasVIEW {
     public ArrayList<Cita> array_citas = new ArrayList<>();
-    public ArrayList<Vehiculo> array_vehiculos = new ArrayList<>();
-    public ArrayList<Encargo> array_encargos = new ArrayList<>();
 
     Scanner sc = new Scanner(System.in);
 
@@ -19,10 +17,9 @@ public class CitasVIEW {
         int id = array_citas.size() + 1;
         String fecha;
         String hora;
-        String matricula;
-        Vehiculo vehiculo = null;
-        int id_encargo;
-        Encargo encargo = null;
+        String matricula_coche;
+        String id_encargo;
+        
        //TODO: Añadir validaciones al asignar cita
         Cita cita;
         System.out.print("Ingrese la fecha: ");

@@ -7,7 +7,6 @@ public class Cita {
     public String matricula_coche; 
     public String id_encargo; 
 
-    //En vez de Encargo encargo en el constructor creo que seria mejor utilizar id_encargo
     public Cita(String id, String fecha, String hora, String matricula_coche, String id_encargo) {
         this.id = id;
         this.fecha = fecha;

@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import model.Cita;
-import model.Cliente;
 
 public class CitaDAO {
    public boolean  insertar(Cita cita) {
@@ -89,7 +88,7 @@ public class CitaDAO {
         return null; 
     }
 */
-    public Cliente buscarMostrar(String matricula_coche) {
+    public Cita buscarMostrar(String matricula_coche) {
         Connection conexion = ConexionDB.conectar();
 
         if (conexion != null) {
@@ -110,42 +109,41 @@ public class CitaDAO {
                     );
                 }
             } catch (SQLException e) {
-                System.out.println("Error al buscar cliente por DNI: " + e.getMessage());
+                System.out.println("Error al buscar cita por la matrícula del coche: " + e.getMessage());
             }
-            return cliente; 
+            return cita; 
         }
         return null; 
     }
 
-    public ArrayList<Cliente> obtenerTodos() {
+    public ArrayList<Cita> obtenerTodos() {
         Connection conexion = ConexionDB.conectar();
-        ArrayList<Cliente> clientes = new ArrayList<>();
+        ArrayList<Cita> citas = new ArrayList<>();
 
         if (conexion != null) {
             
-            String query = "SELECT * FROM Cliente";
+            String query = "SELECT * FROM Cita";
 
             try (
                 PreparedStatement stmt = conexion.prepareStatement(query);
                 ResultSet rs = stmt.executeQuery()) {
                 
                 while (rs.next()) {
-                    Cliente cliente = new Cliente(
-                        rs.getString("dni"),
-                        rs.getString("nombre"),
-                        rs.getString("apellidos"),
-                        rs.getString("direccion"),
-                        rs.getInt("telefono"),
-                        rs.getString("cuenta_bancaria")
+                    Cita cita = new Cita(
+                        rs.getString("id"),
+                        rs.getString("fecha"),
+                        rs.getString("hora"),
+                        rs.getString("matricula_coche"),
+                        rs.getString("id_encargo")
                     );
-                    clientes.add(cliente);
+                    citas.add(cita);
                 }
             } catch (SQLException e) {
                 System.out.println("Error al obtener todos los clientes: " + e.getMessage());
             }
         }
-        return clientes;
+        return citas;
     }
 }
  
-}
+
