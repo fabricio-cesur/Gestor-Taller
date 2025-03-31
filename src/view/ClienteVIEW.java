@@ -17,8 +17,8 @@ public class ClienteVIEW {
         String direccion;
         String phone;
         String cuenta_bancaria;
-       //TODO: Añadir validaciones al registrar cliente
         Cliente cliente;
+       //TODO: Añadir validaciones al registrar cliente
         System.out.print("Ingrese el DNI: ");
         dni = sc.nextLine();
         System.out.print("Ingrese el nombre: ");

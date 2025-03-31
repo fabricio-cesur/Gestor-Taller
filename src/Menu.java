@@ -114,9 +114,10 @@ public class Menu {
 
     public static void menuCitas() {
         String opcion;
+        CitaVIEW citaVIEW = new CitaVIEW();
         do { 
             System.out.println("Qué desea hacer con los citas?");
-            System.out.println("1. Asignar Cita");
+            System.out.println("1. Crear Cita");
             System.out.println("2. Modificar Cita");
             System.out.println("3. Eliminar Cita");
             System.out.println("4. Mostrar Citas");
@@ -126,10 +127,10 @@ public class Menu {
             vaciarConsola();
     
             switch (opcion) {
-                case "1", "registrar" -> { /*taller.asignarCita() */ }
-                case "2", "modificar" -> { /*taller.modificarCita() */ }
-                case "3", "eliminar" -> { /*taller.eliminarCita() */ }
-                case "4", "mostrar" -> { /*taller.mostrarCitas() */ }
+                case "1", "registrar" -> { citaVIEW.registrarCita(); }
+                case "2", "modificar" -> { citaVIEW.modificarCita(); }
+                case "3", "eliminar" -> { citaVIEW.eliminarCita(); }
+                case "4", "mostrar" -> { citaVIEW.mostrarCitas(); }
                 default -> {
                     System.out.println("ERR0R: No se reconoció esa opción");
                 }
