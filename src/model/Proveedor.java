@@ -6,8 +6,8 @@ public class Proveedor {
     public String direccion;
     public String cuenta;
 
-    public Proveedor(String id, String nombre, String direccion, String cuenta) {
-        this.id = id;
+    public Proveedor(String nombre, String direccion, String cuenta) {
+        // this.id = autoincrement
         this.nombre = nombre;
         this.direccion = direccion;
         this.cuenta = cuenta;

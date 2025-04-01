@@ -7,8 +7,8 @@ public class Servicio {
     public String item;
     public double precio;
 
-    public Servicio(String id, String nombre, String descripcion, String item, double precio) {
-        this.id = id;
+    public Servicio(String nombre, String descripcion, String item, double precio) {
+        // this.id = base de datos Autoincrement id?
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.item = item;
