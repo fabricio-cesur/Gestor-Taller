@@ -14,7 +14,7 @@ public class Empleado {
     public boolean disponibilidad;
     
     public Empleado(String dni, String nombre,String apellido, String direccion, int telefono, 
-    String cuenta_bancaria, int salario, String cargo, Boolean disponibilidad){
+    String cuenta_bancaria, int salario, String cargo){
         this.dni = dni;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -23,7 +23,6 @@ public class Empleado {
         this.cuenta_bancaria = cuenta_bancaria;
         this.salario = salario;
         this.cargo = cargo;
-        this.disponibilidad = disponibilidad;
     }
 
     //TODO: Mostrar y toString
