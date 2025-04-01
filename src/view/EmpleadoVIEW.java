@@ -206,6 +206,10 @@ public class EmpleadoVIEW {
                     default -> {
                         System.out.println("No se reconoció esa opción.");
                     }
+                }
+            } while(seguir);
+        }
+    }
 
     
     public void mostrarEmpleados() {
