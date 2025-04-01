@@ -169,12 +169,12 @@ public class Menu {
 
     public static void menuEmpleados() {
         String opcion;
+        EmpleadoVIEW empleadoVIEW = new EmpleadoVIEW();
         do { 
             System.out.println("Qué desea hacer con los empleados?");
             System.out.println("1. Registrar Empleado");
             System.out.println("2. Modificar Empleado");
             System.out.println("3. Eliminar Empleado");
-            System.out.println("4. Mostrar Servicios");
             System.out.println("5. Mostrar Empleados");
             System.out.println("0. Atrás");
             System.out.print(">>> ");
@@ -182,12 +182,10 @@ public class Menu {
             vaciarConsola();
     
             switch (opcion) {
-                case "1", "registrar" -> { /*taller.registrarEmpleado() */ }
-                case "2", "modificar" -> { /*taller.modificarEmpleado() */ }
-                case "3", "eliminar" -> { /*taller.eliminarEmpleado() */ }
-                case "4", "servicios" -> { /*taller.mostrarServiciosEmpleado() */ }
-                case "5", "disponibilidad" -> { /*taller.revisarDisponibilidadEmpleado() */ }
-                case "6", "mostrar" -> { /*taller.mostrarEmpleados() */ }
+                case "1", "registrar" -> { empleadoVIEW.registrarEmpleado(); }
+                case "2", "modificar" -> { empleadoVIEW.modificarEmpleado(); }
+                case "3", "eliminar" -> { empleadoVIEW.eliminarEmpleado(); }
+                case "4", "mostrar" -> { empleadoVIEW.mostrarEmpleados(); }
                 default -> {
                     System.out.println("ERR0R: No se reconoció esa opción");
                 }
