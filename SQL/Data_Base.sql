@@ -36,7 +36,7 @@ CREATE TABLE Proveedor (
 );
 
 CREATE TABLE Item (
-    codigo INT AUTO_INCREMENT PRIMARY KEY,
+    codigo VARCHAR PRIMARY KEY,
     nombre VARCHAR(100),
     id_proveedor INT, 
     cantidad INT,
@@ -105,4 +105,11 @@ CREATE TABLE Item_Pedido(
     cantidad INT,
     FOREIGN KEY (id_pedido) REFERENCES Pedido(id),
     FOREIGN KEY (id_item) REFERENCES Item(codigo)
+);
+CREATE TABLE Empleado_Asignacion (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_empleado INT,
+    id_asignacion INT,
+    FOREIGN KEY (id_empleado) REFERENCES Empleado(id),
+    FOREIGN KEY (id_asignacion) REFERENCES Asignacion(id)
 );
