@@ -36,7 +36,7 @@ CREATE TABLE Proveedor (
 );
 
 CREATE TABLE Item (
-    codigo INT AUTO_INCREMENT PRIMARY KEY,
+    codigo VARCHAR PRIMARY KEY,
     nombre VARCHAR(100),
     id_proveedor INT, 
     cantidad INT,
