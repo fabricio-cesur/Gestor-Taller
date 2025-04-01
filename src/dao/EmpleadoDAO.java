@@ -46,7 +46,7 @@ public class EmpleadoDAO {
         return false;
     }
 
-    public boolean  eliminar(String dni) {
+    public boolean eliminar(String dni) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
             String query = "DELETE FROM Empleado WHERE dni = " + dni;

@@ -10,7 +10,7 @@ public class ServicioDAO {
     public boolean insertar(Servicio servicio) {
         Connection conexion = ConexionDB.conectar(); 
         if (conexion != null) { 
-            String query = "INSERT INTO Empleado (nombre, descripcion, id_item, precio,) VALUES (" + servicio.getNombre() 
+            String query = "INSERT INTO Servicio (nombre, descripcion, id_item, precio,) VALUES (" + servicio.getNombre() 
             + ", " + servicio.getDescripcion() + ", " + servicio.getItem() + ", " +servicio.getPrecio() +");" ; 
             try (PreparedStatement stmt = conexion.prepareStatement(query)) { 
                
@@ -27,15 +27,32 @@ public class ServicioDAO {
     public boolean actualizar(String columna, String id, String valor ) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
-            String query = "UPDATE Empleado SET " + columna + "=" + valor + " WHERE id = " + id; 
+            String query = "UPDATE Servicio SET " + columna + "=" + valor + " WHERE id = " + id; 
             try (PreparedStatement stmt = conexion.prepareStatement(query)) {
                                 
-                int filasAfectadas = stmt.executeUpdate();
+                int filas_afectadas = stmt.executeUpdate();
 
-                return filasAfectadas == 1;
+                return filas_afectadas == 1;
             } catch (SQLException e) {
-                System.out.println("Error al actualizar empleado: " + e.getMessage());
+                System.out.println("Error al actualizar servicio: " + e.getMessage());
             } 
+        }
+        return false;
+    }
+
+    public boolean eliminar(String id) {
+        Connection conexion = ConexionDB.conectar();
+        if (conexion != null) {
+            String query = "DELETE FROM Servicio WHERE id = " + id;
+            try (PreparedStatement stmt = conexion.prepareStatement(query)) {
+                stmt.setString(1, id);
+
+                int filas_afectadas = stmt.executeUpdate();
+                
+                return filas_afectadas == 1;
+            } catch (SQLException e) {
+                System.out.println("Error al eliminar servicio: " + e.getMessage());
+            }
         }
         return false;
     }
