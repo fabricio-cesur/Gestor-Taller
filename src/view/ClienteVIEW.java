@@ -20,7 +20,6 @@ public class ClienteVIEW {
         String cuenta_bancaria;
         Cliente cliente;
        //TODO: Añadir validaciones al registrar cliente
-        boolean terminar;
         // do {
         System.out.print("Ingrese el DNI: ");
         dni = sc.nextLine();
@@ -31,18 +30,10 @@ public class ClienteVIEW {
         apellido = sc.nextLine();
         System.out.print("Ingrese la dirección: ");
         direccion = sc.nextLine();
-        do {
-            terminar = true;
-            System.out.print("Ingrese el telefono: ");
-            phone = sc.nextLine();
-            for (int i = 0; i < phone.length(); i++) {
-                if (Character.isAlphabetic(phone.charAt(i))) {
-                    terminar = false;
-                    System.out.println("Un número de teléfono debe tener 9 dígitos");
-                    break;
-                }
-            }
-        } while (!terminar);
+        // do {
+        System.out.print("Ingrese el telefono: ");
+        phone = sc.nextLine();
+        // } while (!val.valirdarTelefono(phone));
         do { 
             System.out.print("Ingrese el número de cuenta bancaria: ");
             cuenta_bancaria = sc.nextLine();

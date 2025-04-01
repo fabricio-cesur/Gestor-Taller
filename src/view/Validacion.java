@@ -22,4 +22,19 @@ public class Validacion {
             return true;
         }
     }
+
+    public boolean validarTelefono(String telefono) {
+        if (telefono.length() != 9) {
+            System.out.println("El número de teléfono debe tener 9 dígitos");
+            return false;
+        } else {
+            for (int i = 0; i < telefono.length(); i++) {
+                if (Character.isAlphabetic(telefono.charAt(i))) {
+                    System.out.println("El número de teléfono sólo debe tener números");
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
 }
