@@ -23,6 +23,20 @@ public class ServicioDAO {
         }
         return false;
     }
-
     
+    public boolean actualizar(String columna, String id, String valor ) {
+        Connection conexion = ConexionDB.conectar();
+        if (conexion != null) {
+            String query = "UPDATE Empleado SET " + columna + "=" + valor + " WHERE id = " + id; 
+            try (PreparedStatement stmt = conexion.prepareStatement(query)) {
+                                
+                int filasAfectadas = stmt.executeUpdate();
+
+                return filasAfectadas == 1;
+            } catch (SQLException e) {
+                System.out.println("Error al actualizar empleado: " + e.getMessage());
+            } 
+        }
+        return false;
+    }
 }
