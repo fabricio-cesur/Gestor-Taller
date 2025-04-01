@@ -22,4 +22,37 @@ public class ProveedorDAO {
         }
         return false;
     }
+
+    public boolean actualizar(String columna, String id, String valor ) {
+        Connection conexion = ConexionDB.conectar();
+        if (conexion != null) {
+            String query = "UPDATE Proveedor SET " + columna + "=" + valor + " WHERE id = " + id; 
+            try (PreparedStatement stmt = conexion.prepareStatement(query)) {
+                                
+                int filas_afectadas = stmt.executeUpdate();
+
+                return filas_afectadas == 1;
+            } catch (SQLException e) {
+                System.out.println("Error al actualizar proveedor: " + e.getMessage());
+            } 
+        }
+        return false;
+    }
+
+    public boolean eliminar(String id) {
+        Connection conexion = ConexionDB.conectar();
+        if (conexion != null) {
+            String query = "DELETE FROM Proveedor WHERE id = " + id;
+            try (PreparedStatement stmt = conexion.prepareStatement(query)) {
+                stmt.setString(1, id);
+
+                int filas_afectadas = stmt.executeUpdate();
+                
+                return filas_afectadas == 1;
+            } catch (SQLException e) {
+                System.out.println("Error al eliminar proveedor: " + e.getMessage());
+            }
+        }
+        return false;
+    }
 }
