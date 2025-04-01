@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import model.Servicio;
 
 public class ServicioDAO {
@@ -78,5 +79,60 @@ public class ServicioDAO {
             return id_busqueda; 
         }
         return null; 
+    }
+
+    public Servicio buscarMostrar(String id) {
+        Connection conexion = ConexionDB.conectar();
+
+        if (conexion != null) {
+            Servicio servicio = null;
+            String query = "SELECT * FROM Servicio WHERE id = " + id;
+
+            try ( PreparedStatement stmt = conexion.prepareStatement(query)) {
+                
+                ResultSet rs = stmt.executeQuery();
+
+                if (rs.next()) {
+                    servicio = new Servicio(
+                        rs.getString("nombre"),
+                        rs.getString("descripcion"),
+                        rs.getString("id_item"),
+                        rs.getInt("precio")
+                    );
+                }
+            } catch (SQLException e) {
+                System.out.println("Error al buscar servicio por ID: " + e.getMessage());
+            }
+            return servicio; 
+        }
+        return null; 
+    }
+
+    public ArrayList<Servicio> obtenerTodos() {
+        Connection conexion = ConexionDB.conectar();
+
+        if (conexion != null) {
+            ArrayList<Servicio> servicios = new ArrayList<>();
+            String query = "SELECT * FROM Servicio";
+
+            try (
+                PreparedStatement stmt = conexion.prepareStatement(query);
+                ResultSet rs = stmt.executeQuery()) {
+                
+                while (rs.next()) {
+                    Servicio servicio = new Servicio(
+                        rs.getString("nombre"),
+                        rs.getString("descripcion"),
+                        rs.getString("id_item"),
+                        rs.getInt("precio")
+                    );
+                    servicios.add(servicio);
+                }
+            } catch (SQLException e) {
+                System.out.println("Error al obtener todos los servicio: " + e.getMessage());
+            }
+            return servicios;
+        }
+        return null;
     }
 }
