@@ -17,7 +17,7 @@ public class VehiculoVIEW {
         String matricula;
         String modelo;
         String marca;
-        String year;
+        String ano;
         String dni_cliente;
         Vehiculo vehiculo;
         //TODO: Añadir validaciones al registrar vehiculo
@@ -28,11 +28,11 @@ public class VehiculoVIEW {
         System.out.print("Ingrese el marca: ");
         marca = sc.nextLine();
         System.out.print("Ingrese el año: ");
-        year = sc.nextLine();
+        ano = sc.nextLine();
         System.out.print("Ingrese el DNI del propietario: ");
         dni_cliente = sc.nextLine();
 
-        int ano = Integer.parseInt(year);
+        
         vehiculo = new Vehiculo(matricula, modelo, marca, ano, dni_cliente);
 
         VehiculoDAO vehiculoDAO = new VehiculoDAO();

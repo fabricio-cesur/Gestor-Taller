@@ -108,7 +108,7 @@ public class VehiculoDAO {
                         rs.getString("matricula"),
                         rs.getString("modelo"),
                         rs.getString("marca"),
-                        rs.getInt("ano"),
+                        rs.getString("ano"),
                         rs.getString("dni_cliente")
                     );
                 }
@@ -136,7 +136,7 @@ public class VehiculoDAO {
                         rs.getString("matricula"),
                         rs.getString("modelo"),
                         rs.getString("marca"),
-                        rs.getInt("ano"),
+                        rs.getString("ano"),
                         rs.getString("dni_cliente")
                     );
                     vehiculos.add(vehiculo);
