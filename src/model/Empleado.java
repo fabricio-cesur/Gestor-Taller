@@ -23,7 +23,7 @@ public class Empleado {
         this.cuenta_bancaria = cuenta_bancaria;
         this.salario = salario;
         this.cargo = cargo;
-        
+
     }
 
     //TODO: Mostrar y toString
@@ -46,10 +46,5 @@ public class Empleado {
     public void setTelefono(int telefono) { this.telefono = telefono; }
     public void setCuentaBancaria(String cuenta_bancaria) { this.cuenta_bancaria = cuenta_bancaria; }
     public String setSargo() { return this.cargo; }
-    
-
-    public void add(ArrayList<Empleado> empleado) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
+   
 }

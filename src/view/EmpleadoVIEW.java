@@ -7,6 +7,7 @@ import model.Empleado;
 
 
 
+
 public class EmpleadoVIEW {
     public Scanner sc = new Scanner(System.in);
     public ArrayList<Empleado> array_empleados = new ArrayList<>();
@@ -165,6 +166,7 @@ public class EmpleadoVIEW {
         System.out.println("Ingrese el DNI del empleado a eliminar");
         System.out.print("--> ");
         dni = sc.next();
+
         EmpleadoDAO empleadoDAO = new EmpleadoDAO();
         empleado = empleadoDAO.buscarMostrar(dni);
 
@@ -204,10 +206,7 @@ public class EmpleadoVIEW {
                     default -> {
                         System.out.println("No se reconoció esa opción.");
                     }
-                }
-            } while (seguir);
-        }
-    }
+
     
     public void mostrarEmpleados() {
        EmpleadoDAO empleadoDAO = new EmpleadoDAO();
