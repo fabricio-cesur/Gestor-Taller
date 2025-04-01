@@ -8,6 +8,7 @@ import model.Cliente;
 public class ClienteVIEW {
 
     public ArrayList<Cliente> array_clientes = new ArrayList<>();
+    // public Validacion val = new Validacion();
 
     Scanner sc = new Scanner(System.in);
     public void registrarCliente() {
@@ -18,52 +19,24 @@ public class ClienteVIEW {
         String phone;
         String cuenta_bancaria;
         Cliente cliente;
-       //TODO: Añadir validaciones al registrar cliente
-        boolean terminar;
-        do {
-            System.out.print("Ingrese el DNI: ");
-            dni = sc.nextLine();
-            dni = dni.toUpperCase();
-            if (dni.length() != 9) {
-                terminar = false;
-                System.out.println("El DNI debe de tener 9 carácteres");
-            } else if (dni.contains("I") || dni.contains("Ñ") || dni.contains("O") || dni.contains("U")) {
-                terminar = false;
-                System.out.println("El DNI no puede tener la letra O, U, Ñ o I");
-            } else if (Character.isDigit(dni.charAt(8))) {
-                terminar = false;
-                System.out.println("El último carácter debe ser la letra");
-            } else {
-                terminar = true;
-                for (int i = 0; i < dni.length(); i++) {
-                    if (!Character.isDigit(dni.charAt(i))) {
-                        terminar = false;
-                        System.out.println("Los primeros 8 carácteres deben ser números");
-                        break;
-                    }
-                }
-            }
-        } while (!terminar);
+        // do {
+        System.out.print("Ingrese el DNI: ");
+        dni = sc.nextLine();
+        // } while (!val.validarDNI(dni));
         System.out.print("Ingrese el nombre: ");
         nombre = sc.nextLine();
         System.out.print("Ingrese el apellido: ");
         apellido = sc.nextLine();
         System.out.print("Ingrese la dirección: ");
         direccion = sc.nextLine();
-        do {
-            System.out.print("Ingrese el telefono: ");
-            phone = sc.nextLine();
-            for (int i = 0; i < phone.length(); i++) {
-                if (Character.isAlphabetic(phone.charAt(i))) {
-                    terminar = false;
-                    System.out.println("Un número de teléfono debe tener 9 dígitos");
-                    break;
-                }
-            }
-            
-        } while (!terminar);
+        // do {
+        System.out.print("Ingrese el telefono: ");
+        phone = sc.nextLine();
+        // } while (!val.valirdarTelefono(phone));
+        // do {
         System.out.print("Ingrese el número de cuenta bancaria: ");
         cuenta_bancaria = sc.nextLine();
+        // } while (!val.validarIBAN(cuenta_bancaria));
 
         int telefono = Integer.parseInt(phone);
  
