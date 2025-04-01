@@ -1,35 +1,32 @@
 package model;
 
 public class Encargo {
-    public int id;
-    public Vehiculo vehiculo;
-    public Servicio servicio;
+    public String id;
+    public String matricula_vehiculo;
+    public String id_servicio;
     public Double precio_total;
-    public Asignacion asignacion;
+    public String id_asignacion;
     public String fecha_inicio;
     public String fecha_finalizado;
-    public boolean completado;
-    public Item item;
+    public String cod_item;
 
-    public Encargo(int id, Vehiculo vehiculo, Servicio servicio, Double precio_total, Asignacion asignacion, String fecha_inicio, String fecha_finalizado, boolean completado, Item item){
+    public Encargo(String id, String matricula_vehiculo, String id_servicio, Double precio_total, String id_asignacion, String fecha_inicio, String fecha_finalizado, String cod_item){
         this.id = id;
-        this.vehiculo = vehiculo;
-        this.servicio = servicio;
+        this.matricula_vehiculo = matricula_vehiculo;
+        this.id_servicio = id_servicio;
         this.precio_total = precio_total;
-        this.asignacion = asignacion;
+        this.id_asignacion = id_asignacion;
         this.fecha_inicio = fecha_inicio;
         this.fecha_finalizado = fecha_finalizado;
-        this.completado = completado;
-        this.item = item;
+        this.cod_item = cod_item;
     }
 
-    public int getId() { return this.id; }
-    public Vehiculo getVehiculo() { return this.vehiculo; }
-    public Servicio getServicio() { return this.servicio; }
+    public String getId() { return this.id; }
+    public String getVehiculo() { return this.matricula_vehiculo; }
+    public String getServicio() { return this.id_servicio; }
     public Double getPrecio_total() { return this.precio_total; }
-    public Asignacion getAsignacion() { return this.asignacion; }
+    public String getAsignacion() { return this.id_asignacion; }
     public String getFechaInicio() { return this.fecha_inicio; }
     public String getFechaFinalizado() { return this.fecha_finalizado; }
-    public boolean getCompletado() { return this.completado; }
-    public Item getItem() { return this.item; }
+    public String getString() { return this.cod_item; }
 }
