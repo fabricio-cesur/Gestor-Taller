@@ -19,7 +19,6 @@ public class ClienteVIEW {
         String phone;
         String cuenta_bancaria;
         Cliente cliente;
-       //TODO: Añadir validaciones al registrar cliente
         // do {
         System.out.print("Ingrese el DNI: ");
         dni = sc.nextLine();
@@ -34,15 +33,10 @@ public class ClienteVIEW {
         System.out.print("Ingrese el telefono: ");
         phone = sc.nextLine();
         // } while (!val.valirdarTelefono(phone));
-        do { 
-            System.out.print("Ingrese el número de cuenta bancaria: ");
-            cuenta_bancaria = sc.nextLine();
-            //Formato de cuenta bancaria ESXX XXXX XXXX XXXX XXXX
-            //Revisa que tenga 
-            if (cuenta_bancaria.length() != 24 || cuenta_bancaria.length() != 29) {
-
-            }
-        } while (!terminar);
+        // do {
+        System.out.print("Ingrese el número de cuenta bancaria: ");
+        cuenta_bancaria = sc.nextLine();
+        // } while (!val.validarIBAN(cuenta_bancaria));
 
         int telefono = Integer.parseInt(phone);
  

@@ -37,4 +37,15 @@ public class Validacion {
             return true;
         }
     }
+
+    public boolean validarIBAN(String iban) {
+        //Formato de cuenta bancaria ESXX XXXX XXXX XXXX XXXX
+        //Revisa que tenga o 24 carácteres de los dígitos sin espacio
+        //o 29 de los 24 carácters con espacio entre cada 4
+        if (iban.length() != 24 || iban.length() != 29) {
+            System.out.println("La cuenta bancaria debe tener 24 carácteres");
+            return false;
+        } else { return true; }
+        //TODO: Validar los demás parámetros del formato
+    }
 }
