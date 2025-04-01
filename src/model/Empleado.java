@@ -1,7 +1,5 @@
 package model;
 
-import java.util.ArrayList;
-
 public class Empleado {
     public String dni;
     public String nombre;

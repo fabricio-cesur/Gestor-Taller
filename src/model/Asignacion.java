@@ -1,22 +1,20 @@
 package model;
 
-
-import java.util.ArrayList;
-
 public class Asignacion {
     
     public int id;
-    public ArrayList<Empleado> empleados;
-    public Encargo encargo;
+    //TODO: Subtabla de asignaciones de empleados
+    public String id_empleado;
+    public String id_encargo;
 
-    public Asignacion(int id, ArrayList<Empleado> empleados, Encargo encargo) {
+    public Asignacion(int id, String id_empleado, String id_encargo) {
         this.id = id;
-        this.empleados = empleados;
-        this.encargo = encargo;
+        this.id_empleado = id_empleado;
+        this.id_encargo = id_encargo;
     }
 
     public int getId() { return this.id; }
-    public ArrayList<Empleado> getEmpleados() { return this.empleados; }
-    public Encargo getEncargo() { return this.encargo; }
+    public String getEmpleados() { return this.id_empleado; }
+    public String getEncargo() { return this.id_encargo; }
 
 }
