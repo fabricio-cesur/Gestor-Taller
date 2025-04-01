@@ -32,13 +32,9 @@ public class ClienteDAO {
             String query = "UPDATE Cliente SET " + columna + "=" + valor + " WHERE dni = " + dni; 
             try (PreparedStatement stmt = conexion.prepareStatement(query)) {
                                 
-                int filasAfectadas = stmt.executeUpdate();
+                int filas_afectadas = stmt.executeUpdate();
 
-                if (filasAfectadas == 1) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return filas_afectadas == 1;
             } catch (SQLException e) {
                 System.out.println("Error al actualizar cliente: " + e.getMessage());
             } 
@@ -52,13 +48,9 @@ public class ClienteDAO {
             String query = "DELETE FROM Cliente WHERE dni = " + dni;
             try (PreparedStatement stmt = conexion.prepareStatement(query)) {
                 
-                int filasAfectadas = stmt.executeUpdate();
+                int filas_afectadas = stmt.executeUpdate();
                 
-                if (filasAfectadas == 1) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return filas_afectadas == 1;
             } catch (SQLException e) {
                 System.out.println("Error al eliminar cliente: " + e.getMessage());
             }
@@ -71,7 +63,6 @@ public class ClienteDAO {
         String dni_busqueda = null;
 
         if (conexion != null) {
-            Cliente cliente = null;
             String query = "SELECT * FROM Cliente WHERE dni = " + dni;
             try ( PreparedStatement stmt = conexion.prepareStatement(query)) {
                 
