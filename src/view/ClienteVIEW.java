@@ -17,10 +17,10 @@ public class ClienteVIEW {
         String direccion;
         String phone;
         String cuenta_bancaria;
-       //TODO: Añadir validaciones al registrar cliente
         Cliente cliente;
+       //TODO: Añadir validaciones al registrar cliente
         boolean terminar;
-        do { 
+        do {
             System.out.print("Ingrese el DNI: ");
             dni = sc.nextLine();
             dni = dni.toUpperCase();

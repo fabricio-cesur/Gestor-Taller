@@ -98,8 +98,6 @@ CREATE TABLE Cita (
     id INT AUTO_INCREMENT PRIMARY KEY,
     fecha DATE,
     hora TIME,
-    matricula_coche VARCHAR(20),
-    id_encargo INT, 
-    FOREIGN KEY (id_encargo) REFERENCES Encargo(id)
+    matricula_coche VARCHAR(20)
 );
 
