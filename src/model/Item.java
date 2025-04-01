@@ -1,15 +1,18 @@
 package model;
 
+import dao.PedidoDAO;
+
 public class Item {
     public String codigo;
     public String nombre;
     public String id_proveedor;
-    public String minimo;
-    public String precio;
-    public String cantidad;
+    public int minimo;
+    public double precio;
+    public int cantidad;
     public boolean restock;
+    private final int REPOSICION = 10;
 
-    public Item(String codigo, String nombre, String id_proveedor, String minimo, String cantidad, String precio) {
+    public Item(String codigo, String nombre, String id_proveedor, int minimo, int cantidad, double precio) {
         
         this.codigo = codigo;
         this.nombre = nombre;
@@ -17,18 +20,45 @@ public class Item {
         this.precio = precio;
         this.minimo = minimo;
         this.cantidad = cantidad;
-        this.restock = restock;
+        this.restock = (cantidad <= minimo);
     }
 
     
     public String getCodigo() { return this.codigo; }
     public String getNombre() { return this.nombre; }
     public String getIdProveedor() { return this.id_proveedor; }
-    public String getPrecio() { return this.precio; }
-    public String getMinimo() { return this.minimo; }
-    public String getCantidad() { return this.cantidad; }
-    public boolean getRestock() { return this.restock; }
+    public double getPrecio() { return this.precio; }
+    public int getMinimo() { return this.minimo; }
+    public int getCantidad() { return this.cantidad; }
+    public boolean isRestock() { return this.restock; }
 
+    public void setCantidad(int nuevaCantidad) {
+        this.cantidad = nuevaCantidad;
+        this.restock = (this.cantidad <= this.minimo);
+        verificarStock();
+    }
+
+    // Método para verificar si se necesita reabastecimiento
+    private void verificarStock() {
+        if (this.restock) {
+            generarPedido();
+        }
+    }
+
+    //REVISAR!!!!!!!!
+    private void generarPedido() {
+        Pedido pedido = null;
+        PedidoDAO pedidoDAO = new PedidoDAO();
+       // pedidoDAO.insertarPedido(pedido);
+        
+    }
+
+    // Simulación de llegada de stock y actualización automática de cantidad
+    private void recibirStock() {
+        int nuevaCantidad = this.cantidad + this.REPOSICION;
+        System.out.println(" Pedido recibido para " + this.nombre + ". Nueva cantidad: " + nuevaCantidad);
+        this.setCantidad(nuevaCantidad);
+    }
 
 
     @Override

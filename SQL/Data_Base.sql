@@ -57,11 +57,13 @@ CREATE TABLE Servicio (
 
 CREATE TABLE Pedido (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    codigo_item VARCHAR,
+    cantidad INT,
+    precio DECIMAL(8,2),
     fecha_pedido DATE,
-    fecha_entrega_aproximada DATE,
-    fecha_recibido DATE,
+    fecha_recibido DATE DEFAULT NULL,
     completado BOOLEAN DEFAULT FALSE,
-    FOREIGN KEY (id_proveedor) REFERENCES Proveedor(id)
+    FOREIGN KEY (id_item) REFERENCES Item(codigo)
 );
 
 CREATE TABLE Encargo (
