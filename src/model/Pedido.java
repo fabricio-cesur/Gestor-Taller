@@ -1,26 +1,37 @@
 package model;
 
+import java.time.LocalDate;
+
 public class Pedido {
 
-    public String id;
-    public String cod_item;
-    public String cantidad;
-    public String id_proveedor;
-    public String fecha_pedido;
-    public String fecha_entrega_aproximada;
-    public String fecha_recivido;
-    public boolean completado;
+    private int id;
+    private String codigo_item; 
+    private int cantidad_solicitada;
+    private LocalDate fecha_pedido;
+    private boolean completado;
 
-    public Pedido(String id, String cod_item, String cantidad, String id_proveedor, String fecha_pedido, String fecha_entrega_aproximada, String fecha_recivido, boolean completado){
+    // Constructor
+    public Pedido(String codigo_item, int cantidad_solicitada, LocalDate fecha_pedido, boolean completado) {
+        this.codigo_item = codigo_item;
+        this.cantidad_solicitada = cantidad_solicitada;
+        this.fecha_pedido = LocalDate.now();
+        this.completado = false;
+    }
 
-        this.id = id;
-        this.cod_item = cod_item;
-        this.cantidad = cantidad;
-        this.id_proveedor = id_proveedor;
-        this.fecha_pedido = fecha_pedido; 
-        this.fecha_entrega_aproximada = fecha_entrega_aproximada;
-        this.fecha_recivido = fecha_recivido;
+    public int getIdPedido() { return this.id; }
+    public String getCodigoItem() { return this.codigo_item; }
+    public int getCantidadSolicitada() { return this.cantidad_solicitada; }
+    public LocalDate getFechaPedido() { return this.fecha_pedido;  }
+    public boolean isCompletado() { return this.completado; }
+
+    public void setCompletado(boolean completado) {
         this.completado = completado;
+    }
+
+    @Override
+    public String toString() {
+        return "Código de pedido: " + this.id + ", código Item=" + this.codigo_item + ", cantidad=" + this.cantidad_solicitada +
+                this.fecha_pedido + ", completado=" + this.completado ;
     }
     
 }
