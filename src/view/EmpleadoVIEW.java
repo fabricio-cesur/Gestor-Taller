@@ -5,147 +5,225 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import model.Empleado;
 
+
+
+
 public class EmpleadoVIEW {
     public Scanner sc = new Scanner(System.in);
-    public EmpleadoDAO EmpleadoDAO = new EmpleadoDAO();
     public ArrayList<Empleado> array_empleados = new ArrayList<>();
+    
+   
+    public void registrarEmpleado() {
+        String dni;
+        String nombre;
+        String apellido;
+        String direccion;
+        String phone;
+        String cuenta_bancaria;
+        String salary;
 
-    public void menu() {
-        String opcion;
-        do { 
-            System.out.println("Qué desea hacer con los empleados?");
-            System.out.println("1. Registrar Empleado");
-            System.out.println("2. Modificar Empleado");
-            System.out.println("3. Eliminar Empleado");
-            System.out.println("4. Mostrar Empleados");
-            System.out.println("0. Atrás");
-            System.out.print(">>> ");
-            opcion = sc.next();
-            opcion = opcion.toLowerCase();
-            switch (opcion) {
-                case "1", "registrar" -> { registrar(); }
-                case "2", "modificar" -> { modificar(); }
-                case "3", "eliminar" -> { eliminar(); }
-                case "4", "mostrar" -> { mostrarEmpleados(); }
-                default -> {
-                    System.out.println("ERR0R: No se reconoció esa opción");
-                }
-            }
-        } while (!opcion.equalsIgnoreCase("0"));
-    }
-
-    public void registrar() {
+        Empleado empleado;
         //TODO: Añadir validaciones al registrar empleado
         System.out.print("Ingrese el DNI: ");
-        String dni = sc.next();
+        dni = sc.nextLine();
         System.out.print("Ingrese el nombre: ");
-        String nombre = sc.next();
+        nombre = sc.nextLine();
         System.out.print("Ingrese el apellido: ");
-        String apellido = sc.next();
+        apellido = sc.nextLine();
         System.out.print("Ingrese la dirección: ");
-        String direccion = sc.nextLine();
+        direccion = sc.nextLine();
         System.out.print("Ingrese el teléfono: ");
-        int telefono = sc.nextInt();
+        phone = sc.nextLine();
         sc.nextLine();
         System.out.print("Ingrese la cuenta bancaria: ");
-        String cuenta_bancaria = sc.next();
+        cuenta_bancaria = sc.nextLine();
         System.out.print("Ingrese el salario: ");
-        int salario = sc.nextInt();
+        salary = sc.nextLine();
         sc.nextLine();
         System.out.print("Ingrese el cargo: ");
-        String cargo = sc.next();
+        String cargo = sc.nextLine();
 
-        EmpleadoDAO.insertar(new Empleado(dni, nombre, apellido, direccion, telefono, cuenta_bancaria, salario, cargo));
+        int telefono = Integer.parseInt(phone);
+        int salario = Integer.parseInt(salary);
+
+        empleado = new Empleado(dni, nombre, apellido, direccion, telefono, cuenta_bancaria, salario, cargo);
+        EmpleadoDAO empleadoDAO = new EmpleadoDAO();
+        empleadoDAO.insertar(empleado);
+        if (empleadoDAO.insertar(empleado)) {
+            System.out.print("Empleado introducido correctamente");
+        }else {
+            System.out.print("El empleado no se ha introducido correctamente \n");
+
+        }
     }
-    public void modificar() {
+    public void modificarEmpleado() {
         String opcion;
-        boolean terminar;
-        String columna = null;
+        String columna;
+        String valor;
+        String dni;
+        
+        Empleado empleado_modificar = null;
+
         do {
             System.out.println("¿Qué desea modificar?");
-            System.out.println("1. Nombre");
-            System.out.println("2. Apellido");
-            System.out.println("3. Dirección");
-            System.out.println("4. Teléfono");
-            System.out.println("5. Cuenta Bancaria");
-            System.out.println("6. Salario");
-            System.out.println("7. Cargo");
+            System.out.println("1. Dirección");
+            System.out.println("2. Teléfono");
+            System.out.println("3. Cuenta Bancaria");
+            System.out.println("4. Salario");
+            System.out.println("5. Cargo");
             System.out.println("0. Atrás");
-            do {
-                terminar = true;
+            opcion = sc.next();
+
+            System.out.println("Ingrese el DNI del empleado a modificar: ");
+            System.out.print("--> ");
+            dni = sc.nextLine();
+
+            EmpleadoDAO empleadoDAO = new EmpleadoDAO();
+            empleado_modificar = empleadoDAO.buscarMostrar(dni);
+            
+            if (empleado_modificar == null) {
+                System.out.println("ERR0R: No se encontró el vehículo");
+
+            } else {
                 System.out.print(">>> ");
-                opcion = sc.next();
                 switch (opcion) {
-                    case "1" -> { columna = "nombre"; }
-                    case "2" -> { columna = "apellido"; }
-                    case "3" -> { columna = "direccion"; }
-                    case "4" -> { columna = "telefono"; }
-                    case "5" -> { columna = "cuenta_bancaria"; }
-                    case "6" -> { columna = "salario"; }
-                    case "7" -> { columna = "cargo"; }
+                    case "1", "direccion" -> {
+                        System.out.print("Ingrese la nueva dirección: ");
+                        String direccion_nueva = sc.nextLine();
+                        valor = direccion_nueva;
+                        columna = "direccion";
+                        
+                        boolean actualizado = empleadoDAO.actualizar(columna, dni, valor);
+                        if (actualizado) {
+                        System.out.println("Propietario actualizado correctamente.");
+                        } else {
+                        System.out.println("Error al actualizar el propietario.");
+                        }
+                    }
+                    case "2", "telefono" -> {
+                        System.out.print("Ingrese la nueva dirección: ");
+                        String telefono_nuevo = sc.nextLine();
+                        valor = telefono_nuevo;
+                        columna = "telefono";
+                        
+                        boolean actualizado = empleadoDAO.actualizar(columna, dni, valor);
+                        if (actualizado) {
+                        System.out.println("Propietario actualizado correctamente.");
+                        } else {
+                        System.out.println("Error al actualizar el propietario.");
+                        }
+                    }
+                    case "3", "cuenta bancaria" -> {
+                        System.out.print("Ingrese la nueva cuenta bancaria: ");
+                        String cuenta_nueva = sc.nextLine();
+                        columna = "cuenta_bancaria";
+                        valor = cuenta_nueva;
+
+                        boolean actualizado = empleadoDAO.actualizar(columna, dni, valor);
+                        if (actualizado) {
+                            System.out.println("Cuenta bancaria actualizada correctamente.");
+                        } else {
+                            System.out.println("Error al actualizar la cuenta bancaria.");
+                        }
+                    }
+                    case "4", "salario" -> {
+                        System.out.print("Ingrese la nueva cuenta bancaria: ");
+                        String salario_nuevo = sc.nextLine();
+                        columna = "salario";
+                        valor = salario_nuevo;
+
+                        boolean actualizado = empleadoDAO.actualizar(columna, dni, valor);
+                        if (actualizado) {
+                            System.out.println("Cuenta bancaria actualizada correctamente.");
+                        } else {
+                            System.out.println("Error al actualizar la cuenta bancaria.");
+                        }
+                    }
+                    case "5", "cargo" -> {
+                        System.out.print("Ingrese la nueva cuenta bancaria: ");
+                        String cargo_nuevo = sc.nextLine();
+                        columna = "cargo";
+                        valor = cargo_nuevo;
+
+                        boolean actualizado = empleadoDAO.actualizar(columna, dni, valor);
+                        if (actualizado) {
+                            System.out.println("Cuenta bancaria actualizada correctamente.");
+                        } else {
+                            System.out.println("Error al actualizar la cuenta bancaria.");
+                        }
+                    }
                     default -> {
                         System.out.println("ERR0R: No se reconoció esa opción");
-                        terminar = false;
                     }
                 }
-            } while (!terminar);
-            //TODO: Añadir validaciones al modificar empleado
-            System.out.print("Ingrese el dni: ");
-            String dni = sc.next();
-            System.out.print("Ingrese el nuevo valor: ");
-            String valor = sc.next();
-            EmpleadoDAO.actualizar(columna, dni, valor);
+            }
+
         } while (!opcion.equalsIgnoreCase("0"));
     }
-    public void eliminar() {
+    public void eliminarEmpleado() {
         String dni;
-        String opcion;
-
+        Empleado empleado = null;
         System.out.println("Ingrese el DNI del empleado a eliminar");
         System.out.print("--> ");
         dni = sc.next();
-        //TODO: Validar que el dni existe iterando en la base de datos
-        System.out.println("Está por eliminar el siguiente Empleado");
-        EmpleadoDAO.buscar(dni);
-        System.out.println("---¿Está seguro?---");
-        System.out.println("1. SI / 2. NO");
-        do { 
-            System.out.print("-->");
-            opcion = sc.next();
-            opcion = opcion.toLowerCase();
-            switch (opcion) {
-                case "1", "si" -> {
-                    if (EmpleadoDAO.buscar(dni).equals(dni)) {
-                        EmpleadoDAO.eliminar(dni);
-                        System.out.println("Se eliminó correctamente");
-                    } else {
-                        System.out.println("ERR0R: No se encontró el DNI del empleado");
+
+        EmpleadoDAO empleadoDAO = new EmpleadoDAO();
+        empleado = empleadoDAO.buscarMostrar(dni);
+
+        
+         if (empleado == null) {
+            System.out.println("ERR0R: No se encontró al empleado con ese DNI");
+        } else {
+            System.out.println("Está por eliminar al siguiente empleado: ");
+            System.out.println("Nombre: " + empleado.getNombre() + " " + empleado.getApellido());
+            System.out.println("Dirección: " + empleado.getDireccion());
+            System.out.println("Teléfono: " + empleado.getTelefono());
+            System.out.println("Cuenta Bancaria: " + empleado.getCuentaBancaria());
+            System.out.println("---¿Está seguro?---");
+            String opcion;
+            boolean seguir = true;
+
+            do { 
+                System.out.println("1. SI / 2. NO");
+                opcion = sc.next();
+                switch (opcion) {
+                    case "1", "si", "SI" -> {
+                        
+                        if (empleadoDAO.buscar(dni).equals(dni)) {
+                            empleadoDAO.eliminar(dni);
+                            System.out.println("Empelado eliminado");
+                            seguir = false;
+                            
+                        } else {
+                            System.out.println("No se encuentra dni");
+                        }
                     }
-                }
-                case "2", "no" -> {
-                    System.out.println("Abortando...");
-                }
-                default -> {
-                    System.out.println("ERR0R: No se reconoció esa opción");
-                }
-            } 
-        } while (!opcion.equals("2"));
-    }
+                    case "2", "no", "NO" -> {
+                        System.out.println("Abortando...");
+                        seguir = false;
+                    }
+                
+                    default -> {
+                        System.out.println("No se reconoció esa opción.");
+                    }
+
+    
     public void mostrarEmpleados() {
-        EmpleadoDAO EmpleadoDAO = new EmpleadoDAO();
-        array_empleados = EmpleadoDAO.obtenerTodos(); // Llenar la lista con los empleados de la BD
+       EmpleadoDAO empleadoDAO = new EmpleadoDAO();
+        array_empleados = empleadoDAO.obtenerTodos(); // Llenar la lista con los clientes de la BD
 
         if (array_empleados == null) {
-            array_empleados = new ArrayList<>(); // Evitar que sea null en caso de error
+         array_empleados = new ArrayList<>(); // Evitar que sea null en caso de error
         }
 
         if (array_empleados.isEmpty()) {
             System.out.println("No hay empleados registrados");
         } else {
-            System.out.println("Empleados: ");
+            System.out.println("Clientes: ");
             for (Empleado empleado : array_empleados) {
-                System.out.println(empleado); // toString()
+                System.out.println(empleado); // `toString()
             }
         }
+
     }
 }

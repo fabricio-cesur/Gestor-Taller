@@ -11,7 +11,7 @@ public class Empleado {
     public String cuenta_bancaria;
     public int salario;
     public String cargo;
-    public boolean disponibilidad;
+    
     
     public Empleado(String dni, String nombre,String apellido, String direccion, int telefono, 
     String cuenta_bancaria, int salario, String cargo){
@@ -23,6 +23,7 @@ public class Empleado {
         this.cuenta_bancaria = cuenta_bancaria;
         this.salario = salario;
         this.cargo = cargo;
+
     }
 
     //TODO: Mostrar y toString
@@ -36,7 +37,7 @@ public class Empleado {
     public String getCuentaBancaria() { return this.cuenta_bancaria; }
     public int getSalario() { return this.salario; }
     public String getCargo() { return this.cargo; }
-    public Boolean getDisponibilidad() { return this.disponibilidad; }
+    
 
     public void setDni(String dni) { this.dni = dni; }
     public void setNombre(String nombre) { this.nombre = nombre; }
@@ -45,10 +46,5 @@ public class Empleado {
     public void setTelefono(int telefono) { this.telefono = telefono; }
     public void setCuentaBancaria(String cuenta_bancaria) { this.cuenta_bancaria = cuenta_bancaria; }
     public String setSargo() { return this.cargo; }
-    public Boolean setDisponibilidad() { return this.disponibilidad; }
-
-    public void add(ArrayList<Empleado> empleado) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
+   
 }
