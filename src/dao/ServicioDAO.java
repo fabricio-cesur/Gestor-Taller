@@ -2,6 +2,7 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import model.Servicio;
 
@@ -55,5 +56,27 @@ public class ServicioDAO {
             }
         }
         return false;
+    }
+
+    public String buscar(String id) {
+        Connection conexion = ConexionDB.conectar();
+        String id_busqueda = null;
+
+        if (conexion != null) {
+            String query = "SELECT * FROM Servicio WHERE id = " + id;
+
+            try ( PreparedStatement stmt = conexion.prepareStatement(query)) {
+                
+                ResultSet rs = stmt.executeQuery();
+
+                if (rs.next()) {
+                    id_busqueda =  rs.getString("id");
+                }
+            } catch (SQLException e) {
+                System.out.println("Error al buscar servicio por ID: " + e.getMessage());
+            }
+            return id_busqueda; 
+        }
+        return null; 
     }
 }
