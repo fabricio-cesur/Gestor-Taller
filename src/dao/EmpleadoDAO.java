@@ -32,13 +32,9 @@ public class EmpleadoDAO {
             String query = "UPDATE Empleado SET " + columna + "=" + valor + " WHERE dni = " + dni; 
             try (PreparedStatement stmt = conexion.prepareStatement(query)) {
                                 
-                int filasAfectadas = stmt.executeUpdate();
+                int filas_afectas = stmt.executeUpdate();
 
-                if (filasAfectadas == 1) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return filas_afectas == 1;
             } catch (SQLException e) {
                 System.out.println("Error al actualizar empleado: " + e.getMessage());
             } 
@@ -46,20 +42,16 @@ public class EmpleadoDAO {
         return false;
     }
 
-    public boolean  eliminar(String dni) {
+    public boolean eliminar(String dni) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
             String query = "DELETE FROM Empleado WHERE dni = " + dni;
             try (PreparedStatement stmt = conexion.prepareStatement(query)) {
                 stmt.setString(1, dni);
 
-                int filasAfectadas = stmt.executeUpdate();
+                int filas_afectas = stmt.executeUpdate();
                 
-                if (filasAfectadas == 1) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return filas_afectas == 1;
             } catch (SQLException e) {
                 System.out.println("Error al eliminar empleado: " + e.getMessage());
             }
@@ -72,7 +64,6 @@ public class EmpleadoDAO {
         String dni_busqueda = null;
 
         if (conexion != null) {
-            Empleado empleado = null;
             String query = "SELECT * FROM Empleado WHERE dni = " + dni;
 
             try ( PreparedStatement stmt = conexion.prepareStatement(query)) {
@@ -89,6 +80,7 @@ public class EmpleadoDAO {
         }
         return null; 
     }
+    
     public Empleado buscarMostrar(String dni) {
         Connection conexion = ConexionDB.conectar();
 

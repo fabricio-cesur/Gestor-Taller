@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import model.Cita;
-import model.Cliente;
 
 public class CitaDAO {
     public boolean  insertar(Cita cita) {
@@ -31,13 +30,9 @@ public class CitaDAO {
             String query = "UPDATE Cita SET " + columna + "= '" + valor + "' WHERE matricula_coche = " + matricula_coche; 
             try (PreparedStatement stmt = conexion.prepareStatement(query)) {
                                 
-                int filasAfectadas = stmt.executeUpdate();
+                int filas_afectadas = stmt.executeUpdate();
 
-                if (filasAfectadas == 1) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return filas_afectadas == 1;
             } catch (SQLException e) {
                 System.out.println("Error al actualizar la cita: " + e.getMessage());
             } 
@@ -51,13 +46,9 @@ public class CitaDAO {
             String query = "DELETE FROM Cita WHERE matricula_coche = " + matricula_coche;
             try (PreparedStatement stmt = conexion.prepareStatement(query)) {
                 
-                int filasAfectadas = stmt.executeUpdate();
+                int filas_afectadas = stmt.executeUpdate();
                 
-                if (filasAfectadas == 1) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return filas_afectadas == 1;
             } catch (SQLException e) {
                 System.out.println("Error al eliminar la cita: " + e.getMessage());
             }
