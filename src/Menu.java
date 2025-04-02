@@ -46,8 +46,8 @@ public class Menu {
             System.out.println("0. Salir");
             System.out.println("");
             System.out.print(">>> ");
-            opcion = sc.next();
-            vaciarConsola();
+            opcion = sc.nextLine();
+            
 
             switch (opcion) {
                 case "1", "Clientes" -> { clienteVIEW.menu(); }

@@ -36,12 +36,12 @@ CREATE TABLE Proveedor (
 );
 
 CREATE TABLE Item (
-    codigo VARCHAR PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100),
     id_proveedor INT, 
     cantidad INT,
     minimo INT,
-    precio INT,
+    precio DECIMAL(8,2),
     restock BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (id_proveedor) REFERENCES Proveedor(id)
 );
@@ -52,18 +52,18 @@ CREATE TABLE Servicio (
     descripcion VARCHAR(200),
     id_item INT,
     precio DECIMAL(8,2),
-    FOREIGN KEY (id_item) REFERENCES Item(codigo) 
+    FOREIGN KEY (id_item) REFERENCES Item(id) 
 );
 
 CREATE TABLE Pedido (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    codigo_item VARCHAR,
+    id_item INT,
     cantidad INT,
     precio DECIMAL(8,2),
     fecha_pedido DATE,
     fecha_recibido DATE DEFAULT NULL,
     completado BOOLEAN DEFAULT FALSE,
-    FOREIGN KEY (id_item) REFERENCES Item(codigo)
+    FOREIGN KEY (id_item) REFERENCES Item(id)
 );
 
 CREATE TABLE Encargo (
@@ -94,8 +94,8 @@ CREATE TABLE Cita (
 
 CREATE TABLE Servicio_Encargo (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    id_encargo VARCHAR,
-    id_servicio VARCHAR,
+    id_encargo INT,
+    id_servicio INT,
     FOREIGN KEY (id_servicio) REFERENCES Servicio(id), 
     FOREIGN KEY (id_encargo) REFERENCES Encargo(id)
 );
@@ -106,7 +106,7 @@ CREATE TABLE Item_Pedido(
     id_item INT,
     cantidad INT,
     FOREIGN KEY (id_pedido) REFERENCES Pedido(id),
-    FOREIGN KEY (id_item) REFERENCES Item(codigo)
+    FOREIGN KEY (id_item) REFERENCES Item(id)
 );
 
 CREATE TABLE Balance(

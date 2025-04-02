@@ -21,7 +21,7 @@ public class ClienteVIEW {
             System.out.println("4. Mostrar Clientes");
             System.out.println("0. Atrás");
             System.out.print(">>> ");
-            opcion = sc.next();
+            opcion = sc.nextLine();
             
     
             switch (opcion) {
@@ -50,31 +50,30 @@ public class ClienteVIEW {
         String phone;
         String cuenta_bancaria;
         Cliente cliente;
-        // do {
+        
         System.out.print("Ingrese el DNI: ");
         dni = sc.nextLine();
-        // } while (!val.validarDNI(dni));
         System.out.print("Ingrese el nombre: ");
         nombre = sc.nextLine();
         System.out.print("Ingrese el apellido: ");
         apellido = sc.nextLine();
         System.out.print("Ingrese la dirección: ");
         direccion = sc.nextLine();
-        // do {
         System.out.print("Ingrese el telefono: ");
-        phone = sc.nextLine();
-        // } while (!val.valirdarTelefono(phone));
-        // do {
+        phone = sc.nextLine();        
         System.out.print("Ingrese el número de cuenta bancaria: ");
         cuenta_bancaria = sc.nextLine();
-        // } while (!val.validarIBAN(cuenta_bancaria));
-
+        
         int telefono = Integer.parseInt(phone);
  
         cliente = new Cliente(dni, nombre, apellido, direccion, telefono, cuenta_bancaria);
        
         ClienteDAO clienteDAO = new ClienteDAO();
-        clienteDAO.insertar(cliente);
+        if (clienteDAO.insertar(cliente)) {
+            System.out.println("Cliente registrado correctamente");
+        } else {
+            System.out.println("No se ha podido registrar el cliente");
+        }
     }
     public void modificarCliente() {
         String opcion;
@@ -85,44 +84,36 @@ public class ClienteVIEW {
         Cliente cliente_modificar;
         do {
             System.out.println("Qué desea modificar?");
-            System.out.println("1. Dni");
-            System.out.println("2. Nombre");
-            System.out.println("3. Apellido");
-            System.out.println("4. Dirección");
-            System.out.println("5. Teléfono");
-            System.out.println("6. Cuenta Bancaria");
+            System.out.println("1. Nombre");
+            System.out.println("2. Apellido");
+            System.out.println("3. Dirección");
+            System.out.println("4. Teléfono");
+            System.out.println("5. Cuenta Bancaria");
             System.out.println("0. Atrás");
             System.out.print(">>> ");
-            opcion = sc.nextLine();
+            opcion = sc.next();
+
+            if(opcion.equalsIgnoreCase("0")) {
+                break;
+            }
+            
             //TODO: Validar que el DNI exista
             System.out.println("Ingrese el DNI del cliente a modificar: ");
             System.out.print("--> ");
-            dni = sc.nextLine();
+            dni = sc.next();
+            
 
             ClienteDAO clienteDAO = new ClienteDAO();
             cliente_modificar = clienteDAO.buscarMostrar(dni);
             
-            
             if (cliente_modificar == null) {
                 System.out.println("ERR0R: No se encontró el cliente");
+                break;
             } else {
                 switch (opcion) {
                     //TODO: Añadir validaciones
-                    case "1", "dni" -> {
-                        System.out.print("Ingrese el nuevo DNI: ");
-                        String dni_nuevo = sc.next();
-                        valor = dni_nuevo;
-                        columna = "dni";
-                        
-                        boolean actualizado = clienteDAO.actualizar(columna, dni, valor);
-                        if (actualizado) {
-                            System.out.println("DNI actualizado correctamente.");
-                        } else {
-                            System.out.println("Error al actualizar el DNI.");
-                        }
-
-                    }
-                    case "2", "nombre" -> {
+                   
+                    case "1", "nombre" -> {
                         System.out.print("Ingrese el nuevo nombre: ");
                         String nombre_nuevo = sc.next();
                         columna = "nombre";
@@ -133,11 +124,12 @@ public class ClienteVIEW {
                         } else {
                             System.out.println("Error al actualizar el nombre.");
                         }
+                        opcion = "0";
                     }
-                    case "3", "apellido" -> {
+                    case "2", "apellido" -> {
                         System.out.print("Ingrese el nuevo apellido: ");
                         String apellido_nuevo = sc.next();
-                        columna = "apellido";
+                        columna = "apellidos";
                         valor = apellido_nuevo;
                         boolean actualizado = clienteDAO.actualizar(columna, dni, valor);
                         if (actualizado) {
@@ -145,32 +137,40 @@ public class ClienteVIEW {
                         } else {
                             System.out.println("Error al actualizar el apellido.");
                         }
+                        opcion = "0";
                     }
-                    case "4", "direccion" -> {
+                    case "3", "direccion" -> {
                         System.out.print("Ingrese la nueva dirección: ");
                         String direccion_nueva = sc.nextLine();
+                        sc.next();
+                        
                         columna = "direccion";
                         valor = direccion_nueva;
+                        
+                        
                         boolean actualizado = clienteDAO.actualizar(columna, dni, valor);
                         if (actualizado) {
                             System.out.println("Dirección actualizada correctamente.");
                         } else {
                             System.out.println("Error al actualizar la dirección.");
                         }
+                        opcion = "0";
                     }
-                    case "5", "telefono" -> {
+                    case "4", "telefono" -> {
                         System.out.print("Ingrese el nuevo teléfono: ");
-                        int telefono_nuevo = sc.nextInt();
+                        String telefono_nuevo = sc.next();
                         columna = "telefono";
-                        valor = Integer.toString(telefono_nuevo); //paso el valor a String
+                        valor = telefono_nuevo; 
                         boolean actualizado = clienteDAO.actualizar(columna, dni, valor);
                         if (actualizado) {
                             System.out.println("Teléfono actualizado correctamente.");
                         } else {
                             System.out.println("Error al actualizar el teléfono.");
                         }
+                        opcion = "0";
+
                     }
-                    case "6", "cuenta bancaria" -> {
+                    case "5", "cuenta bancaria" -> {
                         System.out.print("Ingrese la nueva cuenta bancaria: ");
                         String cuenta_nueva = sc.nextLine();
                         columna = "cuenta_bancaria";
@@ -181,14 +181,15 @@ public class ClienteVIEW {
                         } else {
                             System.out.println("Error al actualizar la cuenta bancaria.");
                         }
+                        opcion = "0";
                     }
                     default -> {
                         System.out.println("ERR0R: No se reconoció esa opción");
                     }
                 }
             }
-
         } while (!opcion.equalsIgnoreCase("0"));
+
 
     }
     public void eliminarCliente() {
@@ -227,6 +228,7 @@ public class ClienteVIEW {
                     case "2", "no", "NO" -> {
                         System.out.println("Abortando...");
                         seguir = false;
+                        
                     }
                     default -> {
                         System.out.println("No se reconoció esa opción.");
@@ -249,7 +251,9 @@ public class ClienteVIEW {
             System.out.println("Clientes: ");
             for (Cliente cliente : array_clientes) {
                 System.out.println(cliente); // toString()
+                
             }
+            System.out.println(" ");
         }
     }
 }
