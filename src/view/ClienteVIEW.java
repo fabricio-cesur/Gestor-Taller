@@ -101,6 +101,7 @@ public class ClienteVIEW {
             System.out.println("Ingrese el DNI del cliente a modificar: ");
             System.out.print("--> ");
             dni = sc.next();
+            sc.nextLine();
             
 
             ClienteDAO clienteDAO = new ClienteDAO();
@@ -142,8 +143,7 @@ public class ClienteVIEW {
                     case "3", "direccion" -> {
                         System.out.print("Ingrese la nueva dirección: ");
                         String direccion_nueva = sc.nextLine();
-                        sc.next();
-                        
+                                                
                         columna = "direccion";
                         valor = direccion_nueva;
                         
