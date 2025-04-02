@@ -11,7 +11,7 @@ public class ProveedorDAO {
         Connection conexion = ConexionDB.conectar(); 
         if (conexion != null) { 
             String query = "INSERT INTO Proveedor (nombre, direccion, cuenta_bancaria) VALUES (" + proveedor.getNombre() 
-            + ", " + proveedor.getDireccion() + ", " + proveedor.getCuenta() + ");" ; 
+            + ", " + proveedor.getDireccion() + ", " + proveedor.getCuentaBancaria() + ");" ; 
             try (PreparedStatement stmt = conexion.prepareStatement(query)) { 
                
                 stmt.executeUpdate(); // Ejecuta la consulta de inserción 
