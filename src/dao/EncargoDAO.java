@@ -1,4 +1,3 @@
-/*
 package dao;
 
 import java.sql.Connection;
@@ -10,11 +9,10 @@ import model.Encargo;
 
 public class EncargoDAO {
 
-    public boolean  insertar(Encargo encargo) {
+    public boolean insertar(Encargo encargo) {
         Connection conexion = ConexionDB.conectar(); 
         if (conexion != null) { 
-            String query = "INSERT INTO Encargo ( matricula_coche, precio_total, fecha_inicio, fecha_finalizado ) VALUES (" + encargo.getMatricula() + ", " 
-            + encargo.getPrecio_total() + ", " + encargo.fecha_inicio + ", " + encargo.getFechaFinalizado() + ");" ; 
+            String query = "INSERT INTO Encargo (matricula_coche, precio_total) VALUES (" + encargo.getMatricula() + ", " + encargo.getPrecioTotal() + ");";
             try (PreparedStatement stmt = conexion.prepareStatement(query)) { 
                
                 stmt.executeUpdate(); // Ejecuta la consulta de inserción 
@@ -27,10 +25,10 @@ public class EncargoDAO {
         return false;
     }
 
-    public boolean actualizar(String columna, String matricula, String valor ) {
+    public boolean actualizar(String columna, int id, String valor ) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
-            String query = "UPDATE Encargo SET " + columna + "=" + valor + " WHERE matricula = " + matricula; 
+            String query = "UPDATE Encargo SET " + columna + "=" + valor + " WHERE id = " + id; 
             try (PreparedStatement stmt = conexion.prepareStatement(query)) {
                                 
                 int filas_afectadas = stmt.executeUpdate();
@@ -44,10 +42,10 @@ public class EncargoDAO {
         return false;
     }
 
-    public boolean  eliminar(String matricula) {
+    public boolean eliminar(int id) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
-            String query = "DELETE FROM Encargo WHERE dni = " + matricula;
+            String query = "DELETE FROM Encargo WHERE id = " + id;
             try (PreparedStatement stmt = conexion.prepareStatement(query)) {
                 
                 int filas_afectadas = stmt.executeUpdate();
@@ -60,12 +58,11 @@ public class EncargoDAO {
         return false;
     }
 
-    public String buscar(String matricula) {
+    public String buscarMatricula(String matricula) {
         Connection conexion = ConexionDB.conectar();
         String matricula_busqueda = null;
 
         if (conexion != null) {
-            Encargo encargo = null;
             String query = "SELECT * FROM Encargo WHERE matricula = " + matricula;
             try ( PreparedStatement stmt = conexion.prepareStatement(query)) {
                 
@@ -76,7 +73,7 @@ public class EncargoDAO {
                     
                 }
             } catch (SQLException e) {
-                System.out.println("Error al buscar cliente por DNI: " + e.getMessage());
+                System.out.println("Error al buscar encargo por Matricula: " + e.getMessage());
             }
             
             return matricula_busqueda; 
@@ -97,18 +94,20 @@ public class EncargoDAO {
 
                 if (rs.next()) {
                     encargo = new Encargo(
-                        rs.getString("id"),
                         rs.getString("matricula_vehiculo"),
-                        rs.getString("id_servicio"),
-                        rs.getDouble("precio_total"),
-                        rs.getString("id_asignacion"),
-                        rs.getString("fecha_inicio"),
-                        rs.getString("fecha_finalizado"),
-                        rs.getString("cod_item")
+                        rs.getDouble("precio_total")
                     );
+                    if (rs.getString("fecha_inicio") != null) {
+                        encargo.setFechaInicio(rs.getString("fecha_inicio"));
+                    }
+                    if (rs.getString("fecha_finalizado") != null) {
+                        encargo.setFechaFinalizado(rs.getString("fecha_finalizado"));
+                    }
+                    // O será false por default o lo habrán cambiado a completado
+                    encargo.setCompletado(rs.getBoolean("completado"));
                 }
             } catch (SQLException e) {
-                System.out.println("Error al buscar cliente por DNI: " + e.getMessage());
+                System.out.println("Error al buscar encargo por id: " + e.getMessage());
             }
             return encargo; 
         }
@@ -120,24 +119,24 @@ public class EncargoDAO {
         ArrayList<Encargo> encargos = new ArrayList<>();
 
         if (conexion != null) {
-            
             String query = "SELECT * FROM Encargo";
-
             try (
                 PreparedStatement stmt = conexion.prepareStatement(query);
                 ResultSet rs = stmt.executeQuery()) {
                 
                 while (rs.next()) {
                     Encargo encargo = new Encargo(
-                        rs.getString("id"),
                         rs.getString("matricula_vehiculo"),
-                        rs.getString("id_servicio"),
-                        rs.getDouble("precio_total"),
-                        rs.getString("id_asignacion"),
-                        rs.getString("fecha_inicio"),
-                        rs.getString("fecha_finalizado"),
-                        rs.getString("cod_item")
+                        rs.getDouble("precio_total")
                     );
+                    if (rs.getString("fecha_inicio") != null) {
+                        encargo.setFechaInicio(rs.getString("fecha_inicio"));
+                    }
+                    if (rs.getString("fecha_finalizado") != null) {
+                        encargo.setFechaFinalizado(rs.getString("fecha_finalizado"));
+                    }
+                    // O será false por default o lo habrán cambiado a completado
+                    encargo.setCompletado(rs.getBoolean("completado"));
                     encargos.add(encargo);
                 }
             } catch (SQLException e) {
@@ -147,4 +146,3 @@ public class EncargoDAO {
         return encargos;
     }
 }
-*/

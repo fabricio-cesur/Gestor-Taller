@@ -12,7 +12,6 @@ public class VehiculoDAO {
     public boolean insertar(Vehiculo vehiculo) {
         Connection conexion = ConexionDB.conectar(); 
         if (conexion != null) { 
-             
             String query = "INSERT INTO Vehiculo (matricula, modelo, marca, ano, dni_cliente) VALUES (" + vehiculo.getMatricula() + ", " + vehiculo.getModelo() + ", " 
             + vehiculo.getMarca() + ", " + vehiculo.getAno() +", " +  vehiculo.getDniCliente() +");"; 
 

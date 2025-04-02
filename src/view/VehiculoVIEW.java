@@ -62,12 +62,11 @@ public class VehiculoVIEW {
         vehiculo = new Vehiculo(matricula, modelo, marca, ano, dni_cliente);
 
         VehiculoDAO vehiculoDAO = new VehiculoDAO();
-        vehiculoDAO.insertar(vehiculo);
+        vehiculoDAO.insertar(vehiculo); //TODO: Revisar que se inserte dos veces
         if (vehiculoDAO.insertar(vehiculo)) {
             System.out.print("Vehículo introducido correctamente");
-        }else {
+        } else {
             System.out.print("El vehículo no se ha introducido correctamente \n");
-
         }
 
     }
