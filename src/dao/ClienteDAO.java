@@ -9,31 +9,36 @@ import model.Cliente;
 
 public class ClienteDAO {
 
-    public boolean  insertar(Cliente cliente) {
-        Connection conexion = ConexionDB.conectar(); 
-        if (conexion != null) { 
-            String query = "INSERT INTO Cliente (dni, nombre, apellidos, direccion, telefono, cuenta_bancaria) VALUES (" + cliente.getDni() + ", " + cliente.getNombre() + ", " + cliente.getApellido() + ", " +
-            cliente.getDireccion() + ", " + cliente.getTelefono() + ", " + cliente.getCuentaBancaria() + ");" ; 
-            try (PreparedStatement stmt = conexion.prepareStatement(query)) { 
-               
-                stmt.executeUpdate(); // Ejecuta la consulta de inserción 
+    public boolean insertar(Cliente cliente) {
+    String sql = "INSERT INTO Cliente (dni, nombre, apellidos, direccion, telefono, cuenta_bancaria) VALUES (?, ?, ?, ?, ?, ?)";
 
-                return true; 
-            } catch (SQLException e) { 
-                System.out.println("Error al agregar cliente: " + e.getMessage()); 
-            } 
-        }
-        return false;
+    try (Connection conexion = ConexionDB.conectar();  
+         PreparedStatement pstmt = conexion.prepareStatement(sql)) {
+
+        pstmt.setString(1, cliente.getDni());
+        pstmt.setString(2, cliente.getNombre());
+        pstmt.setString(3, cliente.getApellido());
+        pstmt.setString(4, cliente.getDireccion());
+        pstmt.setInt(5, cliente.getTelefono());
+        pstmt.setString(6, cliente.getCuentaBancaria());
+
+        pstmt.executeUpdate();
+        return true;
+    } catch (SQLException e) {
+        System.err.println("Error al agregar cliente: " + e.getMessage());
     }
+    return false;
+}
 
     public boolean actualizar(String columna, String dni, String valor ) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
-            String query = "UPDATE Cliente SET " + columna + "=" + valor + " WHERE dni = " + dni; 
+            String query = "UPDATE Cliente SET " + columna + " = ? WHERE dni = ?";
             try (PreparedStatement stmt = conexion.prepareStatement(query)) {
-                                
+                stmt.setString(1, valor); 
+                stmt.setString(2, dni); 
+    
                 int filas_afectadas = stmt.executeUpdate();
-
                 return filas_afectadas == 1;
             } catch (SQLException e) {
                 System.out.println("Error al actualizar cliente: " + e.getMessage());
