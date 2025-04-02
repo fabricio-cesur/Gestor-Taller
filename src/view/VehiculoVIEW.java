@@ -12,6 +12,32 @@ public class VehiculoVIEW {
 
     Scanner sc = new Scanner(System.in);
 
+    public void menu() {
+        String opcion;
+        VehiculoVIEW vehiculoVIEW = new VehiculoVIEW();
+        do { 
+            System.out.println("Qué desea hacer con los vehiculos?");
+            System.out.println("1. Registrar Vehiculo");
+            System.out.println("2. Modificar Vehiculo");
+            System.out.println("3. Eliminar Vehiculo");
+            System.out.println("4. Mostrar Vehiculos");
+            System.out.println("0. Atrás");
+            System.out.print(">>> ");
+            opcion = sc.next();
+            
+            switch (opcion) {
+                case "1", "registrar" -> { registrarVehiculo(); }
+                case "2", "modificar" -> { modificarVehiculo(); }
+                case "3", "eliminar" -> { eliminarVehiculo(); }
+                case "4", "mostrar" -> { mostrarVehiculos(); }
+                default -> {
+                    System.out.println("ERR0R: No se reconoció esa opción");
+                }
+            }
+
+        } while (!opcion.equalsIgnoreCase("0"));
+    }
+
     
     public void registrarVehiculo() {
         String matricula;
@@ -52,7 +78,7 @@ public class VehiculoVIEW {
         String valor;
         String matricula;
 
-        Vehiculo vehiculo_modificar = null;
+        Vehiculo vehiculo_modificar;
         do {
             System.out.println("Qué desea modificar?");
             System.out.println("1. Propietario");
@@ -96,7 +122,7 @@ public class VehiculoVIEW {
     }
     public void eliminarVehiculo() {
         String matricula;
-        Vehiculo vehiculo = null;
+        Vehiculo vehiculo;
         System.out.print("Ingrese la matrícula del vehiculo que quiere eliminar: ");
         matricula = sc.nextLine();
         VehiculoDAO vehiculoDAO = new VehiculoDAO();

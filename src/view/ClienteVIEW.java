@@ -8,6 +8,37 @@ import model.Cliente;
 public class ClienteVIEW {
 
     public ArrayList<Cliente> array_clientes = new ArrayList<>();
+
+    public void menu() {
+
+        String opcion;
+        
+        do { 
+            System.out.println("Qué desea hacer con los clientes?");
+            System.out.println("1. Registrar Cliente");
+            System.out.println("2. Modificar Cliente");
+            System.out.println("3. Eliminar Cliente");
+            System.out.println("4. Mostrar Clientes");
+            System.out.println("0. Atrás");
+            System.out.print(">>> ");
+            opcion = sc.next();
+            
+    
+            switch (opcion) {
+                case "1", "registrar" -> { registrarCliente(); }
+                case "2", "modificar" -> { modificarCliente(); }
+                case "3", "eliminar" -> { eliminarCliente(); }
+                case "4", "mostrar" -> { mostrarClientes(); }
+                default -> {
+                    System.out.println("ERR0R: No se reconoció esa opción");
+                }
+            }
+
+        } while (!opcion.equalsIgnoreCase("0"));
+    }
+
+
+
     // public Validacion val = new Validacion();
 
     Scanner sc = new Scanner(System.in);
@@ -51,7 +82,7 @@ public class ClienteVIEW {
         String columna;
         String valor;
 
-        Cliente cliente_modificar = null;
+        Cliente cliente_modificar;
         do {
             System.out.println("Qué desea modificar?");
             System.out.println("1. Dni");
@@ -162,7 +193,7 @@ public class ClienteVIEW {
     }
     public void eliminarCliente() {
         String dni;
-        Cliente cliente = null;
+        Cliente cliente;
         System.out.print("Ingrese el DNI del cliente que quiere eliminar: ");
         dni = sc.next();
         ClienteDAO clienteDAO = new ClienteDAO();
