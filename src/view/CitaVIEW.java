@@ -1,14 +1,42 @@
 package view;
 
+
 import dao.CitaDAO;
 import java.util.ArrayList;
 import java.util.Scanner;
 import model.Cita;
 
+
 public class CitaVIEW {
     public ArrayList<Cita> array_citas = new ArrayList<>();
-
+    
     Scanner sc = new Scanner(System.in);
+
+    public void menu() {
+        String opcion;
+        
+        do { 
+            System.out.println("Qué desea hacer con los citas?");
+            System.out.println("1. Crear Cita");
+            System.out.println("2. Modificar Cita");
+            System.out.println("3. Eliminar Cita");
+            System.out.println("4. Mostrar Citas");
+            System.out.println("0. Atrás");
+            System.out.print(">>> ");
+            opcion = sc.next();
+    
+            switch (opcion) {
+                case "1", "registrar" ->  registrarCita(); 
+                case "2", "modificar" ->  modificarCita(); 
+                case "3", "eliminar" ->  eliminarCita(); 
+                case "4", "mostrar" ->  mostrarCitas(); 
+                default -> {
+                    System.out.println("ERR0R: No se reconoció esa opción");
+                }
+            }
+
+        } while (!opcion.equalsIgnoreCase("0"));
+    }
 
     public void registrarCita() {
         
@@ -37,7 +65,7 @@ public class CitaVIEW {
         String valor;
         String matricula;
 
-        Cita cita_modificar = null;
+        Cita cita_modificar;
         do {
             System.out.println("Qué desea modificar?");
             System.out.println("1. Fecha");
@@ -95,7 +123,7 @@ public class CitaVIEW {
     }
     public void eliminarCita() {
         String matricula;
-        Cita cita = null;
+        Cita cita;
         System.out.print("Ingrese la matricula de la cita que quiere eliminar: ");
         matricula = sc.nextLine();
 

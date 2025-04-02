@@ -10,6 +10,33 @@ public class ItemVIEW {
     public ArrayList<Item> array_items = new ArrayList<>();
     
     Scanner sc = new Scanner(System.in);
+
+    public void menu() {
+        String opcion;
+        do { 
+            System.out.println("Qué desea hacer con los items?");
+            System.out.println("1. Registrar Item");
+            System.out.println("2. Modificar Item");
+            System.out.println("3. Eliminar Item");
+            System.out.println("4. Mostrar Items");
+            System.out.println("0. Atrás");
+            System.out.print(">>> ");
+            opcion = sc.next();
+            
+            
+            switch (opcion) {
+                case "1", "registrar" -> { registrarItem(); }
+                case "2", "modificar" -> { modificarItem(); }
+                case "3", "eliminar" -> { eliminarItem(); }
+                case "4", "mostrar" -> { mostrarItems(); }
+                default -> {
+                    System.out.println("ERR0R: No se reconoció esa opción");
+                }
+            }
+
+        } while (!opcion.equalsIgnoreCase("0"));
+    }
+
     public void registrarItem() {
         String codigo;
         String nombre;
@@ -45,7 +72,7 @@ public class ItemVIEW {
         String valor;
         String codigo;
 
-        Item codigo_modificar = null;
+        Item codigo_modificar;
         do {
             System.out.println("Qué desea modificar?");
             System.out.println("1. Código");
@@ -130,7 +157,7 @@ public class ItemVIEW {
     }
     public void eliminarItem() {
         String codigo;
-        Item item = null;
+        Item item;
         System.out.print("Ingrese el codigo del item que quiere eliminar: ");
         codigo = sc.next();
         ItemDAO itemDAO = new ItemDAO();

@@ -11,6 +11,34 @@ public class PedidoVIEW {
     public ArrayList<Pedido> array_pedidos = new ArrayList<>();
     
     Scanner sc = new Scanner(System.in);
+
+
+    public void menu() {
+        String opcion;
+        do { 
+            System.out.println("Qué desea hacer con los pedidos?");
+            System.out.println("1. Registrar Pedido");
+            System.out.println("2. Modificar Pedido");
+            System.out.println("3. Eliminar Pedido");
+            System.out.println("4. Mostrar Pedidos");
+            System.out.println("0. Atrás");
+            System.out.print(">>> ");
+            opcion = sc.next();
+            
+    
+            switch (opcion) {
+                case "1", "registrar" -> { registrarPedido(); }
+                case "2", "modificar" -> { modificarPedido(); }
+                case "3", "eliminar" -> { eliminarPedido(); }
+                case "4", "mostrar" -> { mostrarPedidos(); }
+                default -> {
+                    System.out.println("ERR0R: No se reconoció esa opción");
+                }
+            }
+
+        } while (!opcion.equalsIgnoreCase("0"));
+    }
+
     public void registrarPedido() {
         
         String codigo_item;
@@ -75,6 +103,8 @@ public class PedidoVIEW {
 
                         boolean estado = false;
                         System.out.print("Ingrese el nuevo estado: ");
+                        System.out.print("1. Entregado: ");
+                        System.out.print("2. No entregado: ");
                             dato = sc.nextInt();
 
                         if ( dato == 1) {

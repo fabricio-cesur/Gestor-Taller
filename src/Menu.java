@@ -9,7 +9,15 @@ public class Menu {
     public static boolean vaciar = false;
     public static Scanner sc = new Scanner(System.in);
 
+    
     public static void main(String[] args) throws Exception {
+        CitaVIEW citaVIEW = new CitaVIEW();
+        ClienteVIEW clienteVIEW = new ClienteVIEW();
+        VehiculoVIEW vehiculoVIEW = new VehiculoVIEW();
+        EmpleadoVIEW empleadoVIEW = new EmpleadoVIEW();
+        ItemVIEW itemVIEW = new ItemVIEW();
+        PedidoVIEW pedidoVIEW = new PedidoVIEW();
+        ProveedorVIEW proveedorVIEW = new ProveedorVIEW();
 
         vaciarConsola();
         Connection conexion = ConexionDB.conectar();
@@ -42,102 +50,22 @@ public class Menu {
             vaciarConsola();
 
             switch (opcion) {
-                case "1", "Clientes" -> { menuClientes(); }
-                case "2", "Vehiculos" -> { menuVehiculos(); }
-                case "3", "Citas" -> { menuCitas(); }
-                case "4", "Encargos" -> { menuEncargos(); }
-                case "5", "Empleados" -> { menuEmpleados(); }
-                case "6", "Asignaciones" -> { menuAsignaciones(); }
-                case "7", "Servicios" -> { menuServicios(); }
-                case "8", "Items" -> { menuItems(); }
-                case "9", "Pedidos" -> { menuPedidos(); }
-                case "10", "Proveedores" -> { menuProveedores(); }
+                case "1", "Clientes" -> { clienteVIEW.menu(); }
+                case "2", "Vehiculos" -> { vehiculoVIEW.menu(); }
+                case "3", "Citas" -> { citaVIEW.menu(); }
+                case "4", "Encargos" -> { /*menuEncargos();*/ }
+                case "5", "Empleados" -> { empleadoVIEW.menu(); }
+                case "6", "Asignaciones" -> { /*menuAsignaciones(); */}
+                case "7", "Servicios" -> { /*menuServicios();*/ }
+                case "8", "Items" -> { itemVIEW.menu(); }
+                case "9", "Pedidos" -> { pedidoVIEW.menu(); }
+                case "10", "Proveedores" -> { proveedorVIEW.menu(); }
                 default -> {}
                     
             }
         } while (!opcion.equalsIgnoreCase("0"));
     }
 
-    public static void menuClientes() {
-        String opcion;
-        ClienteVIEW clienteVIEW = new ClienteVIEW();
-        do { 
-            System.out.println("Qué desea hacer con los clientes?");
-            System.out.println("1. Registrar Cliente");
-            System.out.println("2. Modificar Cliente");
-            System.out.println("3. Eliminar Cliente");
-            System.out.println("4. Mostrar Clientes");
-            System.out.println("0. Atrás");
-            System.out.print(">>> ");
-            opcion = sc.next();
-            vaciarConsola();
-    
-            switch (opcion) {
-                case "1", "registrar" -> { clienteVIEW.registrarCliente(); }
-                case "2", "modificar" -> { clienteVIEW.modificarCliente(); }
-                case "3", "eliminar" -> { clienteVIEW.eliminarCliente(); }
-                case "4", "mostrar" -> { clienteVIEW.mostrarClientes(); }
-                default -> {
-                    System.out.println("ERR0R: No se reconoció esa opción");
-                }
-            }
-
-        } while (!opcion.equalsIgnoreCase("0"));
-    }
-
-    public static void menuVehiculos() {
-        String opcion;
-        VehiculoVIEW vehiculoVIEW = new VehiculoVIEW();
-        do { 
-            System.out.println("Qué desea hacer con los vehiculos?");
-            System.out.println("1. Registrar Vehiculo");
-            System.out.println("2. Modificar Vehiculo");
-            System.out.println("3. Eliminar Vehiculo");
-            System.out.println("4. Mostrar Vehiculos");
-            System.out.println("0. Atrás");
-            System.out.print(">>> ");
-            opcion = sc.next();
-            vaciarConsola();
-    
-            switch (opcion) {
-                case "1", "registrar" -> { vehiculoVIEW.registrarVehiculo(); }
-                case "2", "modificar" -> { vehiculoVIEW.modificarVehiculo(); }
-                case "3", "eliminar" -> { vehiculoVIEW.eliminarVehiculo(); }
-                case "4", "mostrar" -> { vehiculoVIEW.mostrarVehiculos(); }
-                default -> {
-                    System.out.println("ERR0R: No se reconoció esa opción");
-                }
-            }
-
-        } while (!opcion.equalsIgnoreCase("0"));
-    }
-
-    public static void menuCitas() {
-        String opcion;
-        CitaVIEW citaVIEW = new CitaVIEW();
-        do { 
-            System.out.println("Qué desea hacer con los citas?");
-            System.out.println("1. Crear Cita");
-            System.out.println("2. Modificar Cita");
-            System.out.println("3. Eliminar Cita");
-            System.out.println("4. Mostrar Citas");
-            System.out.println("0. Atrás");
-            System.out.print(">>> ");
-            opcion = sc.next();
-            vaciarConsola();
-    
-            switch (opcion) {
-                case "1", "registrar" -> { citaVIEW.registrarCita(); }
-                case "2", "modificar" -> { citaVIEW.modificarCita(); }
-                case "3", "eliminar" -> { citaVIEW.eliminarCita(); }
-                case "4", "mostrar" -> { citaVIEW.mostrarCitas(); }
-                default -> {
-                    System.out.println("ERR0R: No se reconoció esa opción");
-                }
-            }
-
-        } while (!opcion.equalsIgnoreCase("0"));
-    }
 
     public static void menuEncargos() {
         String opcion;
@@ -167,33 +95,8 @@ public class Menu {
         } while (!opcion.equalsIgnoreCase("0"));
     }
 
-    public static void menuEmpleados() {
-        String opcion;
-        EmpleadoVIEW empleadoVIEW = new EmpleadoVIEW();
-        do { 
-            System.out.println("Qué desea hacer con los empleados?");
-            System.out.println("1. Registrar Empleado");
-            System.out.println("2. Modificar Empleado");
-            System.out.println("3. Eliminar Empleado");
-            System.out.println("5. Mostrar Empleados");
-            System.out.println("0. Atrás");
-            System.out.print(">>> ");
-            opcion = sc.next();
-            vaciarConsola();
     
-            switch (opcion) {
-                case "1", "registrar" -> { empleadoVIEW.registrarEmpleado(); }
-                case "2", "modificar" -> { empleadoVIEW.modificarEmpleado(); }
-                case "3", "eliminar" -> { empleadoVIEW.eliminarEmpleado(); }
-                case "4", "mostrar" -> { empleadoVIEW.mostrarEmpleados(); }
-                default -> {
-                    System.out.println("ERR0R: No se reconoció esa opción");
-                }
-            }
-
-        } while (!opcion.equalsIgnoreCase("0"));
-    }
-
+    /* 
     public static void menuAsignaciones() {
         String opcion;
         do { 
@@ -208,10 +111,10 @@ public class Menu {
             vaciarConsola();
     
             switch (opcion) {
-                case "1", "registrar" -> { /*taller.asignarEmpleados() */ }
-                case "2", "modificar" -> { /*taller.modificarAsignacion() */ }
-                case "3", "eliminar" -> { /*taller.eliminarAsignacion() */ }
-                case "4", "mostrar" -> { /*taller.mostrarAsignaciones() */ }
+                case "1", "registrar" -> { taller.asignarEmpleados()  }
+                case "2", "modificar" -> { taller.modificarAsignacion()  }
+                case "3", "eliminar" -> { taller.eliminarAsignacion()  }
+                case "4", "mostrar" -> { taller.mostrarAsignaciones()  }
                 default -> {
                     System.out.println("ERR0R: No se reconoció esa opción");
                 }
@@ -219,7 +122,11 @@ public class Menu {
 
         } while (!opcion.equalsIgnoreCase("0"));
     }
-
+     
+    */
+   
+    /* 
+     
     public static void menuServicios() {
         String opcion;
         do { 
@@ -234,10 +141,10 @@ public class Menu {
             vaciarConsola();
     
             switch (opcion) {
-                case "1", "registrar" -> { /*taller.registrarServicio() */ }
-                case "2", "modificar" -> { /*taller.modificarServicio() */ }
-                case "3", "eliminar" -> { /*taller.eliminarServicio() */ }
-                case "4", "mostrar" -> { /*taller.mostrarServicios() */ }
+                case "1", "registrar" -> {  }
+                case "2", "modificar" -> {  }
+                case "3", "eliminar" -> {  }
+                case "4", "mostrar" -> {  }
                 default -> {
                     System.out.println("ERR0R: No se reconoció esa opción");
                 }
@@ -245,87 +152,8 @@ public class Menu {
 
         } while (!opcion.equalsIgnoreCase("0"));
     }
+    */
 
-    public static void menuItems() {
-        String opcion;
-        do { 
-            System.out.println("Qué desea hacer con los items?");
-            System.out.println("1. Registrar Item");
-            System.out.println("2. Modificar Item");
-            System.out.println("3. Eliminar Item");
-            System.out.println("4. Mostrar Items");
-            System.out.println("0. Atrás");
-            System.out.print(">>> ");
-            opcion = sc.next();
-            vaciarConsola();
-            //TODO: Añadir opciones de Restock
-            switch (opcion) {
-                case "1", "registrar" -> { /*taller.registrarItem() */ }
-                case "2", "modificar" -> { /*taller.modificarItem() */ }
-                case "3", "eliminar" -> { /*taller.eliminarItem() */ }
-                case "4", "mostrar" -> { /*taller.mostrarItems() */ }
-                default -> {
-                    System.out.println("ERR0R: No se reconoció esa opción");
-                }
-            }
-
-        } while (!opcion.equalsIgnoreCase("0"));
-    }
-
-    public static void menuPedidos() {
-        String opcion;
-        do { 
-            System.out.println("Qué desea hacer con los pedidos?");
-            System.out.println("1. Registrar Pedido");
-            System.out.println("2. Modificar Pedido");
-            System.out.println("3. Eliminar Pedido");
-            System.out.println("4. Mostrar Pedidos");
-            System.out.println("0. Atrás");
-            System.out.print(">>> ");
-            opcion = sc.next();
-            vaciarConsola();
-    
-            switch (opcion) {
-                case "1", "registrar" -> { /*taller.registrarPedido() */ }
-                case "2", "modificar" -> { /*taller.modificarPedido() */ }
-                case "3", "eliminar" -> { /*taller.eliminarPedido() */ }
-                case "4", "mostrar" -> { /*taller.mostrarPedidos() */ }
-                default -> {
-                    System.out.println("ERR0R: No se reconoció esa opción");
-                }
-            }
-
-        } while (!opcion.equalsIgnoreCase("0"));
-    }
-
-    public static void menuProveedores() {
-        String opcion;
-        do { 
-            System.out.println("Qué desea hacer con los proveedores?");
-            System.out.println("1. Registrar Proveedor");
-            System.out.println("2. Modificar Proveedor");
-            System.out.println("3. Eliminar Proveedor");
-            System.out.println("4. Mostrar Proveedores");
-            System.out.println("0. Atrás");
-            System.out.print(">>> ");
-            opcion = sc.next();
-            vaciarConsola();
-    
-            switch (opcion) {
-                case "1", "registrar" -> { /*taller.registrarProveedor() */ }
-                case "2", "modificar" -> { /*taller.modificarProveedor() */ }
-                case "3", "eliminar" -> { /*taller.eliminarProveedor() */ }
-                case "4", "mostrar" -> { /*taller.mostrarProveedores() */ }
-                default -> {
-                    System.out.println("ERR0R: No se reconoció esa opción");
-                }
-            }
-
-        } while (!opcion.equalsIgnoreCase("0"));
-    }
-
-  
-    
     public static void vaciarConsola() {
         String os = System.getProperty("os.name");
 

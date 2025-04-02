@@ -12,6 +12,31 @@ public class EmpleadoVIEW {
     public Scanner sc = new Scanner(System.in);
     public ArrayList<Empleado> array_empleados = new ArrayList<>();
     
+    public void menu() {
+        String opcion;
+        
+        do { 
+            System.out.println("Qué desea hacer con los empleados?");
+            System.out.println("1. Registrar Empleado");
+            System.out.println("2. Modificar Empleado");
+            System.out.println("3. Eliminar Empleado");
+            System.out.println("5. Mostrar Empleados");
+            System.out.println("0. Atrás");
+            System.out.print(">>> ");
+            opcion = sc.next();
+                
+            switch (opcion) {
+                case "1", "registrar" -> { registrarEmpleado(); }
+                case "2", "modificar" -> { modificarEmpleado(); }
+                case "3", "eliminar" -> { eliminarEmpleado(); }
+                case "4", "mostrar" -> { mostrarEmpleados(); }
+                default -> {
+                    System.out.println("ERR0R: No se reconoció esa opción");
+                }
+            }
+
+        } while (!opcion.equalsIgnoreCase("0"));
+    }
    
     public void registrarEmpleado() {
         String dni;
@@ -62,7 +87,7 @@ public class EmpleadoVIEW {
         String valor;
         String dni;
         
-        Empleado empleado_modificar = null;
+        Empleado empleado_modificar;
 
         do {
             System.out.println("¿Qué desea modificar?");
@@ -162,7 +187,7 @@ public class EmpleadoVIEW {
     }
     public void eliminarEmpleado() {
         String dni;
-        Empleado empleado = null;
+        Empleado empleado;
         System.out.println("Ingrese el DNI del empleado a eliminar");
         System.out.print("--> ");
         dni = sc.next();
