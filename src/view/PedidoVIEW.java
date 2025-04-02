@@ -35,7 +35,7 @@ public class PedidoVIEW {
         String columna;
         int valor;
 
-        Pedido pedido_modificar = null;
+        Pedido pedido_modificar;
         do {
             System.out.println("Qué desea modificar?");
             System.out.println("1. Cantidad");
@@ -58,10 +58,10 @@ public class PedidoVIEW {
                 switch (opcion) {
                     //TODO: Añadir validaciones
                     case "1", "id" -> {
-                        System.out.print("Ingrese el nuevo DNI: ");
-                        int id_nuevo = sc.nextInt();
-                        valor = id_nuevo;
-                        columna = "id";
+                        System.out.print("Ingrese el nuevo id: ");
+                        int cantidad_nuevo = sc.nextInt();
+                        valor = cantidad_nuevo;
+                        columna = "cantidad";
                         
                         boolean actualizado = pedidoDAO.actualizar(columna, id, valor);
                         if (actualizado) {
@@ -83,7 +83,6 @@ public class PedidoVIEW {
                             estado = false;
                         }
                         
-                        
                         boolean actualizado = pedidoDAO.actualizarEstado(id, estado);
                         if (actualizado) {
                         System.out.println("Cantidad actualizada correctamente.");
@@ -99,11 +98,11 @@ public class PedidoVIEW {
             }
 
         } while (!opcion.equalsIgnoreCase("0"));
-
     }
+    
     public void eliminarPedido() {
         int id;
-        Pedido pedido = null;
+        Pedido pedido;
         System.out.print("Ingrese el id del pedido que quiere eliminar: ");
         id = sc.nextInt();
         PedidoDAO pedidoDAO = new PedidoDAO();

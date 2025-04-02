@@ -108,10 +108,3 @@ CREATE TABLE Item_Pedido(
     FOREIGN KEY (id_pedido) REFERENCES Pedido(id),
     FOREIGN KEY (id_item) REFERENCES Item(codigo)
 );
-CREATE TABLE Empleado_Asignacion (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    id_empleado INT,
-    id_asignacion INT,
-    FOREIGN KEY (id_empleado) REFERENCES Empleado(id),
-    FOREIGN KEY (id_asignacion) REFERENCES Asignacion(id)
-);

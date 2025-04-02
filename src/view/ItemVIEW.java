@@ -14,9 +14,9 @@ public class ItemVIEW {
         String codigo;
         String nombre;
         String id_proveedor;
-        String minimo;
-        String precio;
-        String cantidad;
+        int minimo;
+        double precio;
+        int cantidad;
         Item item;
 
       
@@ -28,13 +28,13 @@ public class ItemVIEW {
         System.out.print("Ingrese el id del proveedor: ");
         id_proveedor = sc.nextLine();
         System.out.print("Ingrese la cantidad mínima que quiere en el almacen: ");
-        minimo = sc.nextLine();
+        minimo = sc.nextInt();
         System.out.print("Ingrese la cantidad que tiene en el almacen: ");
-        cantidad = sc.nextLine();
+        cantidad = sc.nextInt();
         System.out.print("Ingrese el precio del item: ");
-        precio = sc.nextLine();
+        precio = sc.nextDouble();
          
-        item = new Item(codigo, nombre, id_proveedor, minimo, precio, cantidad);
+        item = new Item(codigo, nombre, id_proveedor, minimo, cantidad, precio);
        
         ItemDAO itemDAO = new ItemDAO();
         itemDAO.insertar(item);

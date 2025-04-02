@@ -97,9 +97,9 @@ public class ItemDAO {
                         rs.getString("codigo"),
                         rs.getString("nombre"),
                         rs.getString("id_proveedor"),
-                        rs.getString("minimo"),
-                        rs.getString("precio"),
-                        rs.getString("cantidad")
+                        rs.getInt("minimo"),
+                        rs.getInt("cantidad"),
+                        rs.getDouble("precio")
                     );
                 }
             } catch (SQLException e) {
@@ -127,9 +127,9 @@ public class ItemDAO {
                         rs.getString("codigo"),
                         rs.getString("nombre"),
                         rs.getString("id_proveedor"),
-                        rs.getString("minimo"),
-                        rs.getString("precio"),
-                        rs.getString("cantidad")
+                        rs.getInt("minimo"),
+                        rs.getInt("cantidad"),
+                        rs.getDouble("precio")
                     );
                     items.add(item);
                 }
