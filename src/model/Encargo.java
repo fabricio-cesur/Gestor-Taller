@@ -18,5 +18,11 @@ public class Encargo {
     public Double getPrecioTotal() { return this.precio_total; }
     public String getFechaInicio() { return this.fecha_inicio; }
     public String getFechaFinalizado() { return this.fecha_finalizado; }
-    public boolean getCompletado() { return this.completado; }     
+    public boolean getCompletado() { return this.completado; }
+
+    public void setMatricula(String matricula_vehiculo) { this.matricula_vehiculo = matricula_vehiculo; } 
+    public void setPrecioTotal(Double precio_total) { this.precio_total = precio_total; }
+    public void setFechaInicio(String fecha_inicio) { this.fecha_inicio = fecha_inicio; }
+    public void setFechaFinalizado(String fecha_finalizado) { this.fecha_finalizado = fecha_finalizado; }
+    public void setCompletado(boolean completado) { this.completado = completado; } 
 }
