@@ -108,3 +108,14 @@ CREATE TABLE Item_Pedido(
     FOREIGN KEY (id_pedido) REFERENCES Pedido(id),
     FOREIGN KEY (id_item) REFERENCES Item(codigo)
 );
+
+CREATE TABLE Balance(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    tipo VARCHAR(100),
+    descripcion VARCHAR(100),
+    cuantia INT,
+    fecha DATE
+);
+
+
+
