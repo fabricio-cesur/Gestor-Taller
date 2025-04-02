@@ -85,9 +85,9 @@ public class ClienteVIEW {
                         
                         boolean actualizado = clienteDAO.actualizar(columna, dni, valor);
                         if (actualizado) {
-                        System.out.println("DNI actualizado correctamente.");
+                            System.out.println("DNI actualizado correctamente.");
                         } else {
-                        System.out.println("Error al actualizar el DNI.");
+                            System.out.println("Error al actualizar el DNI.");
                         }
 
                     }
@@ -162,7 +162,7 @@ public class ClienteVIEW {
     }
     public void eliminarCliente() {
         String dni;
-        Cliente cliente = null;
+        Cliente cliente;
         System.out.print("Ingrese el DNI del cliente que quiere eliminar: ");
         dni = sc.next();
         ClienteDAO clienteDAO = new ClienteDAO();
@@ -197,7 +197,6 @@ public class ClienteVIEW {
                         System.out.println("Abortando...");
                         seguir = false;
                     }
-                
                     default -> {
                         System.out.println("No se reconoció esa opción.");
                     }
@@ -218,8 +217,8 @@ public class ClienteVIEW {
         } else {
             System.out.println("Clientes: ");
             for (Cliente cliente : array_clientes) {
-                System.out.println(cliente); // `toString()
+                System.out.println(cliente); // toString()
             }
         }
-    }    
+    }
 }

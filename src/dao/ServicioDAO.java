@@ -13,7 +13,7 @@ public class ServicioDAO {
         Connection conexion = ConexionDB.conectar(); 
         if (conexion != null) { 
             String query = "INSERT INTO Servicio (nombre, descripcion, id_item, precio,) VALUES (" + servicio.getNombre() 
-            + ", " + servicio.getDescripcion() + ", " + servicio.getItem() + ", " +servicio.getPrecio() +");" ; 
+            + ", " + servicio.getDescripcion() + ", " + servicio.getItemCodigo() + ", " +servicio.getPrecio() +");" ; 
             try (PreparedStatement stmt = conexion.prepareStatement(query)) { 
                
                 stmt.executeUpdate(); // Ejecuta la consulta de inserción 
@@ -81,7 +81,7 @@ public class ServicioDAO {
         return null; 
     }
 
-    public Servicio buscarMostrar(String id) {
+    public Servicio obtener(String id) {
         Connection conexion = ConexionDB.conectar();
 
         if (conexion != null) {
@@ -99,6 +99,7 @@ public class ServicioDAO {
                         rs.getString("id_item"),
                         rs.getInt("precio")
                     );
+                    servicio.setId(rs.getString("id"));
                 }
             } catch (SQLException e) {
                 System.out.println("Error al buscar servicio por ID: " + e.getMessage());
@@ -126,6 +127,7 @@ public class ServicioDAO {
                         rs.getString("id_item"),
                         rs.getInt("precio")
                     );
+                    servicio.setId(rs.getString("id"));
                     servicios.add(servicio);
                 }
             } catch (SQLException e) {
