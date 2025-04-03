@@ -14,7 +14,7 @@ public class VehiculoVIEW {
 
     public void menu() {
         String opcion;
-        VehiculoVIEW vehiculoVIEW = new VehiculoVIEW();
+        
         do { 
             System.out.println("Qué desea hacer con los vehiculos?");
             System.out.println("1. Registrar Vehiculo");
@@ -39,7 +39,6 @@ public class VehiculoVIEW {
         } while (!opcion.equalsIgnoreCase("0"));
     }
 
-    
     public void registrarVehiculo() {
         String matricula;
         String modelo;
@@ -58,18 +57,15 @@ public class VehiculoVIEW {
         ano = sc.nextLine();
         System.out.print("Ingrese el DNI del propietario: ");
         dni_cliente = sc.nextLine();
-
-        
         vehiculo = new Vehiculo(matricula, modelo, marca, ano, dni_cliente);
-
         VehiculoDAO vehiculoDAO = new VehiculoDAO();
-         //TODO: Revisar que se inserte dos veces
+
+        //TODO: Revisar que se inserte dos veces
         if (vehiculoDAO.insertar(vehiculo)) {
             System.out.println("Vehículo introducido correctamente");
         } else {
             System.out.println("El vehículo no se ha introducido correctamente ");
         }
-
     }
 
     public void modificarVehiculo() {
@@ -110,7 +106,6 @@ public class VehiculoVIEW {
                         sc.nextLine();
                         columna = "dni_cliente";
                         valor = propietario_nuevo;
-                        
                         boolean actualizado = vehiculoDAO.actualizar(columna, matricula, valor);
                         if (actualizado) {
                         System.out.println("Propietario actualizado correctamente.");
@@ -121,12 +116,9 @@ public class VehiculoVIEW {
                     }
                     case "0" -> { 
                         System.out.println("Volviendo al menu anterior. ");
-                        
                     }
-                    
-                    default -> {
+                     default -> {
                         System.out.println("ERR0R: No se reconoció esa opción");
-                        
                     }
                 }
             }
@@ -164,20 +156,14 @@ public class VehiculoVIEW {
                             vehiculoDAO.eliminar(matricula);
                             System.out.println("Vehiculo eliminado correctamente");
                             seguir = false;
-                            
-                            
                         } else {
                             System.out.println("No se encuentra el vehículo");
                         }
-                        
                     }
                     case "2", "no", "NO" -> {
                         System.out.println("Abortando...");
                         seguir = false;
-                        
-
                     }
-                
                     default -> {
                         System.out.println("No se reconoció esa opción.");
                     }
