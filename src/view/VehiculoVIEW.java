@@ -30,6 +30,7 @@ public class VehiculoVIEW {
                 case "2", "modificar" -> { modificarVehiculo(); }
                 case "3", "eliminar" -> { eliminarVehiculo(); }
                 case "4", "mostrar" -> { mostrarVehiculos(); }
+                case "0" -> { System.out.println("Volviendo al menu anterior. ");}
                 default -> {
                     System.out.println("ERR0R: No se reconoció esa opción");
                 }
@@ -64,9 +65,9 @@ public class VehiculoVIEW {
         VehiculoDAO vehiculoDAO = new VehiculoDAO();
          //TODO: Revisar que se inserte dos veces
         if (vehiculoDAO.insertar(vehiculo)) {
-            System.out.print("Vehículo introducido correctamente");
+            System.out.println("Vehículo introducido correctamente");
         } else {
-            System.out.print("El vehículo no se ha introducido correctamente ");
+            System.out.println("El vehículo no se ha introducido correctamente ");
         }
 
     }
@@ -84,6 +85,7 @@ public class VehiculoVIEW {
             System.out.println("0. Atrás");
             System.out.print(">>> ");
             opcion = sc.next();
+            sc.nextLine();
 
             if(opcion.equalsIgnoreCase("0")) {
                 break;
@@ -105,6 +107,7 @@ public class VehiculoVIEW {
                     case "1", "propietario" -> {
                         System.out.print("Ingrese el nuevo dni: ");
                         String propietario_nuevo = sc.next();
+                        sc.nextLine();
                         columna = "dni_cliente";
                         valor = propietario_nuevo;
                         
@@ -116,9 +119,14 @@ public class VehiculoVIEW {
                         }
                         opcion = "0";
                     }
+                    case "0" -> { 
+                        System.out.println("Volviendo al menu anterior. ");
+                        
+                    }
                     
                     default -> {
                         System.out.println("ERR0R: No se reconoció esa opción");
+                        
                     }
                 }
             }
@@ -148,6 +156,7 @@ public class VehiculoVIEW {
             do { 
                 System.out.println("1. SI / 2. NO");
                 opcion = sc.next();
+                sc.nextLine();
                 switch (opcion) {
                     case "1", "si", "SI" -> {
                         
@@ -156,13 +165,17 @@ public class VehiculoVIEW {
                             System.out.println("Vehiculo eliminado correctamente");
                             seguir = false;
                             
+                            
                         } else {
                             System.out.println("No se encuentra el vehículo");
                         }
+                        
                     }
                     case "2", "no", "NO" -> {
                         System.out.println("Abortando...");
                         seguir = false;
+                        
+
                     }
                 
                     default -> {
