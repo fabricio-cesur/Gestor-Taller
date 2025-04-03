@@ -29,9 +29,8 @@ public class ClienteVIEW {
                 case "2", "modificar" -> { modificarCliente(); }
                 case "3", "eliminar" -> { eliminarCliente(); }
                 case "4", "mostrar" -> { mostrarClientes(); }
-                default -> {
-                    System.out.println("ERR0R: No se reconoció esa opción");
-                }
+                case "0" -> { System.out.println("Volviendo al menu anterior. ");}
+                default -> { System.out.println("ERR0R: No se reconoció esa opción"); }
             }
 
         } while (!opcion.equalsIgnoreCase("0"));
@@ -129,7 +128,7 @@ public class ClienteVIEW {
                     }
                     case "2", "apellido" -> {
                         System.out.print("Ingrese el nuevo apellido: ");
-                        String apellido_nuevo = sc.next();
+                        String apellido_nuevo = sc.nextLine();
                         columna = "apellidos";
                         valor = apellido_nuevo;
                         boolean actualizado = clienteDAO.actualizar(columna, dni, valor);
@@ -183,6 +182,7 @@ public class ClienteVIEW {
                         }
                         opcion = "0";
                     }
+                    
                     default -> {
                         System.out.println("ERR0R: No se reconoció esa opción");
                     }
