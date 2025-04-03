@@ -28,5 +28,13 @@ public class Encargo {
     public void setPrecioTotal(Double precio_total) { this.precio_total = precio_total; }
     public void setFechaInicio(LocalDate fecha_inicio) { this.fecha_inicio = fecha_inicio; }
     public void setFechaFinalizado(LocalDate fecha_finalizado) { this.fecha_finalizado = fecha_finalizado; }
-    public void setCompletado(boolean completado) { this.completado = completado; } 
+    public void setCompletado(boolean completado) { this.completado = completado; }
+
+    @Override
+    public String toString() {
+        return "ID: " + this.getId() + " Matrícula: " + this.getMatricula() 
+        + "Precio total: " + this.getPrecioTotal() 
+        + "Inicio: " + this.getFechaInicio() + " Finalizado: " + this.getFechaInicio() 
+        + "Completado: " + this.getCompletado();
+    }
 }

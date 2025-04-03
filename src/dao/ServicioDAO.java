@@ -85,7 +85,7 @@ public class ServicioDAO {
         return null; 
     }
 
-    public Servicio buscarMostrar(String id) {
+    public Servicio obtener(String id) {
         Connection conexion = ConexionDB.conectar();
 
         if (conexion != null) {

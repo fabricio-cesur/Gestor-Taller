@@ -6,19 +6,21 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 import model.Encargo;
+import model.Servicio;
 
 public class EncargoVIEW {
 
     public ArrayList<Encargo> array_encargos = new ArrayList<>();
     public EncargoDAO dao = new EncargoDAO();
     public Formateo formateo = new Formateo();
+    public ServicioVIEW serview = new ServicioVIEW();
+    public ServicioDAO serdao = new ServicioDAO();
     
     Scanner sc = new Scanner(System.in);
     public void registrar() {
         String matricula_vehiculo;
         Double precio_total = 0.0;
         Encargo encargo;
-        LocalDate fecha_inicio;
 
         System.out.print("Ingrese la matricula: ");
         matricula_vehiculo = sc.nextLine();
@@ -26,8 +28,6 @@ public class EncargoVIEW {
         dao.insertar(encargo);
         encargo.setId(dao.obtenerUltimo(matricula_vehiculo).getId());
         
-        ServicioVIEW serview = new ServicioVIEW();
-        ServicioDAO serdao = new ServicioDAO();
         System.out.println("Cuáles servicios quiere añadir?");
         System.out.println("(0 para dejar de añadir)");
         serview.mostrarServicios();
@@ -40,7 +40,7 @@ public class EncargoVIEW {
             id_servicio = sc.next();
             if (!id_servicio.equals("0")) {
                 precio_total += serdao.obtener(id_servicio).getPrecio();
-                dao.insertarServicio(String.valueOf(encargo.getId()), id_servicio);
+                dao.insertarServicio(encargo.getId(), Integer.parseInt(id_servicio));
                 num_servicios++;
             }
         } while (!id_servicio.equals("0") && num_servicios > 0);
@@ -52,7 +52,8 @@ public class EncargoVIEW {
         String opcion = sc.next().toLowerCase();
         switch (opcion) {
             case "1", "si" -> {
-                fecha_inicio = LocalDate.now();
+                LocalDate fecha_inicio = LocalDate.now();
+                dao.actualizar("fecha_inicio", encargo.getId(), formateo.dateToString(fecha_inicio));
             }
             case "2", "no" -> {/*TODO: Añadir mensaje?*/}
             default -> {
@@ -79,12 +80,13 @@ public class EncargoVIEW {
             System.out.print(">>> ");
             opcion = sc.nextLine().toLowerCase();
             //TODO: Validar que el Encargo exista
-            System.out.println("Ingrese la matrícula del encargo a modificar: ");
+            System.out.println("Ingrese la matrícula del encargo a modificar");
             System.out.print("--> ");
             matricula = sc.nextLine();
 
             encargo_modificar = dao.obtenerUltimo(matricula);
             
+            String alternativa;
             if (encargo_modificar == null) {
                 System.out.println("ERR0R: No se encontró el encargo");
             } else {
@@ -102,24 +104,35 @@ public class EncargoVIEW {
                         System.out.println("Error al actualizar el DNI.");
                         }
                     }
-                    // case "2", "nombre" -> {
-                    //     System.out.print("Ingrese el nuevo nombre: ");
-                    //     String nombre_nuevo = sc.next();
-                    //     columna = "nombre";
-                    //     valor = nombre_nuevo;
-                    //     boolean actualizado = dao.actualizar(columna, id, valor);
-                    //     if (actualizado) {
-                    //         System.out.println("Nombre actualizado correctamente.");
-                    //     } else {
-                    //         System.out.println("Error al actualizar el nombre.");
-                    //     }
-                    // }
+                    case "2", "servicios" -> {
+                        mostrarServicios();
+                        System.out.println("Qué quiere hacer?");
+                        System.out.println("1. Quitar Servicio");
+                        System.out.println("2. Añadir Servicio");
+                        System.out.print("--> ");
+                        alternativa = sc.next().toLowerCase();
+                        switch (alternativa) {
+                            case "1", "quitar" -> {
+                                System.out.println("Cuál quiere quitar?");
+                                System.out.print("--> ");
+                                int id_servicio = sc.nextInt();
+                                dao.quitarServicio(encargo_modificar.getId(), id_servicio);
+                            }
+                            case "2", "añadir" -> {
+                                System.out.println("Cuál quiere añadir?");
+                                System.out.print("--> ");
+                                int id_servicio = sc.nextInt();
+                                dao.insertarServicio(encargo_modificar.getId(), id_servicio);
+                            }
+                            default -> {}
+                        }
+                    }
                     case "3", "fecha incio", "fecha", "inicio" -> {
                         System.out.println("El encargo empezará ahora?");
                         System.out.println("1. SI / 2. NO");
                         System.out.print("--> ");
-                        opcion = sc.next().toLowerCase();
-                        switch (opcion) {
+                        alternativa = sc.next().toLowerCase();
+                        switch (alternativa) {
                             case "1", "si" -> {
                                 LocalDate fecha_inicio = LocalDate.now();
                                 columna = "fecha_inicio";
@@ -140,9 +153,9 @@ public class EncargoVIEW {
                         System.out.println("El encargo lo ha terminado?");
                         System.out.println("1. SI / 2. NO");
                         System.out.print("--> ");
-                        opcion = sc.next().toLowerCase();
+                        alternativa = sc.next().toLowerCase();
                         LocalDate fecha_finalizado;
-                        switch (opcion) {
+                        switch (alternativa) {
                             case "1", "si" -> {
                                 columna = "fecha_finalizado";
                                 fecha_finalizado = LocalDate.now();
@@ -166,64 +179,76 @@ public class EncargoVIEW {
             }
         } while (!opcion.equalsIgnoreCase("0"));
     }
-    // public void eliminar() {
-    //     String dni;
-    //     Encargo encargo = null;
-    //     System.out.print("Ingrese el DNI del encargo que quiere eliminar: ");
-    //     dni = sc.next();
-    //     encargo = dao.buscarMostrar(dni);
+    public void eliminar() {
+        System.out.println("Ingrese la matrícula del encargo a eliminar");
+        System.out.print("--> ");
+        String matricula = sc.nextLine();
 
-    //     if (encargo == null) {
-    //         System.out.println("ERR0R: No se encontró al encargo con ese DNI");
-    //     } else {
-    //         System.out.println("Está por eliminar al siguiente encargo: ");
-    //         System.out.println("Nombre: " + encargo.getNombre() + " " + encargo.getApellido());
-    //         System.out.println("Dirección: " + encargo.getDireccion());
-    //         System.out.println("Teléfono: " + encargo.getTelefono());
-    //         System.out.println("Cuenta Bancaria: " + encargo.getCuentaBancaria());
-    //         System.out.println("---¿Está seguro?---");
-    //         String opcion;
-    //         boolean seguir = true;
-    //         do { 
-    //             System.out.println("1. SI / 2. NO");
-    //             opcion = sc.next();
-    //             switch (opcion) {
-    //                 case "1", "si", "SI" -> {
-    //                     if (dao.buscar(dni).equals(dni)) {
-    //                         dao.eliminar(dni);
-    //                         System.out.println("Encargo eliminado");
-    //                         seguir = false;
-                            
-    //                     } else {
-    //                         System.out.println("No se encuentra dni");
-    //                     }
-    //                 }
-    //                 case "2", "no", "NO" -> {
-    //                     System.out.println("Abortando...");
-    //                     seguir = false;
-    //                 }
-                
-    //                 default -> {
-    //                     System.out.println("No se reconoció esa opción.");
-    //                 }
-    //             }
-    //         } while (seguir);
-    //     }
-    // }
-    // public void mostrarEncargos() {
-    //     array_encargos = dao.obtenerTodos(); // Llenar la lista con los encargos de la BD
+        Encargo encargo = dao.obtenerUltimo(matricula);
+        int id_encargo = encargo.getId();
+        System.out.println("Está por eliminar al siguiente encargo: ");
+        System.out.println("ID: " + encargo.getId() + " Matrícula: " + encargo.getMatricula());
+        System.out.println("Precio total: " + encargo.getPrecioTotal());
+        System.out.println("Inicio: " + encargo.getFechaInicio() + " Finalizado: " + encargo.getFechaInicio());
+        System.out.println("Completado: " + encargo.getCompletado());
+        System.out.println("---¿Está seguro?---");
+        String opcion;
+        boolean seguir = true;
+        do { 
+            System.out.println("1. SI / 2. NO");
+            opcion = sc.next().toLowerCase();
+            switch (opcion) {
+                case "1", "si" -> {
+                    if (dao.obtenerUltimo(matricula).getId() == id_encargo) {
+                        dao.eliminar(id_encargo);
+                        System.out.println("Encargo eliminado");
+                        seguir = false;
+                    } else {
+                        System.out.println("No se encuentra id_encargo");
+                    }
+                }
+                case "2", "no" -> {
+                    System.out.println("Abortando...");
+                    seguir = false;
+                }
+            
+                default -> {
+                    System.out.println("No se reconoció esa opción.");
+                }
+            }
+        } while (seguir);
+    }
+    public void mostrarEncargos() {
+        array_encargos = dao.obtenerTodos(); // Llenar la lista con los encargos de la BD
 
-    //     if (array_encargos == null) {
-    //      array_encargos = new ArrayList<>(); // Evitar que sea null en caso de error
-    //     }
+        if (array_encargos == null) {
+         array_encargos = new ArrayList<>(); // Evitar que sea null en caso de error
+        }
 
-    //     if (array_encargos.isEmpty()) {
-    //         System.out.println("No hay encargos registrados");
-    //     } else {
-    //         System.out.println("Encargos: ");
-    //         for (Encargo encargo : array_encargos) {
-    //             System.out.println(encargo); // `toString()
-    //         }
-    //     }
-    // }    
+        if (array_encargos.isEmpty()) {
+            System.out.println("No hay encargos registrados");
+        } else {
+            System.out.println("Encargos: ");
+            for (Encargo encargo : array_encargos) {
+                System.out.println(encargo); // `toString()
+            }
+        }
+    }    
+    public void mostrarServicios() {
+        ArrayList<Servicio> array_servicios = new ArrayList<>();
+        array_servicios = serdao.obtenerTodos(); // Llenar la lista con los servicios de la BD
+
+        if (array_servicios == null) {
+            array_servicios = new ArrayList<>(); // Evitar que sea null en caso de error
+        }
+
+        if (array_servicios.isEmpty()) {
+            System.out.println("No hay servicios registrados");
+        } else {
+            System.out.println("Servicios: ");
+            for (Servicio servicio : array_servicios) {
+                System.out.println(servicio); // `toString()
+            }
+        }
+    }    
 }

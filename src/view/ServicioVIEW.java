@@ -90,7 +90,7 @@ public class ServicioVIEW {
             sc.nextLine();
             
             ServicioDAO servicioDAO = new ServicioDAO();
-            servicio_modificar = servicioDAO.buscarMostrar(id);
+            servicio_modificar = servicioDAO.obtener(id);
             
             if (servicio_modificar == null) {
                 System.out.println("ERR0R: No se encontró el servicio");
@@ -168,7 +168,7 @@ public class ServicioVIEW {
         System.out.print("Ingrese el id del servicio que quiera borrar: ");
         id = sc.next();
         ServicioDAO servicioDAO = new ServicioDAO();
-        servicio = servicioDAO.buscarMostrar(id);
+        servicio = servicioDAO.obtener(id);
 
         if (servicio == null) {
             System.out.println("ERR0R: No se encontró el servicio con ese id");

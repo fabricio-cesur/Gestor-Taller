@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import model.Servicio;
 import model.Encargo;
 import view.Formateo;
 
@@ -28,13 +29,14 @@ public class EncargoDAO {
         }
         return false;
     }
-    public boolean insertarServicio(String id_encargo, String id_servicio) {
+    //TODO: Cambiar los id a int
+    public boolean insertarServicio(int id_encargo, int id_servicio) {
         Connection conexion = ConexionDB.conectar(); 
         if (conexion != null) { 
-            String query = "INSERT INTO Servicio_Encargo (id_encargo, id_servicio) VALUES (" 
-            + id_encargo + ", " + id_servicio + ");";
+            String query = "INSERT INTO Servicio_Encargo (id_encargo, id_servicio) VALUES (?, ?);";
             try (PreparedStatement stmt = conexion.prepareStatement(query)) { 
-               
+                stmt.setInt(1, id_encargo);
+                stmt.setInt(2, id_servicio);
                 stmt.executeUpdate(); // Ejecuta la consulta de inserción 
 
                 return true; 
@@ -44,7 +46,22 @@ public class EncargoDAO {
         }
         return false;
     }
+    public boolean quitarServicio(int id_encargo, int id_servicio) {
+        Connection conexion = ConexionDB.conectar(); 
+        if (conexion != null) { 
+            String query = "DELETE FROM Servicio_Encargo WHERE id_encargo = ? AND id_servicio = ?";
+            try (PreparedStatement stmt = conexion.prepareStatement(query)) { 
+                stmt.setInt(1, id_encargo);
+                stmt.setInt(2, id_servicio);
+                int filas_afectadas = stmt.executeUpdate(); // Ejecuta la consulta de inserción 
 
+                return filas_afectadas == 1; 
+            } catch (SQLException e) { 
+                System.out.println("Error al insertar servicio en Servicio_Encargo: " + e.getMessage()); 
+            } 
+        }
+        return false;
+    }
     public boolean actualizar(String columna, int id, String valor ) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
@@ -78,27 +95,44 @@ public class EncargoDAO {
         return false;
     }
 
-    public String buscarMatricula(String matricula) {
+    public Encargo obtenerPorID(int id) {
         Connection conexion = ConexionDB.conectar();
-        String matricula_busqueda = null;
 
+        Encargo encargo = null;
         if (conexion != null) {
-            String query = "SELECT * FROM Encargo WHERE matricula = " + matricula;
+            String query = "SELECT * FROM Encargo WHERE id = " + id;
             try ( PreparedStatement stmt = conexion.prepareStatement(query)) {
                 
                 ResultSet rs = stmt.executeQuery();
 
                 if (rs.next()) {
-                    matricula_busqueda =  rs.getString("matricula");
-                    
+                    if (rs.next()) {
+                        encargo = new Encargo(rs.getString("matricula_vehiculo"));
+                        if (rs.getString("id") != null) {
+                            encargo.setId(rs.getInt("id"));
+                        }
+                        if (rs.getString("precio_total") != null) {
+                            encargo.setPrecioTotal(rs.getDouble("precio_total"));
+                        }
+                        if (rs.getString("fecha_inicio") != null) {
+                            encargo.setFechaInicio(format.stringToDate(rs.getString("fecha_inicio")));
+                        }
+                        if (rs.getString("fecha_finalizado") != null) {
+                            encargo.setFechaFinalizado(format.stringToDate(rs.getString("fecha_finalizado")));
+                        }
+                        // O será false por default o lo habrán cambiado a completado
+                        encargo.setCompletado(rs.getBoolean("completado"));
+                    }
                 }
             } catch (SQLException e) {
                 System.out.println("Error al buscar encargo por Matricula: " + e.getMessage());
             }
             
-            return matricula_busqueda; 
+            return encargo; 
+        } else {
+            System.out.println("ERR0R: No se econtró el id del encargo");
+            return null; 
         }
-        return null; 
     }
 
     public Encargo obtener(String matricula) {
@@ -203,5 +237,33 @@ public class EncargoDAO {
             }
         }
         return encargos;
+    }
+
+    public ArrayList<Servicio> obtenerServicios(int id_encargo) {
+        Connection conexion = ConexionDB.conectar();
+        ArrayList<Servicio> servicios = new ArrayList<>();
+
+        if (conexion != null) {
+            String query = "SELECT * FROM Servicio "
+            +"INNER JOIN Servicio_Encargo ON Servicio.id = Servicio_Encargo.id_servicio" + 
+            " WHERE Servicio_Encargo.id_encargo = " + id_encargo;
+            try (
+                PreparedStatement stmt = conexion.prepareStatement(query);
+                ResultSet rs = stmt.executeQuery()) {
+                
+                while (rs.next()) {
+
+                    Servicio servicio = new Servicio(
+                        rs.getString("nombre"), rs.getString("descripcion"), 
+                        rs.getInt("id_item"), rs.getDouble("precio")
+                    );
+                    servicio.setId(rs.getInt("id"));
+                    servicios.add(servicio);
+                }
+            } catch (SQLException e) {
+                System.out.println("Error al obtener los servicios: " + e.getMessage());
+            }
+        }
+        return servicios;
     }
 }
