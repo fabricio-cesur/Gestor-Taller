@@ -3,18 +3,17 @@ package model;
 import dao.PedidoDAO;
 
 public class Item {
-    public String codigo;
+    
     public String nombre;
-    public String id_proveedor;
+    public int id_proveedor;
     public int minimo;
     public double precio;
     public int cantidad;
     public boolean restock;
     private final int REPOSICION = 10;
 
-    public Item(String codigo, String nombre, String id_proveedor, int minimo, int cantidad, double precio) {
+    public Item(String nombre, int id_proveedor, int minimo, int cantidad, double precio) {
         
-        this.codigo = codigo;
         this.nombre = nombre;
         this.id_proveedor = id_proveedor;
         this.precio = precio;
@@ -24,9 +23,9 @@ public class Item {
     }
 
     
-    public String getCodigo() { return this.codigo; }
+    
     public String getNombre() { return this.nombre; }
-    public String getIdProveedor() { return this.id_proveedor; }
+    public int getIdProveedor() { return this.id_proveedor; }
     public double getPrecio() { return this.precio; }
     public int getMinimo() { return this.minimo; }
     public int getCantidad() { return this.cantidad; }
@@ -63,7 +62,7 @@ public class Item {
 
     @Override
     public String toString() { 
-        return "Codigo: " + this.getCodigo() + ", Nombre: " + this.getNombre() + ", Id del proveedor: " + this.getIdProveedor() 
+        return "Nombre: " + this.getNombre() + ", Id del proveedor: " + this.getIdProveedor() 
         + ", precio: " + this.getPrecio() + ", cantidad mínima: " + this.getMinimo()
         + ", cantidad: " + this.getCantidad();
     }

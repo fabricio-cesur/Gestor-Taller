@@ -8,13 +8,40 @@ import model.Servicio;
 public class ServicioVIEW {
     public ArrayList<Servicio> array_servicios = new ArrayList<>();
     public Scanner sc = new Scanner(System.in);
-    public ServicioDAO dao = new ServicioDAO();
+    
+    public void menu() {
+        String opcion;
+        do { 
+            System.out.println("Qué desea hacer con los servicios?");
+            System.out.println("1. Registrar Servicio");
+            System.out.println("2. Modificar Servicio");
+            System.out.println("3. Eliminar Servicio");
+            System.out.println("4. Mostrar Servicios");
+            System.out.println("0. Atrás");
+            System.out.print(">>> ");
+            opcion = sc.next();
+            sc.nextLine();
+    
+            switch (opcion) {
+                case "1", "registrar" -> { registrar(); }
+                case "2", "modificar" -> {  modificar();}
+                case "3", "eliminar" -> { eliminar(); }
+                case "4", "mostrar" -> { mostrarServicios(); }
+                case "0" -> { System.out.println("Volviendo al menu anterior. ");}
+
+                default -> {
+                    System.out.println("ERR0R: No se reconoció esa opción");
+                }
+            }
+        } while (!opcion.equalsIgnoreCase("0"));
+    }
 
     public void registrar() {
         String nombre;
         String descripcion;
-        String cod_item;
+        int cod_item;
         double precio;
+        Servicio servicio;
         //TODO: Añadir validaciones al registrar servicio
         System.out.print("Ingrese el nombre: ");
         nombre = sc.nextLine();
@@ -22,13 +49,20 @@ public class ServicioVIEW {
         descripcion = sc.nextLine();
         //TODO: Mostrar los items
         System.out.print("Ingrese el código del item que utilice: ");
-        cod_item = sc.nextLine();
+        cod_item = sc.nextInt();
+        sc.nextLine();
         System.out.print("Ingrese el precio: ");
         precio = sc.nextDouble();
+        sc.nextLine();
 
-        Servicio servicio = new Servicio(nombre, descripcion, cod_item, precio);
+        servicio = new Servicio(nombre, descripcion, cod_item, precio);
 
-        dao.insertar(servicio);
+        ServicioDAO servicioDAO = new ServicioDAO();
+        if (servicioDAO.insertar(servicio)) {
+            System.out.println("Servicio registrado correctamente");
+        } else {
+            System.out.println("No se ha podido registrar el servicio");
+        }
     }
     public void modificar() {
         String opcion;
@@ -45,13 +79,18 @@ public class ServicioVIEW {
             System.out.println("0. Atrás");
             System.out.print(">>> ");
             opcion = sc.nextLine();
-            opcion = opcion.toLowerCase();
             
+            if(opcion.equalsIgnoreCase("0")) {
+                break;
+            }
+
             System.out.println("Ingrese el id del servicio");
             System.out.print("-->");
             id = sc.next();
+            sc.nextLine();
             
-            servicio_modificar = dao.obtener(id);
+            ServicioDAO servicioDAO = new ServicioDAO();
+            servicio_modificar = servicioDAO.buscarMostrar(id);
             
             if (servicio_modificar == null) {
                 System.out.println("ERR0R: No se encontró el servicio");
@@ -62,48 +101,61 @@ public class ServicioVIEW {
                         String nombre_nuevo = sc.nextLine();
                         columna = "nombre";
                         valor = nombre_nuevo;
-    
-                        if (dao.actualizar(columna, id, valor)) {
+                        boolean actualizado = servicioDAO.actualizar(columna, id, valor);
+
+                        if (actualizado) {
                             System.out.println("Nombre modificado correctamente");
                         } else {
                             System.out.println("Error al modificar el nombre");
                         }
+                        opcion = "0";
                     }
                     case "2", "descripcion" -> {
                         System.out.println("Ingrese la nueva descripción del servicio: ");
                         String descripcion_nueva = sc.nextLine();
                         columna = "descripcion";
                         valor = descripcion_nueva;
+                        boolean actualizado = servicioDAO.actualizar(columna, id, valor);
     
-                        if (dao.actualizar(columna, id, valor)) {
+                        if (actualizado) {
                             System.out.println("Descripción modificado correctamente");
                         } else {
                             System.out.println("Error al modificar la descripción");
                         }
+                        opcion = "0";
                     }
                     case "3", "item" -> {
                         System.out.println("Ingrese el código del nuevo item: ");
-                        String cod_item_nuevo = sc.next();
+                        String cod_item_nuevo = sc.nextLine();
                         columna = "item";
                         valor = cod_item_nuevo;
+                        boolean actualizado = servicioDAO.actualizar(columna, id, valor);
+
     
-                        if (dao.actualizar(columna, id, valor)) {
+                        if (actualizado) {
                             System.out.println("Item modificado correctamente");
                         } else {
                             System.out.println("Error al modificar el item");
                         }
+                        opcion = "0";
+
                     }
                     case "4", "precio" -> {
                         System.out.println("Ingrese el nuevo precio del servicio: ");
                         double precio_nuevo = sc.nextDouble();
+                        sc.nextLine();
                         columna = "precio";
                         valor = Double.toString(precio_nuevo);
+                        boolean actualizado = servicioDAO.actualizar(columna, id, valor);
+
     
-                        if (dao.actualizar(columna, id, valor)) {
+                        if (actualizado) {
                             System.out.println("Nombre modificado correctamente");
                         } else {
                             System.out.println("Error al modificar el nombre");
                         }
+                        opcion = "0";
+
                     }
                 }
             }
@@ -115,7 +167,8 @@ public class ServicioVIEW {
         //TODO: Añadir validación de que el id del servicio exista
         System.out.print("Ingrese el id del servicio que quiera borrar: ");
         id = sc.next();
-        servicio = dao.obtener(id);
+        ServicioDAO servicioDAO = new ServicioDAO();
+        servicio = servicioDAO.buscarMostrar(id);
 
         if (servicio == null) {
             System.out.println("ERR0R: No se encontró el servicio con ese id");
@@ -131,10 +184,11 @@ public class ServicioVIEW {
             do { 
                 System.out.println("1. SI / 2. NO");
                 opcion = sc.next();
+                sc.nextLine();
                 switch (opcion) {
                     case "1", "si", "SI" -> {
-                        if (dao.buscar(id).equals(id)) {
-                            dao.eliminar(id);
+                        if (servicioDAO.buscar(id).equals(id)) {
+                            servicioDAO.eliminar(id);
                             System.out.println("Servicio eliminado");
                             seguir = false;
                         } else {
@@ -154,14 +208,15 @@ public class ServicioVIEW {
         }
     }
     public void mostrarServicios() {
-        array_servicios = dao.obtenerTodos(); // Llenar la lista con los servicios de la BD
+        ServicioDAO servicioDAO = new ServicioDAO();
+        array_servicios = servicioDAO.obtenerTodos(); // Llenar la lista con los servicios de la BD
 
         if (array_servicios == null) {
             array_servicios = new ArrayList<>(); // Evitar que sea null en caso de error
         }
 
         if (array_servicios.isEmpty()) {
-            System.out.println("No hay clientes registrados");
+            System.out.println("No hay servicios registrados");
         } else {
             System.out.println("Servicios: ");
             for (Servicio servicio : array_servicios) {
