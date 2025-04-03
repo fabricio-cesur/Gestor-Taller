@@ -10,12 +10,14 @@ public class CitaDAO {
     public boolean  insertar(Cita cita) {
         Connection conexion = ConexionDB.conectar(); 
         if (conexion != null) { 
-            String query = "INSERT INTO Cita (fecha, hora, matricula_coche) VALUES ('" + cita.getFecha() + "', '" + cita.getHora() + ":00' " +
-            cita.getVehiculoMatricula() + ");" ; 
+            String query = "INSERT INTO Cita (fecha, hora, matricula_coche) VALUES (?, ?, ?)" ; 
             try (PreparedStatement stmt = conexion.prepareStatement(query)) { 
-               
+                stmt.setString(1, cita.getFecha());
+                stmt.setString(2, cita.getHora() + ":00");
+                stmt.setString(3, cita.getVehiculoMatricula());
                 stmt.executeUpdate(); // Ejecuta la consulta de inserción 
 
+                System.out.println("Cita guardada correctamente: " ); 
                 return true; 
             } catch (SQLException e) { 
                 System.out.println("Error al agregar la cita: " + e.getMessage()); 
@@ -24,30 +26,35 @@ public class CitaDAO {
         return false;
     }
 
-    public boolean actualizar(String columna, String matricula_coche, String valor ) {
+    public boolean actualizar(String columna, String matricula_coche, String valor, String fecha) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
-            String query = "UPDATE Cita SET " + columna + "= '" + valor + "' WHERE matricula_coche = " + matricula_coche; 
+            String query = "UPDATE Cita SET " + columna + " = ? WHERE matricula_coche = ? AND fecha = ?";
             try (PreparedStatement stmt = conexion.prepareStatement(query)) {
-                                
+                stmt.setString(1, valor);
+                stmt.setString(2, matricula_coche);
+                stmt.setString(3, fecha); // Asumiendo que 'fecha' es un String en formato compatible con tu base de datos
+
                 int filas_afectadas = stmt.executeUpdate();
 
                 return filas_afectadas == 1;
             } catch (SQLException e) {
                 System.out.println("Error al actualizar la cita: " + e.getMessage());
-            } 
+            }
         }
         return false;
     }
 
-    public boolean  eliminar(String matricula_coche) {
+    public boolean eliminar(String matricula_coche, String fecha) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
-            String query = "DELETE FROM Cita WHERE matricula_coche = " + matricula_coche;
+            String query = "DELETE FROM Cita WHERE matricula_coche = ? AND fecha = ?";
             try (PreparedStatement stmt = conexion.prepareStatement(query)) {
-                
+                stmt.setString(1, matricula_coche);
+                stmt.setString(2, fecha); // Asumiendo que 'fecha' es un String en formato compatible con tu base de datos
+
                 int filas_afectadas = stmt.executeUpdate();
-                
+
                 return filas_afectadas == 1;
             } catch (SQLException e) {
                 System.out.println("Error al eliminar la cita: " + e.getMessage());
@@ -72,7 +79,7 @@ public class CitaDAO {
                     
                 }
             } catch (SQLException e) {
-                System.out.println("Error al buscar cliente por DNI: " + e.getMessage());
+                System.out.println("Error al la cita por matricula: " + e.getMessage());
             }
             
             return matricula_busqueda; 
@@ -80,15 +87,17 @@ public class CitaDAO {
         return null; 
     }
 
-    public Cita buscarMostrar(String matricula_coche) {
+    public Cita buscarMostrar(String matricula_coche, String fecha) {
         Connection conexion = ConexionDB.conectar();
 
         if (conexion != null) {
             Cita cita = null;
-            String query = "SELECT * FROM Cita WHERE matricula_coche = " + matricula_coche;
+            String query = "SELECT * FROM Cita WHERE matricula_coche = ? AND fecha = ?";
 
-            try ( PreparedStatement stmt = conexion.prepareStatement(query)) {
-                
+            try (PreparedStatement stmt = conexion.prepareStatement(query)) {
+                stmt.setString(1, matricula_coche);
+                stmt.setString(2, fecha);
+
                 ResultSet rs = stmt.executeQuery();
 
                 if (rs.next()) {
@@ -99,11 +108,11 @@ public class CitaDAO {
                     );
                 }
             } catch (SQLException e) {
-                System.out.println("Error al buscar cita por la matrícula del coche: " + e.getMessage());
+                System.out.println("Error al buscar cita por matrícula y fecha: " + e.getMessage());
             }
-            return cita; 
+            return cita;
         }
-        return null; 
+        return null;
     }
 
     public ArrayList<Cita> obtenerTodos() {
@@ -128,7 +137,7 @@ public class CitaDAO {
                     citas.add(cita);
                 }
             } catch (SQLException e) {
-                System.out.println("Error al obtener todos los clientes: " + e.getMessage());
+                System.out.println("Error al obtener todas las citas: " + e.getMessage());
             }
         }
         return citas;
