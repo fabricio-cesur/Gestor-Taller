@@ -6,20 +6,40 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import model.Encargo;
+import view.Formateo;
 
 public class EncargoDAO {
+
+    public Formateo format = new Formateo();
 
     public boolean insertar(Encargo encargo) {
         Connection conexion = ConexionDB.conectar(); 
         if (conexion != null) { 
-            String query = "INSERT INTO Encargo (matricula_coche, precio_total) VALUES (" + encargo.getMatricula() + ", " + encargo.getPrecioTotal() + ");";
+            String query = "INSERT INTO Encargo (matricula_coche, precio_total) VALUES (" 
+            + encargo.getMatricula() + ", " + encargo.getPrecioTotal() + ");";
             try (PreparedStatement stmt = conexion.prepareStatement(query)) { 
                
                 stmt.executeUpdate(); // Ejecuta la consulta de inserción 
 
                 return true; 
             } catch (SQLException e) { 
-                System.out.println("Error al agregar cliente: " + e.getMessage()); 
+                System.out.println("Error al agregar encargo: " + e.getMessage()); 
+            } 
+        }
+        return false;
+    }
+    public boolean insertarServicio(String id_encargo, String id_servicio) {
+        Connection conexion = ConexionDB.conectar(); 
+        if (conexion != null) { 
+            String query = "INSERT INTO Servicio_Encargo (id_encargo, id_servicio) VALUES (" 
+            + id_encargo + ", " + id_servicio + ");";
+            try (PreparedStatement stmt = conexion.prepareStatement(query)) { 
+               
+                stmt.executeUpdate(); // Ejecuta la consulta de inserción 
+
+                return true; 
+            } catch (SQLException e) { 
+                System.out.println("Error al insertar servicio en Servicio_Encargo: " + e.getMessage()); 
             } 
         }
         return false;
@@ -81,27 +101,63 @@ public class EncargoDAO {
         return null; 
     }
 
-    public Encargo buscarMostrar(String matricula) {
+    public Encargo obtener(String matricula) {
         Connection conexion = ConexionDB.conectar();
 
         if (conexion != null) {
             Encargo encargo = null;
-            String query = "SELECT * FROM Encargo WHERE matricula = " + matricula;
+            String query = "SELECT * FROM Encargo WHERE matricula = '" + matricula + "'";
 
             try ( PreparedStatement stmt = conexion.prepareStatement(query)) {
                 
                 ResultSet rs = stmt.executeQuery();
 
                 if (rs.next()) {
-                    encargo = new Encargo(
-                        rs.getString("matricula_vehiculo"),
-                        rs.getDouble("precio_total")
-                    );
+                    encargo = new Encargo(rs.getString("matricula_vehiculo"));
+                    if (rs.getString("id") != null) {
+                        encargo.setId(rs.getInt("id"));
+                    }
+                    if (rs.getString("precio_total") != null) {
+                        encargo.setPrecioTotal(rs.getDouble("precio_total"));
+                    }
                     if (rs.getString("fecha_inicio") != null) {
-                        encargo.setFechaInicio(rs.getString("fecha_inicio"));
+                        encargo.setFechaInicio(format.stringToDate(rs.getString("fecha_inicio")));
                     }
                     if (rs.getString("fecha_finalizado") != null) {
-                        encargo.setFechaFinalizado(rs.getString("fecha_finalizado"));
+                        encargo.setFechaFinalizado(format.stringToDate(rs.getString("fecha_finalizado")));
+                    }
+                    // O será false por default o lo habrán cambiado a completado
+                    encargo.setCompletado(rs.getBoolean("completado"));
+                }
+            } catch (SQLException e) {
+                System.out.println("Error al buscar encargo por id: " + e.getMessage());
+            }
+            return encargo; 
+        }
+        return null; 
+    }
+    public Encargo obtenerUltimo(String matricula) {
+        Connection conexion = ConexionDB.conectar();
+
+        if (conexion != null) {
+            Encargo encargo = null;
+            String query = "SELECT * FROM Encargo WHERE matricula = '" + matricula + "' ORDER BY id DESC LIMIT 1";
+
+            try ( PreparedStatement stmt = conexion.prepareStatement(query)) {
+                
+                ResultSet rs = stmt.executeQuery();
+
+                if (rs.next()) {
+                    encargo = new Encargo(rs.getString("matricula_vehiculo"));
+                    // no hace falta revisar que sea null porque de ser null
+                    // getInt() y getDouble() devuelven 0
+                    encargo.setId(rs.getInt("id"));
+                    encargo.setPrecioTotal(rs.getDouble("precio_total"));
+                    if (rs.getString("fecha_inicio") != null) {
+                        encargo.setFechaInicio(format.stringToDate(rs.getString("fecha_inicio")));
+                    }
+                    if (rs.getString("fecha_finalizado") != null) {
+                        encargo.setFechaFinalizado(format.stringToDate(rs.getString("fecha_finalizado")));
                     }
                     // O será false por default o lo habrán cambiado a completado
                     encargo.setCompletado(rs.getBoolean("completado"));
@@ -125,15 +181,18 @@ public class EncargoDAO {
                 ResultSet rs = stmt.executeQuery()) {
                 
                 while (rs.next()) {
-                    Encargo encargo = new Encargo(
-                        rs.getString("matricula_vehiculo"),
-                        rs.getDouble("precio_total")
-                    );
+                    Encargo encargo = new Encargo(rs.getString("matricula_vehiculo"));
+                    if (rs.getString("id") != null) {
+                        encargo.setId(rs.getInt("id"));
+                    }
+                    if (rs.getString("precio_total") != null) {
+                        encargo.setPrecioTotal(rs.getDouble("precio_total"));
+                    }
                     if (rs.getString("fecha_inicio") != null) {
-                        encargo.setFechaInicio(rs.getString("fecha_inicio"));
+                        encargo.setFechaInicio(format.stringToDate(rs.getString("fecha_inicio")));
                     }
                     if (rs.getString("fecha_finalizado") != null) {
-                        encargo.setFechaFinalizado(rs.getString("fecha_finalizado"));
+                        encargo.setFechaFinalizado(format.stringToDate(rs.getString("fecha_finalizado")));
                     }
                     // O será false por default o lo habrán cambiado a completado
                     encargo.setCompletado(rs.getBoolean("completado"));
