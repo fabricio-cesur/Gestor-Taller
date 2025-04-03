@@ -29,7 +29,7 @@ public class Menu {
         }
 
         String opcion;
-        System.out.println("\nBienvenido al Gestor del Taller!");
+        System.out.println("Bienvenido al Gestor del Taller!");
 
         do { 
             System.out.println("Qué quiere manejar?");
