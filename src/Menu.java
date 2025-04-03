@@ -18,6 +18,7 @@ public class Menu {
         ItemVIEW itemVIEW = new ItemVIEW();
         PedidoVIEW pedidoVIEW = new PedidoVIEW();
         ProveedorVIEW proveedorVIEW = new ProveedorVIEW();
+        ServicioVIEW servicioVIEW = new ServicioVIEW();
 
         vaciarConsola();
         Connection conexion = ConexionDB.conectar();
@@ -56,7 +57,7 @@ public class Menu {
                 case "4", "Encargos" -> { /*menuEncargos();*/ }
                 case "5", "Empleados" -> { empleadoVIEW.menu(); }
                 case "6", "Asignaciones" -> { /*menuAsignaciones(); */}
-                case "7", "Servicios" -> { /*menuServicios();*/ }
+                case "7", "Servicios" -> { servicioVIEW.menu(); }
                 case "8", "Items" -> { itemVIEW.menu(); }
                 case "9", "Pedidos" -> { pedidoVIEW.menu(); }
                 case "10", "Proveedores" -> { proveedorVIEW.menu(); }
@@ -125,34 +126,10 @@ public class Menu {
      
     */
    
-    /* 
-     
-    public static void menuServicios() {
-        String opcion;
-        do { 
-            System.out.println("Qué desea hacer con los servicios?");
-            System.out.println("1. Registrar Servicio");
-            System.out.println("2. Modificar Servicio");
-            System.out.println("3. Eliminar Servicio");
-            System.out.println("4. Mostrar Servicios");
-            System.out.println("0. Atrás");
-            System.out.print(">>> ");
-            opcion = sc.next();
-            vaciarConsola();
     
-            switch (opcion) {
-                case "1", "registrar" -> {  }
-                case "2", "modificar" -> {  }
-                case "3", "eliminar" -> {  }
-                case "4", "mostrar" -> {  }
-                default -> {
-                    System.out.println("ERR0R: No se reconoció esa opción");
-                }
-            }
-
-        } while (!opcion.equalsIgnoreCase("0"));
-    }
-    */
+     
+    
+    
 
     public static void vaciarConsola() {
         String os = System.getProperty("os.name");

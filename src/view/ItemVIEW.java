@@ -22,6 +22,7 @@ public class ItemVIEW {
             System.out.println("0. Atrás");
             System.out.print(">>> ");
             opcion = sc.next();
+            sc.nextLine();
             
             
             switch (opcion) {
@@ -29,6 +30,7 @@ public class ItemVIEW {
                 case "2", "modificar" -> { modificarItem(); }
                 case "3", "eliminar" -> { eliminarItem(); }
                 case "4", "mostrar" -> { mostrarItems(); }
+                case "0" -> { System.out.println("Volviendo al menu anterior. ");}
                 default -> {
                     System.out.println("ERR0R: No se reconoció esa opción");
                 }
@@ -38,58 +40,65 @@ public class ItemVIEW {
     }
 
     public void registrarItem() {
-        String codigo;
+        
         String nombre;
-        String id_proveedor;
+        int id_proveedor;
         int minimo;
         double precio;
         int cantidad;
         Item item;
 
-      
-        System.out.print("Ingrese el código: ");
-        codigo = sc.nextLine();
-        
         System.out.print("Ingrese el nombre: ");
         nombre = sc.nextLine();
         System.out.print("Ingrese el id del proveedor: ");
-        id_proveedor = sc.nextLine();
+        id_proveedor = sc.nextInt();
+        sc.nextLine();
         System.out.print("Ingrese la cantidad mínima que quiere en el almacen: ");
         minimo = sc.nextInt();
+        sc.nextLine();
         System.out.print("Ingrese la cantidad que tiene en el almacen: ");
         cantidad = sc.nextInt();
+        sc.nextLine();
         System.out.print("Ingrese el precio del item: ");
         precio = sc.nextDouble();
+        sc.nextLine();
          
-        item = new Item(codigo, nombre, id_proveedor, minimo, cantidad, precio);
+        item = new Item( nombre, id_proveedor, minimo, cantidad, precio);
        
         ItemDAO itemDAO = new ItemDAO();
-        itemDAO.insertar(item);
+        if (itemDAO.insertar(item)) {
+            System.out.println("Item registrado correctamente");
+        } else {
+            System.out.println("No se ha podido registrar el item");
+        }
     }
     public void modificarItem() {
         String opcion;
         String columna;
         String valor;
-        String codigo;
+        String nombre;
 
         Item codigo_modificar;
         do {
             System.out.println("Qué desea modificar?");
-            System.out.println("1. Código");
-            System.out.println("2. Nombre");
-            System.out.println("3. Id del proveedor");
-            System.out.println("4. Cantidad mínima");
-            System.out.println("5. Precio del producto");
+            System.out.println("1. Nombre");
+            System.out.println("2. Id del proveedor");
+            System.out.println("3. Cantidad mínima");
+            System.out.println("4. Precio del producto");
             System.out.println("0. Atrás");
             System.out.print(">>> ");
             opcion = sc.nextLine();
+
+            if(opcion.equalsIgnoreCase("0")) {
+                break;
+            }
             
-            System.out.println("Ingrese el código del item a modificar: ");
+            System.out.println("Ingrese el nombre del item a modificar: ");
             System.out.print("--> ");
-            codigo = sc.nextLine();
+            nombre = sc.nextLine();
 
             ItemDAO itemDAO = new ItemDAO();
-            codigo_modificar = itemDAO.buscarMostrar(codigo);
+            codigo_modificar = itemDAO.buscarMostrar(nombre);
             
             
             if (codigo_modificar == null) {
@@ -100,50 +109,60 @@ public class ItemVIEW {
                     case "1", "nombre" -> {
                         System.out.print("Ingrese el nuevo nombre: ");
                         String nombre_nuevo = sc.next();
+                        sc.nextLine();
                         columna = "nombre";
                         valor = nombre_nuevo;
-                        boolean actualizado = itemDAO.actualizar(columna, codigo, valor);
+                        boolean actualizado = itemDAO.actualizar(columna, nombre, valor);
                         if (actualizado) {
                             System.out.println("Nombre actualizado correctamente.");
                         } else {
                             System.out.println("Error al actualizar el nombre.");
                         }
+                        opcion = "0";
+
                     }
                     case "2", "id_proveedor" -> {
                         System.out.print("Ingrese el nuevo id del proveedor: ");
                         String id_proveedor_nuevo = sc.next();
+                        sc.nextLine();
                         columna = "id_proveedor";
                         valor = id_proveedor_nuevo;
-                        boolean actualizado = itemDAO.actualizar(columna, codigo, valor);
+                        boolean actualizado = itemDAO.actualizar(columna, nombre, valor);
                         if (actualizado) {
                             System.out.println("Id del proveedor actualizado correctamente.");
                         } else {
                             System.out.println("Error al actualizar el apellido id del proveedor.");
                         }
+                        opcion = "0";
+
                     }
                     case "3", "minimo" -> {
                         System.out.print("Ingrese el valor mínimo que desea tener: ");
                         String minimo_nuevo = sc.nextLine();
                         columna = "minimo";
                         valor = minimo_nuevo;
-                        boolean actualizado = itemDAO.actualizar(columna, codigo, valor);
+                        boolean actualizado = itemDAO.actualizar(columna, nombre, valor);
                         if (actualizado) {
                             System.out.println("Valor mínimo actualizada correctamente.");
                         } else {
                             System.out.println("Error al actualizar el valor mínimo.");
                         }
+                        opcion = "0";
+
                     }
                     case "4", "precio" -> {
                         System.out.print("Ingrese el nuevo precio: ");
                         String precio_nuevo = sc.nextLine();
                         columna = "precio";
                         valor = precio_nuevo; 
-                        boolean actualizado = itemDAO.actualizar(columna, codigo, valor);
+                        boolean actualizado = itemDAO.actualizar(columna, nombre, valor);
                         if (actualizado) {
-                            System.out.println("Teléfono actualizado correctamente.");
+                            System.out.println("Precio actualizado correctamente.");
                         } else {
-                            System.out.println("Error al actualizar el teléfono.");
+                            System.out.println("Error al actualizar el precio.");
                         }
+                        opcion = "0";
+
                     }
                     
                     default -> {
@@ -156,18 +175,18 @@ public class ItemVIEW {
 
     }
     public void eliminarItem() {
-        String codigo;
+        String nombre;
         Item item;
-        System.out.print("Ingrese el codigo del item que quiere eliminar: ");
-        codigo = sc.next();
+        System.out.print("Ingrese el nombre del item que quiere eliminar: ");
+        nombre = sc.nextLine();
         ItemDAO itemDAO = new ItemDAO();
-        item = itemDAO.buscarMostrar(codigo);
+        item = itemDAO.buscarMostrar(nombre);
 
         if (item == null) {
-            System.out.println("ERR0R: No se encontró al cliente con ese DNI");
+            System.out.println("ERR0R: No se encontró al item con ese nombre");
         } else {
-            System.out.println("Está por eliminar al siguiente cliente: ");
-            System.out.println("Código: " + item.getCodigo() + ", nombre: " + item.getNombre() );
+            System.out.println("Está por eliminar al siguiente item: ");
+            System.out.println("Nombre: " + item.getNombre() );
             System.out.println("Id del proveedor: " + item.getIdProveedor() );
             System.out.println("---¿Está seguro?---");
             String opcion;
@@ -175,10 +194,11 @@ public class ItemVIEW {
             do { 
                 System.out.println("1. SI / 2. NO");
                 opcion = sc.next();
+                sc.nextLine();
                 switch (opcion) {
                     case "1", "si", "SI" -> {
-                        if (itemDAO.buscar(codigo).equals(codigo)) {
-                            itemDAO.eliminar(codigo);
+                        if (itemDAO.buscar(nombre).equals(nombre)) {
+                            itemDAO.eliminar(nombre);
                             System.out.println("Item eliminado");
                             seguir = false;
                             
@@ -207,9 +227,9 @@ public class ItemVIEW {
         }
 
         if (array_items.isEmpty()) {
-            System.out.println("No hay clientes registrados");
+            System.out.println("No hay items registrados");
         } else {
-            System.out.println("Clientes: ");
+            System.out.println("Items: ");
             for (Item item : array_items) {
                 System.out.println(item); // `toString()
             }

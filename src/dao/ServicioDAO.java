@@ -11,17 +11,20 @@ public class ServicioDAO {
 
     public boolean insertar(Servicio servicio) {
         Connection conexion = ConexionDB.conectar(); 
-        if (conexion != null) { 
-            String query = "INSERT INTO Servicio (nombre, descripcion, id_item, precio,) VALUES (" + servicio.getNombre() 
-            + ", " + servicio.getDescripcion() + ", " + servicio.getItemCodigo() + ", " +servicio.getPrecio() +");" ; 
-            try (PreparedStatement stmt = conexion.prepareStatement(query)) { 
-               
-                stmt.executeUpdate(); // Ejecuta la consulta de inserción 
-
-                return true; 
-            } catch (SQLException e) { 
-                System.out.println("Error al agregar servicio: " + e.getMessage()); 
-            } 
+        if (conexion != null) {
+            String query = "INSERT INTO Servicio (nombre, descripcion, id_item, precio) VALUES (?, ?, ?, ?)";
+    
+            try (PreparedStatement stmt = conexion.prepareStatement(query)) {
+                stmt.setString(1, servicio.getNombre());
+                stmt.setString(2, servicio.getDescripcion());
+                stmt.setInt(3, servicio.getItemCodigo());
+                stmt.setDouble(4, servicio.getPrecio());
+    
+                stmt.executeUpdate();
+                return true;
+            } catch (SQLException e) {
+                System.out.println("Error al agregar servicio: " + e.getMessage());
+            }
         }
         return false;
     }
@@ -29,15 +32,16 @@ public class ServicioDAO {
     public boolean actualizar(String columna, String id, String valor ) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
-            String query = "UPDATE Servicio SET " + columna + "=" + valor + " WHERE id = " + id; 
+            String query = "UPDATE Servicio SET " + columna + " = ? WHERE id = ?";
             try (PreparedStatement stmt = conexion.prepareStatement(query)) {
-                                
+                stmt.setString(1, valor);
+                stmt.setString(2, id);
+    
                 int filas_afectadas = stmt.executeUpdate();
-
                 return filas_afectadas == 1;
             } catch (SQLException e) {
                 System.out.println("Error al actualizar servicio: " + e.getMessage());
-            } 
+            }
         }
         return false;
     }
@@ -81,7 +85,7 @@ public class ServicioDAO {
         return null; 
     }
 
-    public Servicio obtener(String id) {
+    public Servicio buscarMostrar(String id) {
         Connection conexion = ConexionDB.conectar();
 
         if (conexion != null) {
@@ -96,10 +100,10 @@ public class ServicioDAO {
                     servicio = new Servicio(
                         rs.getString("nombre"),
                         rs.getString("descripcion"),
-                        rs.getString("id_item"),
+                        rs.getInt("id_item"),
                         rs.getInt("precio")
                     );
-                    servicio.setId(rs.getString("id"));
+                    servicio.setId(rs.getInt("id"));
                 }
             } catch (SQLException e) {
                 System.out.println("Error al buscar servicio por ID: " + e.getMessage());
@@ -124,10 +128,10 @@ public class ServicioDAO {
                     Servicio servicio = new Servicio(
                         rs.getString("nombre"),
                         rs.getString("descripcion"),
-                        rs.getString("id_item"),
+                        rs.getInt("id_item"),
                         rs.getInt("precio")
                     );
-                    servicio.setId(rs.getString("id"));
+                    servicio.setId(rs.getInt("id"));
                     servicios.add(servicio);
                 }
             } catch (SQLException e) {
