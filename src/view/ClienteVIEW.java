@@ -182,6 +182,7 @@ public class ClienteVIEW {
                         }
                         opcion = "0";
                     }
+                    case "0" -> { System.out.println("Volviendo al menu anterior. ");}
                     
                     default -> {
                         System.out.println("ERR0R: No se reconoció esa opción");
@@ -214,6 +215,7 @@ public class ClienteVIEW {
             do { 
                 System.out.println("1. SI / 2. NO");
                 opcion = sc.next();
+                sc.nextLine();
                 switch (opcion) {
                     case "1", "si", "SI" -> {
                         if (clienteDAO.buscar(dni).equals(dni)) {
