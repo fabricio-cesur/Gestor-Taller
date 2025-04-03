@@ -35,9 +35,6 @@ public class ClienteVIEW {
 
         } while (!opcion.equalsIgnoreCase("0"));
     }
-
-
-
     // public Validacion val = new Validacion();
 
     Scanner sc = new Scanner(System.in);
@@ -158,6 +155,7 @@ public class ClienteVIEW {
                     case "4", "telefono" -> {
                         System.out.print("Ingrese el nuevo teléfono: ");
                         String telefono_nuevo = sc.next();
+                        sc.nextLine();
                         columna = "telefono";
                         valor = telefono_nuevo; 
                         boolean actualizado = clienteDAO.actualizar(columna, dni, valor);

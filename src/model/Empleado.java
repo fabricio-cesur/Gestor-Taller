@@ -45,4 +45,11 @@ public class Empleado {
     public void setCuentaBancaria(String cuenta_bancaria) { this.cuenta_bancaria = cuenta_bancaria; }
     public String setSargo() { return this.cargo; }
    
+    @Override
+    public String toString() { 
+        return "DNI: " + this.getDni() + ", Nombre: " + this.getNombre() + ", Apellidos: " + this.getApellido() 
+        + ", telefono: " + this.getTelefono() + ", dirección: " + this.getDireccion()
+        + ", número de cuenta: " + this.getCuentaBancaria() + 
+        ", salario: " + this.getSalario() + ", cargo: " + this.getCargo();
+    }
 }
