@@ -16,7 +16,7 @@ public class CitaVIEW {
         String opcion;
         
         do { 
-            System.out.println("Qué desea hacer con los citas?");
+            System.out.println("Qué desea hacer con las citas?");
             System.out.println("1. Crear Cita");
             System.out.println("2. Modificar Cita");
             System.out.println("3. Eliminar Cita");
@@ -24,6 +24,7 @@ public class CitaVIEW {
             System.out.println("0. Atrás");
             System.out.print(">>> ");
             opcion = sc.next();
+            sc.nextLine();
     
             switch (opcion) {
                 case "1", "registrar" ->  registrarCita(); 
@@ -47,7 +48,7 @@ public class CitaVIEW {
                 
        //TODO: Añadir validaciones al asignar cita
         
-        System.out.print("Ingrese la fecha (YYYY/MM/DD): ");
+        System.out.print("Ingrese la fecha (YYYY-MM-DD): ");
         fecha = sc.nextLine();
         System.out.print("Ingrese la hora (HH:MM): ");
         hora = sc.nextLine();
@@ -74,13 +75,20 @@ public class CitaVIEW {
             System.out.print(">>> ");
             opcion = sc.nextLine();
 
+            if(opcion.equalsIgnoreCase("0")) {
+                break;
+            }
+
             //TODO: Validar que la matricula exista
             System.out.println("Ingrese la matricula del coche para modificar la cita: ");
             System.out.print("--> ");
             matricula = sc.nextLine();
+            System.out.print("Ingrese la fecha antigua: ");
+            String fecha = sc.next();
+            sc.nextLine();
 
             CitaDAO citaDAO = new CitaDAO();
-            cita_modificar = citaDAO.buscarMostrar(matricula);
+            cita_modificar = citaDAO.buscarMostrar(matricula,fecha);
 
             
             if (cita_modificar == null) {
@@ -89,12 +97,14 @@ public class CitaVIEW {
                 switch (opcion) {
                     //TODO: Añadir validaciones al modificar la cita
                     case "1", "fecha" -> {
+                        
                         System.out.print("Ingrese la nueva fecha: ");
                         String fecha_nueva = sc.next();
+                        sc.nextLine();
                         valor = fecha_nueva;
                         columna = "fecha";
                         
-                        boolean actualizado = citaDAO.actualizar(columna, matricula, valor);
+                        boolean actualizado = citaDAO.actualizar(columna, matricula, valor, fecha);
                         if (actualizado) {
                         System.out.println("Fecha actualizada correctamente.");
                         } else {
@@ -102,11 +112,13 @@ public class CitaVIEW {
                         }
                     }
                     case "2", "hora" -> {
+                        
                         System.out.print("Ingrese la nueva hora: ");
                         String hora_nueva = sc.next();
+                        sc.nextLine();
                         columna = "hora";
                         valor = hora_nueva;
-                        boolean actualizado = citaDAO.actualizar(columna, matricula, valor);
+                        boolean actualizado = citaDAO.actualizar(columna, matricula, valor, fecha);
                         if (actualizado) {
                             System.out.println("Hora actualizada correctamente.");
                         } else {
@@ -126,9 +138,12 @@ public class CitaVIEW {
         Cita cita;
         System.out.print("Ingrese la matricula de la cita que quiere eliminar: ");
         matricula = sc.nextLine();
+        System.out.print("Ingrese la fecha de la cita: ");
+        String fecha = sc.next();
+        sc.nextLine();
 
         CitaDAO citaDAO = new CitaDAO();
-        cita = citaDAO.buscarMostrar(matricula);
+        cita = citaDAO.buscarMostrar(matricula, fecha);
 
         if (cita == null) {
             System.out.println("ERR0R: No se encontró una cita con esa matricula");
@@ -142,11 +157,13 @@ public class CitaVIEW {
             do { 
                 System.out.println("1. SI / 2. NO");
                 opcion = sc.next();
+                sc.nextLine();
                 switch (opcion) {
                     case "1", "si", "SI" -> {
+                        
                         if (citaDAO.buscar(matricula).equals(matricula)) {
-                            citaDAO.eliminar(matricula);
-                            System.out.println("Cita eliminado");
+                            citaDAO.eliminar(matricula, fecha);
+                            System.out.println("Cita eliminada");
                             seguir = false;
                             
                         } else {
@@ -172,7 +189,7 @@ public class CitaVIEW {
         }
 
         if (array_citas.isEmpty()) {
-            System.out.println("No hay clientes registrados");
+            System.out.println("No hay citas registradas");
         } else {
             System.out.println("Citas: ");
             for (Cita cita : array_citas) {
