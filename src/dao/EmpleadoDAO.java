@@ -12,16 +12,25 @@ public class EmpleadoDAO {
     public boolean  insertar(Empleado empleado) {
         Connection conexion = ConexionDB.conectar(); 
         if (conexion != null) { 
-            String query = "INSERT INTO Empleado (dni, nombre, apellido, direccion, telefono, cuenta_bancaria, salario, cargo) VALUES (" + empleado.getDni() + ", " + empleado.getNombre() + ", " + empleado.getApellido() + ", " +
-            empleado.getDireccion() + ", " + empleado.getTelefono() + ", " + empleado.getCuentaBancaria() + empleado.getSalario() + ", " + empleado.getCargo() +");" ; 
-            try (PreparedStatement stmt = conexion.prepareStatement(query)) { 
-               
-                stmt.executeUpdate(); // Ejecuta la consulta de inserción 
-
-                return true; 
-            } catch (SQLException e) { 
-                System.out.println("Error al agregar empleado: " + e.getMessage()); 
-            } 
+            String querry = "INSERT INTO Empleado (dni, nombre, apellidos, direccion, telefono, cuenta_bancaria, salario, cargo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    
+            try (PreparedStatement stmt = conexion.prepareStatement(querry)) {
+    
+                stmt.setString(1, empleado.getDni());
+                stmt.setString(2, empleado.getNombre());
+                stmt.setString(3, empleado.getApellido());
+                stmt.setString(4, empleado.getDireccion());
+                stmt.setInt(5, empleado.getTelefono());
+                stmt.setString(6, empleado.getCuentaBancaria());
+                stmt.setInt(7, empleado.getSalario());
+                stmt.setString(8, empleado.getCargo());
+                
+    
+                stmt.executeUpdate();
+                return true;
+            } catch (SQLException e) {
+                System.out.println("Error al agregar empleado: " + e.getMessage());
+            }
         }
         return false;
     }
@@ -29,12 +38,13 @@ public class EmpleadoDAO {
     public boolean actualizar(String columna, String dni, String valor ) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
-            String query = "UPDATE Empleado SET " + columna + "=" + valor + " WHERE dni = " + dni; 
+            String query = "UPDATE Empleado SET " + columna + " = ? WHERE dni = ?";
             try (PreparedStatement stmt = conexion.prepareStatement(query)) {
-                                
-                int filas_afectas = stmt.executeUpdate();
-
-                return filas_afectas == 1;
+                stmt.setString(1, valor); 
+                stmt.setString(2, dni); 
+    
+                int filas_afectadas = stmt.executeUpdate();
+                return filas_afectadas == 1;
             } catch (SQLException e) {
                 System.out.println("Error al actualizar empleado: " + e.getMessage());
             } 
@@ -42,18 +52,17 @@ public class EmpleadoDAO {
         return false;
     }
 
-    public boolean eliminar(String dni) {
+    public boolean  eliminar(String dni) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
             String query = "DELETE FROM Empleado WHERE dni = " + dni;
             try (PreparedStatement stmt = conexion.prepareStatement(query)) {
-                stmt.setString(1, dni);
-
-                int filas_afectas = stmt.executeUpdate();
                 
-                return filas_afectas == 1;
+                int filas_afectadas = stmt.executeUpdate();
+                
+                return filas_afectadas == 1;
             } catch (SQLException e) {
-                System.out.println("Error al eliminar empleado: " + e.getMessage());
+                System.out.println("Error al eliminar cliente: " + e.getMessage());
             }
         }
         return false;
@@ -96,7 +105,7 @@ public class EmpleadoDAO {
                     empleado = new Empleado(
                         rs.getString("dni"),
                         rs.getString("nombre"),
-                        rs.getString("apellido"),
+                        rs.getString("apellidos"),
                         rs.getString("direccion"),
                         rs.getInt("telefono"),
                         rs.getString("cuenta_bancaria"),
@@ -127,7 +136,7 @@ public class EmpleadoDAO {
                     Empleado empleado = new Empleado(
                         rs.getString("dni"),
                         rs.getString("nombre"),
-                        rs.getString("apellido"),
+                        rs.getString("apellidos"),
                         rs.getString("direccion"),
                         rs.getInt("telefono"),
                         rs.getString("cuenta_bancaria"),
