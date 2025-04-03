@@ -10,42 +10,45 @@ public class ProveedorDAO {
     public boolean insertar(Proveedor proveedor) {
         Connection conexion = ConexionDB.conectar(); 
         if (conexion != null) { 
-            String query = "INSERT INTO Proveedor (nombre, direccion, cuenta_bancaria) VALUES (" + proveedor.getNombre() 
-            + ", " + proveedor.getDireccion() + ", " + proveedor.getCuentaBancaria() + ");" ; 
-            try (PreparedStatement stmt = conexion.prepareStatement(query)) { 
-               
-                stmt.executeUpdate(); // Ejecuta la consulta de inserción 
+            String query = "INSERT INTO Proveedor (nombre, direccion, cuenta_bancaria) VALUES (?, ?, ?)";
 
-                return true; 
-            } catch (SQLException e) { 
-                System.out.println("Error al agregar proveedor: " + e.getMessage()); 
-            } 
+            try (PreparedStatement stmt = conexion.prepareStatement(query)) {
+                stmt.setString(1, proveedor.getNombre());
+                stmt.setString(2, proveedor.getDireccion());
+                stmt.setString(3, proveedor.getCuentaBancaria());
+
+                stmt.executeUpdate();
+                return true;
+            } catch (SQLException e) {
+                System.out.println("Error al agregar proveedor: " + e.getMessage());
+            }
         }
         return false;
     }
 
-    public boolean actualizar(String columna, String id, String valor ) {
+    public boolean actualizar(String columna, String nombre, String valor ) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
-            String query = "UPDATE Proveedor SET " + columna + "=" + valor + " WHERE id = " + id; 
+            String query = "UPDATE Proveedor SET " + columna + " = ? WHERE nombre = ?";
             try (PreparedStatement stmt = conexion.prepareStatement(query)) {
-                                
-                int filas_afectadas = stmt.executeUpdate();
+                stmt.setString(1, valor);
+                stmt.setString(2, nombre);
 
+                int filas_afectadas = stmt.executeUpdate();
                 return filas_afectadas == 1;
             } catch (SQLException e) {
                 System.out.println("Error al actualizar proveedor: " + e.getMessage());
-            } 
+            }
         }
         return false;
     }
 
-    public boolean eliminar(String id) {
+    public boolean eliminar(String nombre) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
-            String query = "DELETE FROM Proveedor WHERE id = " + id;
+            String query = "DELETE FROM Proveedor WHERE nombre = ?";
             try (PreparedStatement stmt = conexion.prepareStatement(query)) {
-                stmt.setString(1, id);
+                stmt.setString(1, nombre);
 
                 int filas_afectadas = stmt.executeUpdate();
                 
@@ -57,37 +60,38 @@ public class ProveedorDAO {
         return false;
     }
 
-    public String buscar(String id) {
+    public String buscar(String nombre) {
         Connection conexion = ConexionDB.conectar();
-        String id_busqueda = null;
+        String nombre_busqueda = null;
 
         if (conexion != null) {
-            String query = "SELECT * FROM Proveedor WHERE id = " + id;
+            String query = "SELECT * FROM Proveedor WHERE nombre = ?";
 
             try ( PreparedStatement stmt = conexion.prepareStatement(query)) {
+                stmt.setString(1, nombre);
                 
                 ResultSet rs = stmt.executeQuery();
 
                 if (rs.next()) {
-                    id_busqueda =  rs.getString("id");
+                    nombre_busqueda =  rs.getString("nombre");
                 }
             } catch (SQLException e) {
-                System.out.println("Error al buscar proveedor por ID: " + e.getMessage());
+                System.out.println("Error al buscar proveedor por nombre: " + e.getMessage());
             }
-            return id_busqueda; 
+            return nombre_busqueda; 
         }
         return null; 
     }
 
-    public Proveedor buscarMostrar(String id) {
+    public Proveedor buscarMostrar(String nombre) {
         Connection conexion = ConexionDB.conectar();
 
         if (conexion != null) {
             Proveedor proveedor = null;
-            String query = "SELECT * FROM Proveedor WHERE id = " + id;
+            String query = "SELECT * FROM Proveedor WHERE nombre = ?";
 
             try ( PreparedStatement stmt = conexion.prepareStatement(query)) {
-                
+                stmt.setString(1, nombre);
                 ResultSet rs = stmt.executeQuery();
 
                 if (rs.next()) {
@@ -98,7 +102,7 @@ public class ProveedorDAO {
                     );
                 }
             } catch (SQLException e) {
-                System.out.println("Error al buscar proveedor por ID: " + e.getMessage());
+                System.out.println("Error al buscar proveedor por nombre: " + e.getMessage());
             }
             return proveedor; 
         }

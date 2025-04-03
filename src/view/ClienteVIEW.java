@@ -88,6 +88,7 @@ public class ClienteVIEW {
             System.out.println("0. Atrás");
             System.out.print(">>> ");
             opcion = sc.next();
+            sc.nextLine();
 
             if(opcion.equalsIgnoreCase("0")) {
                 break;
@@ -113,6 +114,7 @@ public class ClienteVIEW {
                     case "1", "nombre" -> {
                         System.out.print("Ingrese el nuevo nombre: ");
                         String nombre_nuevo = sc.next();
+                        sc.nextLine();
                         columna = "nombre";
                         valor = nombre_nuevo;
                         boolean actualizado = clienteDAO.actualizar(columna, dni, valor);
@@ -142,8 +144,7 @@ public class ClienteVIEW {
                                                 
                         columna = "direccion";
                         valor = direccion_nueva;
-                        
-                        
+                                                
                         boolean actualizado = clienteDAO.actualizar(columna, dni, valor);
                         if (actualizado) {
                             System.out.println("Dirección actualizada correctamente.");
