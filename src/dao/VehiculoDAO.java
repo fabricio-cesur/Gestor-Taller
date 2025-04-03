@@ -12,10 +12,14 @@ public class VehiculoDAO {
     public boolean insertar(Vehiculo vehiculo) {
         Connection conexion = ConexionDB.conectar(); 
         if (conexion != null) { 
-            String query = "INSERT INTO Vehiculo (matricula, modelo, marca, ano, dni_cliente) VALUES (" + vehiculo.getMatricula() + ", " + vehiculo.getModelo() + ", " 
-            + vehiculo.getMarca() + ", " + vehiculo.getAno() +", " +  vehiculo.getDniCliente() +");"; 
+            String query = "INSERT INTO Vehiculo (matricula, modelo, marca, ano, dni_cliente) VALUES (?, ?, ?, ?, ?)"; 
 
             try (PreparedStatement stmt = conexion.prepareStatement(query)) { 
+                stmt.setString(1, vehiculo.getMatricula());
+                stmt.setString(2, vehiculo.getModelo());
+                stmt.setString(3, vehiculo.getMarca());
+                stmt.setString(4, vehiculo.getAno());
+                stmt.setString(5, vehiculo.getDniCliente());
                 
                 stmt.executeUpdate(); // Ejecuta la consulta de inserción 
 
@@ -30,16 +34,14 @@ public class VehiculoDAO {
     public boolean actualizar(String columna, String matricula, String valor ) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
-            String query = "UPDATE Vehiculo SET " + columna + "=" + valor + " WHERE matricula = " + matricula; 
+            String query = "UPDATE Vehiculo SET " + columna + " = ? WHERE matricula = ?"; 
             try (PreparedStatement stmt = conexion.prepareStatement(query)) {
-                                
-                int filasAfectadas = stmt.executeUpdate();
+                stmt.setString(1, valor); 
+                stmt.setString(2, matricula);
+                int filas_afectadas = stmt.executeUpdate();
 
-                if (filasAfectadas == 1) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return filas_afectadas == 1;
+
             } catch (SQLException e) {
                 System.out.println("Error al actualizar vehiculo: " + e.getMessage());
             } 
@@ -50,16 +52,11 @@ public class VehiculoDAO {
     public boolean eliminar(String matricula) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
-            String query = "DELETE FROM Vehiculo WHERE matricula = " + matricula ;
+            String query = "DELETE FROM Vehiculo WHERE matricula = ?";
             try (PreparedStatement stmt = conexion.prepareStatement(query)) {
-               
-                int filasAfectadas = stmt.executeUpdate();
-                
-                if (filasAfectadas == 1) {
-                    return true;
-                } else {
-                    return false;
-                }
+
+                stmt.setString(1, matricula);
+                return stmt.executeUpdate() == 1;
             } catch (SQLException e) {
                 System.out.println("Error al eliminar el vehículo: " + e.getMessage());
             }
@@ -70,21 +67,24 @@ public class VehiculoDAO {
     public String buscar(String matricula) {
         Connection conexion = ConexionDB.conectar();
         String matricula_busqueda = null;
+       
         if (conexion != null) {
             
-            String query = "SELECT * FROM Vehiculo WHERE matricula = " + matricula;
+            String query = "SELECT * FROM Vehiculo WHERE matricula = ?";
 
             try ( PreparedStatement stmt = conexion.prepareStatement(query)) {
-                
+
+                stmt.setString(1, matricula);
+    
                 ResultSet rs = stmt.executeQuery();
 
                 if (rs.next()) {
                     matricula_busqueda = rs.getString("matricula");
-                        
-                    
                 }
+                
+
             } catch (SQLException e) {
-                System.out.println("Error al buscar vehiculo por DNI: " + e.getMessage());
+                System.out.println("Error al buscar vehiculo por matricula: " + e.getMessage());
             }
             return matricula_busqueda;
         }
@@ -96,10 +96,11 @@ public class VehiculoDAO {
         
         if (conexion != null) {
             Vehiculo vehiculo = null;
-            String query = "SELECT * FROM Vehiculo WHERE matricula = " + matricula;
+            String query = "SELECT * FROM Vehiculo WHERE matricula = ?";
 
             try ( PreparedStatement stmt = conexion.prepareStatement(query)) {
                 
+                stmt.setString(1, matricula);
                 ResultSet rs = stmt.executeQuery();
 
                 if (rs.next()) {
@@ -112,7 +113,7 @@ public class VehiculoDAO {
                     );
                 }
             } catch (SQLException e) {
-                System.out.println("Error al buscar vehiculo por DNI: " + e.getMessage());
+                System.out.println("Error al buscar vehiculo por matricula: " + e.getMessage());
             }
             return vehiculo;
         }

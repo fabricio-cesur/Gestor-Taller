@@ -23,7 +23,7 @@ public class VehiculoVIEW {
             System.out.println("4. Mostrar Vehiculos");
             System.out.println("0. Atrás");
             System.out.print(">>> ");
-            opcion = sc.next();
+            opcion = sc.nextLine();
             
             switch (opcion) {
                 case "1", "registrar" -> { registrarVehiculo(); }
@@ -46,7 +46,7 @@ public class VehiculoVIEW {
         String ano;
         String dni_cliente;
         Vehiculo vehiculo;
-        //TODO: Añadir validaciones al registrar vehiculo
+        
         System.out.print("Ingrese la matrícula: ");
         matricula = sc.nextLine();
         System.out.print("Ingrese el modelo: ");
@@ -62,11 +62,11 @@ public class VehiculoVIEW {
         vehiculo = new Vehiculo(matricula, modelo, marca, ano, dni_cliente);
 
         VehiculoDAO vehiculoDAO = new VehiculoDAO();
-        vehiculoDAO.insertar(vehiculo); //TODO: Revisar que se inserte dos veces
+         //TODO: Revisar que se inserte dos veces
         if (vehiculoDAO.insertar(vehiculo)) {
             System.out.print("Vehículo introducido correctamente");
         } else {
-            System.out.print("El vehículo no se ha introducido correctamente \n");
+            System.out.print("El vehículo no se ha introducido correctamente ");
         }
 
     }
@@ -83,25 +83,30 @@ public class VehiculoVIEW {
             System.out.println("1. Propietario");
             System.out.println("0. Atrás");
             System.out.print(">>> ");
-            opcion = sc.nextLine();
+            opcion = sc.next();
 
+            if(opcion.equalsIgnoreCase("0")) {
+                break;
+            }
             System.out.println("Ingrese la matrícula del vehículo a modificar: ");
             System.out.print("--> ");
-            matricula = sc.nextLine();
+            matricula = sc.next();
+            sc.nextLine();
 
             VehiculoDAO vehiculoDAO = new VehiculoDAO();
             vehiculo_modificar = vehiculoDAO.buscarMostrar(matricula);
             
             if (vehiculo_modificar == null) {
                 System.out.println("ERR0R: No se encontró el vehículo");
+                break;
 
             } else {
                 switch (opcion) {
                     case "1", "propietario" -> {
-                        System.out.print("Ingrese el nuevo propietario: ");
-                        String propietario_nuevo = sc.nextLine();
-                        valor = propietario_nuevo;
+                        System.out.print("Ingrese el nuevo dni: ");
+                        String propietario_nuevo = sc.next();
                         columna = "dni_cliente";
+                        valor = propietario_nuevo;
                         
                         boolean actualizado = vehiculoDAO.actualizar(columna, matricula, valor);
                         if (actualizado) {
@@ -109,6 +114,7 @@ public class VehiculoVIEW {
                         } else {
                         System.out.println("Error al actualizar el propietario.");
                         }
+                        opcion = "0";
                     }
                     
                     default -> {
@@ -123,7 +129,7 @@ public class VehiculoVIEW {
         String matricula;
         Vehiculo vehiculo;
         System.out.print("Ingrese la matrícula del vehiculo que quiere eliminar: ");
-        matricula = sc.nextLine();
+        matricula = sc.next();
         VehiculoDAO vehiculoDAO = new VehiculoDAO();
         vehiculo = vehiculoDAO.buscarMostrar(matricula);
 

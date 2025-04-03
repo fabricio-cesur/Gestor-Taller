@@ -10,25 +10,29 @@ import model.Cliente;
 public class ClienteDAO {
 
     public boolean insertar(Cliente cliente) {
-    String sql = "INSERT INTO Cliente (dni, nombre, apellidos, direccion, telefono, cuenta_bancaria) VALUES (?, ?, ?, ?, ?, ?)";
+        Connection conexion = ConexionDB.conectar(); 
 
-    try (Connection conexion = ConexionDB.conectar();  
-         PreparedStatement pstmt = conexion.prepareStatement(sql)) {
+        if (conexion != null) {
 
-        pstmt.setString(1, cliente.getDni());
-        pstmt.setString(2, cliente.getNombre());
-        pstmt.setString(3, cliente.getApellido());
-        pstmt.setString(4, cliente.getDireccion());
-        pstmt.setInt(5, cliente.getTelefono());
-        pstmt.setString(6, cliente.getCuentaBancaria());
-
-        pstmt.executeUpdate();
-        return true;
-    } catch (SQLException e) {
-        System.err.println("Error al agregar cliente: " + e.getMessage());
+            String querry = "INSERT INTO Cliente (dni, nombre, apellidos, direccion, telefono, cuenta_bancaria) VALUES (?, ?, ?, ?, ?, ?)";
+    
+            try (PreparedStatement stmt = conexion.prepareStatement(querry)) {
+    
+                stmt.setString(1, cliente.getDni());
+                stmt.setString(2, cliente.getNombre());
+                stmt.setString(3, cliente.getApellido());
+                stmt.setString(4, cliente.getDireccion());
+                stmt.setInt(5, cliente.getTelefono());
+                stmt.setString(6, cliente.getCuentaBancaria());
+    
+                stmt.executeUpdate();
+                return true;
+            } catch (SQLException e) {
+                System.out.println("Error al agregar cliente: " + e.getMessage());
+            }
+        }
+        return false;
     }
-    return false;
-}
 
     public boolean actualizar(String columna, String dni, String valor ) {
         Connection conexion = ConexionDB.conectar();
