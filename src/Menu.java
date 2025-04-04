@@ -39,11 +39,10 @@ public class Menu {
             System.out.println("3. Citas");
             System.out.println("4. Encargos");
             System.out.println("5. Empleados");
-            System.out.println("6. Asignaciones");
-            System.out.println("7. Servicios");
-            System.out.println("8. Items");
-            System.out.println("9. Pedidos");
-            System.out.println("10. Proveedores");
+            System.out.println("6. Servicios");
+            System.out.println("7. Items");
+            System.out.println("8. Pedidos");
+            System.out.println("9. Proveedores");
             System.out.println("0. Salir");
             System.out.println("");
             System.out.print(">>> ");
@@ -56,11 +55,10 @@ public class Menu {
                 case "3", "Citas" -> { citaVIEW.menu(); }
                 case "4", "Encargos" -> { /*menuEncargos();*/ }
                 case "5", "Empleados" -> { empleadoVIEW.menu(); }
-                case "6", "Asignaciones" -> { /*menuAsignaciones(); */}
-                case "7", "Servicios" -> { servicioVIEW.menu(); }
-                case "8", "Items" -> { itemVIEW.menu(); }
-                case "9", "Pedidos" -> { pedidoVIEW.menu(); }
-                case "10", "Proveedores" -> { proveedorVIEW.menu(); }
+                case "6", "Servicios" -> { servicioVIEW.menu(); }
+                case "7", "Items" -> { itemVIEW.menu(); }
+                case "8", "Pedidos" -> { pedidoVIEW.menu(); }
+                case "9", "Proveedores" -> { proveedorVIEW.menu(); }
                 default -> {}
                     
             }
@@ -96,40 +94,7 @@ public class Menu {
         } while (!opcion.equalsIgnoreCase("0"));
     }
 
-    
-    /* 
-    public static void menuAsignaciones() {
-        String opcion;
-        do { 
-            System.out.println("Qué desea hacer con las asignaciones?");
-            System.out.println("1. Asignar Empleados");
-            System.out.println("2. Modificar Asignacion");
-            System.out.println("3. Eliminar Asignacion");
-            System.out.println("4. Mostrar Asignaciones");
-            System.out.println("0. Atrás");
-            System.out.print(">>> ");
-            opcion = sc.next();
-            vaciarConsola();
-    
-            switch (opcion) {
-                case "1", "registrar" -> { taller.asignarEmpleados()  }
-                case "2", "modificar" -> { taller.modificarAsignacion()  }
-                case "3", "eliminar" -> { taller.eliminarAsignacion()  }
-                case "4", "mostrar" -> { taller.mostrarAsignaciones()  }
-                default -> {
-                    System.out.println("ERR0R: No se reconoció esa opción");
-                }
-            }
 
-        } while (!opcion.equalsIgnoreCase("0"));
-    }
-     
-    */
-   
-    
-     
-    
-    
 
     public static void vaciarConsola() {
         String os = System.getProperty("os.name");
