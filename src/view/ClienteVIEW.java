@@ -197,6 +197,7 @@ public class ClienteVIEW {
         Cliente cliente;
         System.out.print("Ingrese el DNI del cliente que quiere eliminar: ");
         dni = sc.next();
+        sc.nextLine();
         ClienteDAO clienteDAO = new ClienteDAO();
         cliente = clienteDAO.buscarMostrar(dni);
 
