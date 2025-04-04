@@ -10,15 +10,32 @@ public class CitaDAO {
     public boolean  insertar(Cita cita) {
         Connection conexion = ConexionDB.conectar(); 
         if (conexion != null) { 
-            String query = "INSERT INTO Cita (fecha, hora, matricula_coche) VALUES (?, ?, ?)" ; 
-            try (PreparedStatement stmt = conexion.prepareStatement(query)) { 
-                stmt.setString(1, cita.getFecha());
-                stmt.setString(2, cita.getHora() + ":00");
-                stmt.setString(3, cita.getVehiculoMatricula());
-                stmt.executeUpdate(); // Ejecuta la consulta de inserción 
+            try {
+                //Contar citas existentes para la fecha
+                String queryContar = "SELECT COUNT(*) FROM Cita WHERE fecha = ?";
+                PreparedStatement stmtContar = conexion.prepareStatement(queryContar);
+                stmtContar.setString(1, cita.getFecha());
+                ResultSet resultados = stmtContar.executeQuery();
 
-                System.out.println("Cita guardada correctamente: " ); 
-                return true; 
+                resultados.next();
+                int cantidadCitas = resultados.getInt(1);
+
+                if (cantidadCitas >= 10) {
+                    System.out.println("No se pueden crear más citas para el " + cita.getFecha() + ". Se ha alcanzado el límite.");
+                    return false; // No se inserta la cita
+                }
+
+                //Insertar la nueva cita (si no se ha alcanzado el límite)
+                String queryInsertar = "INSERT INTO Cita (fecha, hora, matricula_coche) VALUES (?, ?, ?)";
+                PreparedStatement stmtInsertar = conexion.prepareStatement(queryInsertar);
+                stmtInsertar.setString(1, cita.getFecha());
+                stmtInsertar.setString(2, cita.getHora() + ":00");
+                stmtInsertar.setString(3, cita.getVehiculoMatricula());
+                stmtInsertar.executeUpdate();
+
+                System.out.println("Cita guardada correctamente: ");
+                return true;
+
             } catch (SQLException e) { 
                 System.out.println("Error al agregar la cita: " + e.getMessage()); 
             } 
