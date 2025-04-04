@@ -49,8 +49,10 @@ public class EncargoVIEW {
         Encargo encargo;
 
         System.out.print("Ingrese la matricula: ");
-        matricula_vehiculo = sc.nextLine();
+        matricula_vehiculo = sc.next();
+        sc.nextLine();
         encargo = new Encargo(matricula_vehiculo);
+        //TODO: Revisar que el vehiculo exista primero
         dao.insertar(encargo);
         encargo.setId(dao.obtenerUltimo(matricula_vehiculo).getId());
         

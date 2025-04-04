@@ -5,8 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import model.Servicio;
 import model.Encargo;
+import model.Servicio;
 import view.Formateo;
 
 public class EncargoDAO {
@@ -16,8 +16,8 @@ public class EncargoDAO {
     public boolean insertar(Encargo encargo) {
         Connection conexion = ConexionDB.conectar(); 
         if (conexion != null) { 
-            String query = "INSERT INTO Encargo (matricula_coche, precio_total) VALUES (" 
-            + encargo.getMatricula() + ", " + encargo.getPrecioTotal() + ");";
+            String query = "INSERT INTO Encargo (matricula_coche) VALUES (" 
+            + encargo.getMatricula() + ");";
             try (PreparedStatement stmt = conexion.prepareStatement(query)) { 
                
                 stmt.executeUpdate(); // Ejecuta la consulta de inserción 
