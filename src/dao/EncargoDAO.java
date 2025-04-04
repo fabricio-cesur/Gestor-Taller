@@ -16,8 +16,8 @@ public class EncargoDAO {
     public boolean insertar(Encargo encargo) {
         Connection conexion = ConexionDB.conectar(); 
         if (conexion != null) { 
-            String query = "INSERT INTO Encargo (matricula_coche, precio_total) VALUES (" 
-            + encargo.getMatricula() + ", " + encargo.getPrecioTotal() + ");";
+            String query = "INSERT INTO Encargo (matricula_coche) VALUES (" 
+            + encargo.getMatricula() + ");";
             try (PreparedStatement stmt = conexion.prepareStatement(query)) { 
                
                 stmt.executeUpdate(); // Ejecuta la consulta de inserción 
