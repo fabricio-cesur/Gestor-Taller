@@ -17,6 +17,32 @@ public class EncargoVIEW {
     public ServicioDAO serdao = new ServicioDAO();
     
     Scanner sc = new Scanner(System.in);
+
+    public void menu() {
+        String opcion;
+
+        do {
+            System.out.println("Qué desea hacer con los encargos?");
+            System.out.println("1. Registrar Encargo");
+            System.out.println("2. Modificar Encargo");
+            System.out.println("3. Eliminar Encargo");
+            System.out.println("4. Mostrar Encargos");
+            System.out.println("5. Mostrar Servicios");
+            System.out.println("0. Atrás");
+            System.out.print(">>> ");
+            opcion = sc.next();
+
+            switch (opcion) {
+                case "1" -> { registrar(); }
+                case "2" -> { modificar(); }
+                case "3" -> { eliminar(); }
+                case "4" -> { mostrarEncargos(); }
+                case "5" -> { mostrarServiciosMenu(); }
+                default -> {}
+            }
+        } while (!opcion.equalsIgnoreCase("0"));
+    }
+
     public void registrar() {
         String matricula_vehiculo;
         Double precio_total = 0.0;
@@ -105,7 +131,7 @@ public class EncargoVIEW {
                         }
                     }
                     case "2", "servicios" -> {
-                        mostrarServicios();
+                        mostrarServiciosEncargo(encargo_modificar.getId());
                         System.out.println("Qué quiere hacer?");
                         System.out.println("1. Quitar Servicio");
                         System.out.println("2. Añadir Servicio");
@@ -143,7 +169,9 @@ public class EncargoVIEW {
                                     System.out.println("Error al actualizar la fecha de inicio.");
                                 }
                             }
-                            case "2", "no" -> {/*TODO: Añadir mensaje?*/}
+                            case "2", "no" -> {
+                                System.out.println("Marque la fecha de inicio del encargo cuando empiece a hacerse");
+                            }
                             default -> {
                                 System.out.println("No se reconoció esa opción");
                             }
@@ -166,7 +194,9 @@ public class EncargoVIEW {
                                     System.out.println("Error al actualizar la fecha de inicio.");
                                 }
                             }
-                            case "2", "no" -> {/*TODO: Añadir mensaje?*/}
+                            case "2", "no" -> {
+                                System.out.println("Marque el encargo cómo completado cuándo lo esté");
+                            }
                             default -> {
                                 System.out.println("No se reconoció esa opción");
                             }
@@ -234,9 +264,19 @@ public class EncargoVIEW {
             }
         }
     }    
-    public void mostrarServicios() {
-        ArrayList<Servicio> array_servicios = new ArrayList<>();
-        array_servicios = serdao.obtenerTodos(); // Llenar la lista con los servicios de la BD
+    public void mostrarServiciosMenu() {
+        System.out.println("Ingrese la matrícula del encargo a eliminar");
+        System.out.print("--> ");
+        String matricula = sc.nextLine();
+    
+        Encargo encargo = dao.obtenerUltimo(matricula);
+        int id_encargo = encargo.getId();
+
+        mostrarServiciosEncargo(id_encargo);
+    }
+    public void mostrarServiciosEncargo(int id_encargo) {
+        ArrayList<Servicio> array_servicios;
+        array_servicios = dao.obtenerServicios(id_encargo);
 
         if (array_servicios == null) {
             array_servicios = new ArrayList<>(); // Evitar que sea null en caso de error
@@ -247,7 +287,7 @@ public class EncargoVIEW {
         } else {
             System.out.println("Servicios: ");
             for (Servicio servicio : array_servicios) {
-                System.out.println(servicio); // `toString()
+                System.out.println(servicio); // toString()
             }
         }
     }    
