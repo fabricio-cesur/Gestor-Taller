@@ -164,7 +164,7 @@ public class ItemVIEW {
                         opcion = "0";
 
                     }
-                    
+                    case "0" -> { System.out.println("Volviendo al menu anterior. ");}
                     default -> {
                         System.out.println("ERR0R: No se reconoció esa opción");
                     }

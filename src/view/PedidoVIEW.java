@@ -31,6 +31,7 @@ public class PedidoVIEW {
                 case "2", "modificar" -> { modificarPedido(); }
                 case "3", "eliminar" -> { eliminarPedido(); }
                 case "4", "mostrar" -> { mostrarPedidos(); }
+                case "0" -> { System.out.println("Volviendo al menu anterior. ");}
                 default -> {
                     System.out.println("ERR0R: No se reconoció esa opción");
                 }
@@ -120,7 +121,7 @@ public class PedidoVIEW {
                         System.out.println("Error al actualizar la cantidad.");
                         }
                     }
-                    
+                    case "0" -> { System.out.println("Volviendo al menu anterior. ");}
                     default -> {
                         System.out.println("ERR0R: No se reconoció esa opción");
                     }

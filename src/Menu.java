@@ -32,7 +32,8 @@ public class Menu {
         String opcion;
         System.out.println("Bienvenido al Gestor del Taller!");
 
-        do { 
+        do {
+            System.out.println("");
             System.out.println("Qué quiere manejar?");
             System.out.println("1. Clientes");
             System.out.println("2. Vehiculos");
@@ -59,6 +60,7 @@ public class Menu {
                 case "7", "Items" -> { itemVIEW.menu(); }
                 case "8", "Pedidos" -> { pedidoVIEW.menu(); }
                 case "9", "Proveedores" -> { proveedorVIEW.menu(); }
+                case "0" -> { System.out.println("Saliendo del programa.");}
                 default -> {}
                     
             }
