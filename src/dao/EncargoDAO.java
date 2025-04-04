@@ -5,8 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import model.Servicio;
 import model.Encargo;
+import model.Servicio;
 import view.Formateo;
 
 public class EncargoDAO {
@@ -73,7 +73,7 @@ public class EncargoDAO {
                 return filas_afectadas == 1;
                 
             } catch (SQLException e) {
-                System.out.println("Error al actualizar cliente: " + e.getMessage());
+                System.out.println("Error al actualizar encargo: " + e.getMessage());
             } 
         }
         return false;
@@ -89,7 +89,7 @@ public class EncargoDAO {
                 
                 return filas_afectadas == 1;
             } catch (SQLException e) {
-                System.out.println("Error al eliminar cliente: " + e.getMessage());
+                System.out.println("Error al eliminar encargo: " + e.getMessage());
             }
         }
         return false;
@@ -107,7 +107,7 @@ public class EncargoDAO {
 
                 if (rs.next()) {
                     if (rs.next()) {
-                        encargo = new Encargo(rs.getString("matricula_vehiculo"));
+                        encargo = new Encargo(rs.getString("matricula_coche"));
                         if (rs.getString("id") != null) {
                             encargo.setId(rs.getInt("id"));
                         }
@@ -140,14 +140,14 @@ public class EncargoDAO {
 
         if (conexion != null) {
             Encargo encargo = null;
-            String query = "SELECT * FROM Encargo WHERE matricula = '" + matricula + "'";
+            String query = "SELECT * FROM Encargo WHERE matricula_coche = '" + matricula + "'";
 
             try ( PreparedStatement stmt = conexion.prepareStatement(query)) {
                 
                 ResultSet rs = stmt.executeQuery();
 
                 if (rs.next()) {
-                    encargo = new Encargo(rs.getString("matricula_vehiculo"));
+                    encargo = new Encargo(rs.getString("matricula_coche"));
                     if (rs.getString("id") != null) {
                         encargo.setId(rs.getInt("id"));
                     }
@@ -164,7 +164,7 @@ public class EncargoDAO {
                     encargo.setCompletado(rs.getBoolean("completado"));
                 }
             } catch (SQLException e) {
-                System.out.println("Error al buscar encargo por id: " + e.getMessage());
+                System.out.println("Error al buscar encargo por matrícula: " + e.getMessage());
             }
             return encargo; 
         }
@@ -175,14 +175,14 @@ public class EncargoDAO {
 
         if (conexion != null) {
             Encargo encargo = null;
-            String query = "SELECT * FROM Encargo WHERE matricula = '" + matricula + "' ORDER BY id DESC LIMIT 1";
+            String query = "SELECT * FROM Encargo WHERE matricula_coche = '" + matricula + "' ORDER BY id DESC LIMIT 1";
 
             try ( PreparedStatement stmt = conexion.prepareStatement(query)) {
                 
                 ResultSet rs = stmt.executeQuery();
 
                 if (rs.next()) {
-                    encargo = new Encargo(rs.getString("matricula_vehiculo"));
+                    encargo = new Encargo(rs.getString("matricula_coche"));
                     // no hace falta revisar que sea null porque de ser null
                     // getInt() y getDouble() devuelven 0
                     encargo.setId(rs.getInt("id"));
@@ -197,7 +197,7 @@ public class EncargoDAO {
                     encargo.setCompletado(rs.getBoolean("completado"));
                 }
             } catch (SQLException e) {
-                System.out.println("Error al buscar encargo por id: " + e.getMessage());
+                System.out.println("Error al buscar encargo por matrícula: " + e.getMessage());
             }
             return encargo; 
         }
@@ -215,7 +215,7 @@ public class EncargoDAO {
                 ResultSet rs = stmt.executeQuery()) {
                 
                 while (rs.next()) {
-                    Encargo encargo = new Encargo(rs.getString("matricula_vehiculo"));
+                    Encargo encargo = new Encargo(rs.getString("matricula_coche"));
                     if (rs.getString("id") != null) {
                         encargo.setId(rs.getInt("id"));
                     }
@@ -233,7 +233,7 @@ public class EncargoDAO {
                     encargos.add(encargo);
                 }
             } catch (SQLException e) {
-                System.out.println("Error al obtener todos los clientes: " + e.getMessage());
+                System.out.println("Error al obtener todos los encargos: " + e.getMessage());
             }
         }
         return encargos;

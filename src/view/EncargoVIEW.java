@@ -265,9 +265,10 @@ public class EncargoVIEW {
         }
     }    
     public void mostrarServiciosMenu() {
-        System.out.println("Ingrese la matrícula del encargo a eliminar");
+        System.out.println("Ingrese la matrícula del encargo");
         System.out.print("--> ");
-        String matricula = sc.nextLine();
+        String matricula = sc.next();
+        sc.nextLine();
     
         Encargo encargo = dao.obtenerUltimo(matricula);
         int id_encargo = encargo.getId();

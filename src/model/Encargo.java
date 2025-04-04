@@ -33,8 +33,8 @@ public class Encargo {
     @Override
     public String toString() {
         return "ID: " + this.getId() + " Matrícula: " + this.getMatricula() 
-        + "Precio total: " + this.getPrecioTotal() 
-        + "Inicio: " + this.getFechaInicio() + " Finalizado: " + this.getFechaInicio() 
-        + "Completado: " + this.getCompletado();
+        + " Precio total: " + this.getPrecioTotal() 
+        + " Inicio: " + this.getFechaInicio() + " Finalizado: " + this.getFechaInicio() 
+        + " Completado: " + this.getCompletado();
     }
 }
