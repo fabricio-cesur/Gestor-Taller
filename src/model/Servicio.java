@@ -31,7 +31,7 @@ public class Servicio {
     @Override
     public String toString() { 
         return "ID: " + getId() + ", nombre: " + this.getNombre() 
-        + ", descripción" + this.getDescripcion() 
-        + ", código del item que se utiliza: " + this.getItemCodigo() + "Precio: " + this.getPrecio() ;
+        + ", descripción: " + this.getDescripcion() 
+        + ", código del item que se utiliza: " + this.getItemCodigo() + ", precio: " + this.getPrecio() ;
     }
 }
