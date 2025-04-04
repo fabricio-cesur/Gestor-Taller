@@ -38,6 +38,7 @@ public class EncargoVIEW {
                 case "3" -> { eliminar(); }
                 case "4" -> { mostrarEncargos(); }
                 case "5" -> { mostrarServiciosMenu(); }
+                case "0" -> { System.out.println("Volviendo al menu anterior. ");}
                 default -> {}
             }
         } while (!opcion.equalsIgnoreCase("0"));
@@ -202,6 +203,7 @@ public class EncargoVIEW {
                             }
                         }
                     }
+                    case "0" -> { System.out.println("Volviendo al menu anterior. ");}
                     default -> {
                         System.out.println("No se reconoció esa opción");
                     }

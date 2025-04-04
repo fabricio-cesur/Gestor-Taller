@@ -31,6 +31,7 @@ public class CitaVIEW {
                 case "2", "modificar" ->  modificarCita(); 
                 case "3", "eliminar" ->  eliminarCita(); 
                 case "4", "mostrar" ->  mostrarCitas(); 
+                case "0" -> { System.out.println("Volviendo al menu anterior. ");}
                 default -> {
                     System.out.println("ERR0R: No se reconoció esa opción");
                 }
@@ -125,7 +126,7 @@ public class CitaVIEW {
                             System.out.println("Error al actualizar la hora.");
                         }
                     }
-                    
+                    case "0" -> { System.out.println("Volviendo al menu anterior. ");}
                     default -> {
                         System.out.println("ERR0R: No se reconoció esa opción");
                     }

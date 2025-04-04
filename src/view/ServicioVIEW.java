@@ -157,6 +157,10 @@ public class ServicioVIEW {
                         opcion = "0";
 
                     }
+                    case "0" -> { System.out.println("Volviendo al menu anterior. ");}
+                    default -> {
+                        System.out.println("No se reconoció esa opción");
+                    }
                 }
             }
         } while (!opcion.equals("0"));
