@@ -8,8 +8,8 @@ public class Menu {
     // public static boolean vaciar = false;
     public static Scanner sc = new Scanner(System.in);
 
-    
-    public static void main(String[] args) throws Exception {
+    //Menu principal de la aplicacion
+    public static void main(String[] args){
         CitaVIEW citaVIEW = new CitaVIEW();
         ClienteVIEW clienteVIEW = new ClienteVIEW();
         VehiculoVIEW vehiculoVIEW = new VehiculoVIEW();
@@ -21,6 +21,8 @@ public class Menu {
         EncargoVIEW encargoVIEW = new EncargoVIEW();
 
         // vaciarConsola();
+
+        //Se intenta conectar a la base de datos
         Connection conexion = ConexionDB.conectar();
 
         if (conexion != null) {
@@ -66,6 +68,8 @@ public class Menu {
             }
         } while (!opcion.equalsIgnoreCase("0"));
     }
+
+    //Metodo para vaciar la consola en cada menu
 
     // public static void vaciarConsola() {
     //     String os = System.getProperty("os.name");
