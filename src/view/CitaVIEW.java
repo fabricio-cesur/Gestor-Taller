@@ -12,6 +12,7 @@ public class CitaVIEW {
     
     Scanner sc = new Scanner(System.in);
 
+    //MEnu principal de la clase cita
     public void menu() {
         String opcion;
         
@@ -25,23 +26,24 @@ public class CitaVIEW {
             System.out.print(">>> ");
             opcion = sc.next();
             sc.nextLine();
+            //Limpia el buffer de las entradas
     
             switch (opcion) {
                 case "1", "registrar" ->  registrarCita(); 
                 case "2", "modificar" ->  modificarCita(); 
                 case "3", "eliminar" ->  eliminarCita(); 
                 case "4", "mostrar" ->  mostrarCitas(); 
-                case "0" -> { System.out.println("Volviendo al menu anterior. ");}
+                case "0" -> { System.out.println("Volviendo al menu anterior. ");} //Se muestra cuando se introduce 0
                 default -> {
                     System.out.println("ERR0R: No se reconoció esa opción");
                 }
             }
-
+        //Se ejecuta mientras no se introduzca 0
         } while (!opcion.equalsIgnoreCase("0"));
     }
 
     public void registrarCita() {
-        
+        //Atributos para la insercion de datos
         String fecha;
         String hora;
         String matricula;
@@ -58,10 +60,12 @@ public class CitaVIEW {
                 
         cita = new Cita(fecha, hora, matricula);
         CitaDAO citaDAO = new CitaDAO();
+        //Inserta en la base de datos los datos recogidos
         citaDAO.insertar(cita);
     }
 
     public void modificarCita() {
+
         String opcion;
         String columna;
         String valor;
@@ -75,37 +79,41 @@ public class CitaVIEW {
             System.out.println("0. Atrás");
             System.out.print(">>> ");
             opcion = sc.nextLine();
-
+            
+            //Si se introduce el 0 sale del menu y no se ejecuta el resto del codigo
             if(opcion.equalsIgnoreCase("0")) {
                 break;
             }
 
-            //TODO: Validar que la matricula exista
+            
             System.out.println("Ingrese la matricula del coche para modificar la cita: ");
             System.out.print("--> ");
             matricula = sc.nextLine();
             System.out.print("Ingrese la fecha antigua: ");
             String fecha = sc.next();
-            sc.nextLine();
+            sc.nextLine(); //Limpia el buffer de entrada de datos
 
             CitaDAO citaDAO = new CitaDAO();
+            //Obtiene el objeto cita
             cita_modificar = citaDAO.buscarMostrar(matricula,fecha);
 
-            
+            //En caso de que el objeto sea nulo es que no se ha encintrado en la BD
             if (cita_modificar == null) {
                 System.out.println("ERR0R: No se encontró esa matrícula");
             } else {
                 switch (opcion) {
-                    //TODO: Añadir validaciones al modificar la cita
+                    
                     case "1", "fecha" -> {
                         
                         System.out.print("Ingrese la nueva fecha: ");
                         String fecha_nueva = sc.next();
                         sc.nextLine();
                         valor = fecha_nueva;
-                        columna = "fecha";
-                        
+                        columna = "fecha"; //Es el nombre de la columna en la DB
+                        //Actualiza la cita
                         boolean actualizado = citaDAO.actualizar(columna, matricula, valor, fecha);
+                        
+                        //Salidas segun si se ha conseguido modificar o no
                         if (actualizado) {
                         System.out.println("Fecha actualizada correctamente.");
                         } else {
@@ -126,6 +134,7 @@ public class CitaVIEW {
                             System.out.println("Error al actualizar la hora.");
                         }
                     }
+                    //En caso de que la entrada sea 0 vuelve al menu anterior
                     case "0" -> { System.out.println("Volviendo al menu anterior. ");}
                     default -> {
                         System.out.println("ERR0R: No se reconoció esa opción");
@@ -134,6 +143,7 @@ public class CitaVIEW {
             }
         } while (!opcion.equalsIgnoreCase("0"));
     }
+    //MEtodo de eliminar una cita
     public void eliminarCita() {
         String matricula;
         Cita cita;
@@ -142,8 +152,10 @@ public class CitaVIEW {
         System.out.print("Ingrese la fecha de la cita: ");
         String fecha = sc.next();
         sc.nextLine();
+        //Limpia el buffer de entrada de datos
 
         CitaDAO citaDAO = new CitaDAO();
+        //Obtiene el objeto cita
         cita = citaDAO.buscarMostrar(matricula, fecha);
 
         if (cita == null) {
@@ -154,6 +166,7 @@ public class CitaVIEW {
             System.out.println("Fecha y hora: " + cita.getFecha() + " " + cita.getHora());
             System.out.println("---¿Está seguro?---");
             String opcion;
+            //Atributo de seguir al siguiente menu o no
             boolean seguir = true;
             do { 
                 System.out.println("1. SI / 2. NO");
@@ -181,12 +194,13 @@ public class CitaVIEW {
             } while (seguir);
         }
     }
+    //Metodo para mostrar todas las citas
     public void mostrarCitas() {
         CitaDAO citaDAO = new CitaDAO();
         array_citas = citaDAO.obtenerTodos(); // Llenar la lista con los clientes de la BD
 
         if (array_citas == null) {
-         array_citas = new ArrayList<>(); // Evitar que sea null en caso de error
+            array_citas = new ArrayList<>(); // Evitar que sea null en caso de error
         }
 
         if (array_citas.isEmpty()) {
@@ -194,7 +208,7 @@ public class CitaVIEW {
         } else {
             System.out.println("Citas: ");
             for (Cita cita : array_citas) {
-                System.out.println(cita); // `toString()
+                System.out.println(cita); // imprime con el`toString()
             }
         }
     }

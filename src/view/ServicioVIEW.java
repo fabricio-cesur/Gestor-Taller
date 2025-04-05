@@ -9,6 +9,7 @@ public class ServicioVIEW {
     public ArrayList<Servicio> array_servicios = new ArrayList<>();
     public Scanner sc = new Scanner(System.in);
     
+    //Menu principal de la clase servicio
     public void menu() {
         String opcion;
         do { 
@@ -21,7 +22,8 @@ public class ServicioVIEW {
             System.out.print(">>> ");
             opcion = sc.next();
             sc.nextLine();
-    
+            //Limpia el buffer de entrada de datos
+   
             switch (opcion) {
                 case "1", "registrar" -> { registrar(); }
                 case "2", "modificar" -> {  modificar();}
@@ -36,18 +38,19 @@ public class ServicioVIEW {
         } while (!opcion.equalsIgnoreCase("0"));
     }
 
+    //Metodo para registrar un nuevo servicio
     public void registrar() {
         String nombre;
         String descripcion;
         int cod_item;
         double precio;
         Servicio servicio;
-        //TODO: Añadir validaciones al registrar servicio
+        
         System.out.print("Ingrese el nombre: ");
         nombre = sc.nextLine();
         System.out.print("Ingrese la descripción: ");
         descripcion = sc.nextLine();
-        //TODO: Mostrar los items
+        
         System.out.print("Ingrese el código del item que utilice: ");
         cod_item = sc.nextInt();
         sc.nextLine();
@@ -55,6 +58,7 @@ public class ServicioVIEW {
         precio = sc.nextDouble();
         sc.nextLine();
 
+        //Crea el objeto servicio para insertarlo en la DB
         servicio = new Servicio(nombre, descripcion, cod_item, precio);
 
         ServicioDAO servicioDAO = new ServicioDAO();
@@ -64,6 +68,8 @@ public class ServicioVIEW {
             System.out.println("No se ha podido registrar el servicio");
         }
     }
+
+    //Metodo modificar Servicio
     public void modificar() {
         String opcion;
         String id;
@@ -80,6 +86,7 @@ public class ServicioVIEW {
             System.out.print(">>> ");
             opcion = sc.nextLine();
             
+            //En caso de que se introduzca 0 sale del menu y no sigue con el codigo
             if(opcion.equalsIgnoreCase("0")) {
                 break;
             }
@@ -90,6 +97,7 @@ public class ServicioVIEW {
             sc.nextLine();
             
             ServicioDAO servicioDAO = new ServicioDAO();
+            //Otiene el objeto servicio segun el id
             servicio_modificar = servicioDAO.obtener(id);
             
             if (servicio_modificar == null) {
@@ -101,6 +109,7 @@ public class ServicioVIEW {
                         String nombre_nuevo = sc.nextLine();
                         columna = "nombre";
                         valor = nombre_nuevo;
+                        //Actualiza el servicio y segun si lo ha conseguido o no muestra una cosa u otra
                         boolean actualizado = servicioDAO.actualizar(columna, id, valor);
 
                         if (actualizado) {
@@ -108,6 +117,7 @@ public class ServicioVIEW {
                         } else {
                             System.out.println("Error al modificar el nombre");
                         }
+                        //Para evitar problemas con menus posteriores
                         opcion = "0";
                     }
                     case "2", "descripcion" -> {
@@ -165,6 +175,8 @@ public class ServicioVIEW {
             }
         } while (!opcion.equals("0"));
     }
+
+    //MEtodo eliminar servicio
     public void eliminar() {
         String id;
         Servicio servicio;
@@ -172,6 +184,7 @@ public class ServicioVIEW {
         System.out.print("Ingrese el id del servicio que quiera borrar: ");
         id = sc.next();
         ServicioDAO servicioDAO = new ServicioDAO();
+        //Obtiene el objeto servicio segun id
         servicio = servicioDAO.obtener(id);
 
         if (servicio == null) {
@@ -191,6 +204,7 @@ public class ServicioVIEW {
                 sc.nextLine();
                 switch (opcion) {
                     case "1", "si", "SI" -> {
+                        //Compara id introducido don el de db y elimina servicio si coincide
                         if (servicioDAO.buscar(id).equals(id)) {
                             servicioDAO.eliminar(id);
                             System.out.println("Servicio eliminado");
@@ -211,6 +225,8 @@ public class ServicioVIEW {
             } while (seguir);
         }
     }
+
+    //Metodo para mostrar todos los servicios
     public void mostrarServicios() {
         ServicioDAO servicioDAO = new ServicioDAO();
         array_servicios = servicioDAO.obtenerTodos(); // Llenar la lista con los servicios de la BD
@@ -224,7 +240,7 @@ public class ServicioVIEW {
         } else {
             System.out.println("Servicios: ");
             for (Servicio servicio : array_servicios) {
-                System.out.println(servicio); // toString()
+                System.out.println(servicio); // imprime los sericios utilizando la plantilla toString()
             }
         }
     }

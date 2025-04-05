@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import model.Proveedor;
 public class ProveedorDAO {
+    //Metodo para insertar un nuveo proveedor
     public boolean insertar(Proveedor proveedor) {
         Connection conexion = ConexionDB.conectar(); 
         if (conexion != null) { 
@@ -25,7 +26,7 @@ public class ProveedorDAO {
         }
         return false;
     }
-
+    //Metodo para actualizar un proveedor
     public boolean actualizar(String columna, String nombre, String valor ) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
@@ -42,7 +43,7 @@ public class ProveedorDAO {
         }
         return false;
     }
-
+    //Metodo para eliminar un proveedor
     public boolean eliminar(String nombre) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
@@ -59,7 +60,7 @@ public class ProveedorDAO {
         }
         return false;
     }
-
+    //Metodo para buscar un proveedor en la DB
     public String buscar(String nombre) {
         Connection conexion = ConexionDB.conectar();
         String nombre_busqueda = null;
@@ -82,7 +83,7 @@ public class ProveedorDAO {
         }
         return null; 
     }
-
+    //Metodo para obtener un objeto proveedor de la DB
     public Proveedor buscarMostrar(String nombre) {
         Connection conexion = ConexionDB.conectar();
 
@@ -108,7 +109,7 @@ public class ProveedorDAO {
         }
         return null;
     }
-
+    //Metodo para obtener todos los proveedores
     public ArrayList<Proveedor> obtenerTodos() {
         Connection conexion = ConexionDB.conectar();
 

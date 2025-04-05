@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import model.Pedido;
 
 public class PedidoDAO {
-
+    //Metodo para insertar un nuevo pedido en la DB
     public boolean insertar(Pedido pedido) {
         Connection conexion = ConexionDB.conectar(); 
         if (conexion != null) { 
@@ -43,7 +43,7 @@ public class PedidoDAO {
         }
         return false;
     }
-
+    //Metodo para actualizar los pedidos
     public boolean actualizar(String columna, int id, int valor ) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
@@ -59,6 +59,7 @@ public class PedidoDAO {
         }
         return false;
     }
+    //Metodo para actualizar el estado de un pedido, si esta entregado o no
     public boolean actualizarEstado(int id_pedido, boolean completado) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
@@ -73,6 +74,7 @@ public class PedidoDAO {
         }
         return false;
     }
+    //MEtodo para eliminar un Pedido
     public boolean  eliminar(int id) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
@@ -88,7 +90,7 @@ public class PedidoDAO {
         }
         return false;
     }
-
+    //Metodo para buscar un pedido por id en la DB
     public int buscar(int id ) {
         Connection conexion = ConexionDB.conectar();
         int id_busqueda = 0;
@@ -111,7 +113,7 @@ public class PedidoDAO {
         }
         return id_busqueda; 
     }
-
+    //Metodo para obtener un objeto pedido de la DB segun el id
     public Pedido buscarMostrar(int id_pedido) {
         Connection conexion = ConexionDB.conectar();
 
@@ -140,7 +142,7 @@ public class PedidoDAO {
         }
         return null; 
     }
-
+    //Metodo para ver todos los pedidos
     public ArrayList<Pedido> obtenerTodos() {
         Connection conexion = ConexionDB.conectar();
         ArrayList<Pedido> pedidos = new ArrayList<>();

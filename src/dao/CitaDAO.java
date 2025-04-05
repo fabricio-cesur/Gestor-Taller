@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import model.Cita;
 
 public class CitaDAO {
+
+    //Metodo crear una nueva cita
     public boolean  insertar(Cita cita) {
         Connection conexion = ConexionDB.conectar(); 
         if (conexion != null) { 
@@ -19,13 +21,13 @@ public class CitaDAO {
 
                 resultados.next();
                 int cantidadCitas = resultados.getInt(1);
-
-                if (cantidadCitas >= 10) {
+                // En caso de que haya una cantidad igual a 10 no se puede pedir cita para ese dia
+                if (cantidadCitas == 10) {
                     System.out.println("No se pueden crear más citas para el " + cita.getFecha() + ". Se ha alcanzado el límite.");
                     return false; // No se inserta la cita
                 }
 
-                //Insertar la nueva cita (si no se ha alcanzado el límite)
+                //Insertar la nueva cita 
                 String queryInsertar = "INSERT INTO Cita (fecha, hora, matricula_coche) VALUES (?, ?, ?)";
                 PreparedStatement stmtInsertar = conexion.prepareStatement(queryInsertar);
                 stmtInsertar.setString(1, cita.getFecha());
@@ -42,7 +44,7 @@ public class CitaDAO {
         }
         return false;
     }
-
+    //Metodo para actualizar una cita filtrando por matricula y fecha
     public boolean actualizar(String columna, String matricula_coche, String valor, String fecha) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
@@ -50,7 +52,7 @@ public class CitaDAO {
             try (PreparedStatement stmt = conexion.prepareStatement(query)) {
                 stmt.setString(1, valor);
                 stmt.setString(2, matricula_coche);
-                stmt.setString(3, fecha); // Asumiendo que 'fecha' es un String en formato compatible con tu base de datos
+                stmt.setString(3, fecha); 
 
                 int filas_afectadas = stmt.executeUpdate();
 
@@ -62,16 +64,17 @@ public class CitaDAO {
         return false;
     }
 
+    //Metodo para eliminar una cita filtrando por matricula y fecha
     public boolean eliminar(String matricula_coche, String fecha) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
             String query = "DELETE FROM Cita WHERE matricula_coche = ? AND fecha = ?";
             try (PreparedStatement stmt = conexion.prepareStatement(query)) {
                 stmt.setString(1, matricula_coche);
-                stmt.setString(2, fecha); // Asumiendo que 'fecha' es un String en formato compatible con tu base de datos
+                stmt.setString(2, fecha); 
 
                 int filas_afectadas = stmt.executeUpdate();
-
+                
                 return filas_afectadas == 1;
             } catch (SQLException e) {
                 System.out.println("Error al eliminar la cita: " + e.getMessage());
@@ -79,8 +82,8 @@ public class CitaDAO {
         }
         return false;
     }
-
-     public String buscar(String matricula) {
+    //Metodo para buscar una cita por matricula
+    public String buscar(String matricula) {
         Connection conexion = ConexionDB.conectar();
         String matricula_busqueda = null;
 
@@ -103,7 +106,7 @@ public class CitaDAO {
         }
         return null; 
     }
-
+    //Metodo para buscar un objeto Cita filtrando por matriucla y fecha
     public Cita buscarMostrar(String matricula_coche, String fecha) {
         Connection conexion = ConexionDB.conectar();
 
@@ -131,7 +134,7 @@ public class CitaDAO {
         }
         return null;
     }
-
+    //Metodo para obtener un arrayList de todas las citas
     public ArrayList<Cita> obtenerTodos() {
         Connection conexion = ConexionDB.conectar();
         ArrayList<Cita> citas = new ArrayList<>();
