@@ -10,6 +10,7 @@ public class ProveedorVIEW {
     public ArrayList<Proveedor> array_proveedores = new ArrayList<>();
     Scanner sc = new Scanner(System.in);
 
+    //Menu principal de la clase proveedor
     public void menu() {
         String opcion;
         do { 
@@ -38,6 +39,7 @@ public class ProveedorVIEW {
         } while (!opcion.equalsIgnoreCase("0"));
     }
 
+    //Metodo resgistrar porveedor
     public void registrarProveedor() {
         String nombre;
         String direccion;
@@ -51,6 +53,7 @@ public class ProveedorVIEW {
         System.out.print("Ingrese el número de cuenta bancaria: ");
         cuenta_bancaria = sc.nextLine();
         
+        //Crea un nuevo objeto proveedor y lo inserta
         proveedor = new Proveedor(nombre, direccion, cuenta_bancaria);
        
         ProveedorDAO proveedorDAO = new ProveedorDAO();
@@ -61,6 +64,8 @@ public class ProveedorVIEW {
             System.out.println("No se ha podido registrar el proveedor");
         }
     }
+
+    // Metodo para modificar proveedor
     public void modificarProveedor() {
         String opcion;
         String columna;
@@ -68,6 +73,8 @@ public class ProveedorVIEW {
         String nombre;
         
         Proveedor proveedor_modificar;
+
+        //Menu de modificar proveedor
         do {
             System.out.println("Qué desea modificar?");
             System.out.println("1. Dirección");
@@ -80,9 +87,10 @@ public class ProveedorVIEW {
             nombre = sc.nextLine();
             
             ProveedorDAO proveedorDAO = new ProveedorDAO();
+            //Obtiene el objeto proveedor segun el nombre
             proveedor_modificar = proveedorDAO.buscarMostrar(nombre);
             
-            
+            //En caso de que no se encuentre el objeto sale del menu
             if (proveedor_modificar == null) {
                 System.out.println("ERR0R: No se encontró el proveedor");
                 break;
@@ -95,12 +103,14 @@ public class ProveedorVIEW {
                         String direccion_nueva = sc.nextLine();
                         columna = "direccion";
                         valor = direccion_nueva;
+                        //Actualiza el proveedor y muesstra una salida u otra segun si lo ha conseguido
                         boolean actualizado = proveedorDAO.actualizar(columna, nombre, valor);
                         if (actualizado) {
                             System.out.println("Dirección actualizada correctamente.");
                         } else {
                             System.out.println("Error al actualizar la dirección.");
                         }
+                        //Para evitar problemas con menus posteriores
                         opcion = "0";
                     }
                    
@@ -127,6 +137,7 @@ public class ProveedorVIEW {
         } while (!opcion.equalsIgnoreCase("0"));
 
     }
+    //MEtodo eliminar proveedor
     public void eliminarProveedor() {
         String nombre;
         Proveedor proveedor;
@@ -134,6 +145,7 @@ public class ProveedorVIEW {
         nombre = sc.nextLine();
         
         ProveedorDAO proveedorDAO = new ProveedorDAO();
+        //Obtiene el proveedor por el nombre
         proveedor = proveedorDAO.buscarMostrar(nombre);
 
         if (proveedor == null) {
@@ -152,6 +164,7 @@ public class ProveedorVIEW {
                 sc.nextLine();
                 switch (opcion) {
                     case "1", "si", "SI" -> {
+                        //Compra el nombre introducido con el de la Db y si coincide lo elimina
                         if (proveedorDAO.buscar(nombre).equals(nombre)) {
                             proveedorDAO.eliminar(nombre);
                             System.out.println("Proveedor eliminado");
@@ -173,6 +186,8 @@ public class ProveedorVIEW {
             } while (seguir);
         }
     }
+
+    //MEtodo para mostrar todos los proveedores
     public void mostrarProveedores() {
         ProveedorDAO proveedorDAO = new ProveedorDAO();
         array_proveedores = proveedorDAO.obtenerTodos(); // Llenar la lista con los clientes de la BD
@@ -186,7 +201,7 @@ public class ProveedorVIEW {
         } else {
             System.out.println("Proveedores: ");
             for (Proveedor proveedor : array_proveedores) {
-                System.out.println(proveedor); // `toString()
+                System.out.println(proveedor); // imprime con la plantilla del`toString()
             }
         }
     }    

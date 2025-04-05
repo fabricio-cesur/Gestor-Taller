@@ -12,7 +12,7 @@ public class PedidoVIEW {
     
     Scanner sc = new Scanner(System.in);
 
-
+    //Menu principal de la clase pedido
     public void menu() {
         String opcion;
         do { 
@@ -53,11 +53,13 @@ public class PedidoVIEW {
         System.out.print("Ingrese la cantidad: ");
         cantidad_solicitada = sc.nextInt();
         fecha_pedido = LocalDate.now();
+        //Se crea el objeto para introducirlo en la DB
         pedido = new Pedido(codigo_item, cantidad_solicitada, fecha_pedido, completado);
        
         PedidoDAO pedidoDAO = new PedidoDAO();
         pedidoDAO.insertar(pedido);
     }
+    //MEnu para modificar el pedido
     public void modificarPedido() {
         String opcion;
         int id;
@@ -65,6 +67,8 @@ public class PedidoVIEW {
         int valor;
 
         Pedido pedido_modificar;
+
+        //Menu modificar pedido
         do {
             System.out.println("Qué desea modificar?");
             System.out.println("1. Cantidad");
@@ -78,6 +82,7 @@ public class PedidoVIEW {
             id = sc.nextInt();
 
             PedidoDAO pedidoDAO = new PedidoDAO();
+            //Obtiene el objeto pedido segun id
             pedido_modificar = pedidoDAO.buscarMostrar(id);
             
             
@@ -85,13 +90,13 @@ public class PedidoVIEW {
                 System.out.println("ERR0R: No se encontró el pedido");
             } else {
                 switch (opcion) {
-                    //TODO: Añadir validaciones
+                    
                     case "1", "id" -> {
                         System.out.print("Ingrese el nuevo id: ");
                         int cantidad_nuevo = sc.nextInt();
                         valor = cantidad_nuevo;
                         columna = "cantidad";
-                        
+                        //Si consigue actualizar muestra una cosa y sino la otra
                         boolean actualizado = pedidoDAO.actualizar(columna, id, valor);
                         if (actualizado) {
                         System.out.println("Cantidad actualizada correctamente.");
@@ -106,8 +111,8 @@ public class PedidoVIEW {
                         System.out.print("Ingrese el nuevo estado: ");
                         System.out.print("1. Entregado: ");
                         System.out.print("2. No entregado: ");
-                            dato = sc.nextInt();
-
+                        dato = sc.nextInt();
+                        //Cambia el dato introducido por un booleano para cambiar el estado
                         if ( dato == 1) {
                             estado = true;
                         }else if (dato == 0) {
@@ -131,12 +136,14 @@ public class PedidoVIEW {
         } while (!opcion.equalsIgnoreCase("0"));
     }
     
+    //MEtodo para eliminar pedido
     public void eliminarPedido() {
         int id;
         Pedido pedido;
         System.out.print("Ingrese el id del pedido que quiere eliminar: ");
         id = sc.nextInt();
         PedidoDAO pedidoDAO = new PedidoDAO();
+        //Obtiene el objeto pedido segun el id
         pedido = pedidoDAO.buscarMostrar(id);
 
         if (pedido == null) {
@@ -150,11 +157,13 @@ public class PedidoVIEW {
             System.out.println("---¿Está seguro?---");
             String opcion;
             boolean seguir = true;
+
             do { 
                 System.out.println("1. SI / 2. NO");
                 opcion = sc.next();
                 switch (opcion) {
                     case "1", "si", "SI" -> {
+                        //Compara el datro introducido con el de la base de datos y se elimina
                         if (pedidoDAO.buscar(id) == id ){
                             pedidoDAO.eliminar(id);
                             System.out.println("Pedido eliminado");
@@ -176,6 +185,8 @@ public class PedidoVIEW {
             } while (seguir);
         }
     }
+
+    //MEtodo mostrar todos los pedidos
     public void mostrarPedidos() {
         PedidoDAO pedidoDAO = new PedidoDAO();
         array_pedidos = pedidoDAO.obtenerTodos(); // Llenar la lista con los clientes de la BD
@@ -189,7 +200,7 @@ public class PedidoVIEW {
         } else {
             System.out.println("Clientes: ");
             for (Pedido pedido : array_pedidos) {
-                System.out.println(pedido); // `toString()
+                System.out.println(pedido); // imprime los pedidos segun el `toString()
             }
         }
     }    

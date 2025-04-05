@@ -12,6 +12,7 @@ public class EmpleadoVIEW {
     public Scanner sc = new Scanner(System.in);
     public ArrayList<Empleado> array_empleados = new ArrayList<>();
     
+    //MEnu principal de la clase empleado
     public void menu() {
         String opcion;
         
@@ -25,7 +26,8 @@ public class EmpleadoVIEW {
             System.out.print(">>> ");
             opcion = sc.next();
             sc.nextLine();
-                
+            //Limpia el buffer de entrada de datos
+
             switch (opcion) {
                 case "1", "registrar" -> { registrarEmpleado(); }
                 case "2", "modificar" -> { modificarEmpleado(); }
@@ -39,7 +41,7 @@ public class EmpleadoVIEW {
 
         } while (!opcion.equalsIgnoreCase("0"));
     }
-   
+    // Metodo registrar nuevo empleado
     public void registrarEmpleado() {
         String dni;
         String nombre;
@@ -68,6 +70,7 @@ public class EmpleadoVIEW {
         System.out.print("Ingrese el cargo: ");
         String cargo = sc.nextLine();
 
+        //Se pasan los datos de Phone y salary a int pra crear objeto e insertarlo en la DB
         int telefono = Integer.parseInt(phone);
         int salario = Integer.parseInt(salary);
 
@@ -80,6 +83,7 @@ public class EmpleadoVIEW {
 
         }
     }
+    //MEtodo modificar empleado
     public void modificarEmpleado() {
         String opcion;
         String columna;
@@ -98,7 +102,9 @@ public class EmpleadoVIEW {
             System.out.println("0. Atrás");
             opcion = sc.next();
             sc.nextLine();
+            //Limpia el buffer de entrada de datos
 
+            //En caso de que se introduzca 0 sale del menu y no se ejecuta el codigo restante
             if(opcion.equalsIgnoreCase("0")) {
                 break;
             }
@@ -108,6 +114,7 @@ public class EmpleadoVIEW {
             dni = sc.nextLine();
 
             EmpleadoDAO empleadoDAO = new EmpleadoDAO();
+            //Obtiene el objeto empleado segun dni
             empleado_modificar = empleadoDAO.buscarMostrar(dni);
             
             if (empleado_modificar == null) {
@@ -123,12 +130,14 @@ public class EmpleadoVIEW {
                         valor = direccion_nueva;
                         columna = "direccion";
                         
+                        //Actualiza empleado segun columna y dni y si lo consigue o no muestra cosas diferentes
                         boolean actualizado = empleadoDAO.actualizar(columna, dni, valor);
                         if (actualizado) {
                         System.out.println("Empleado actualizado correctamente.");
                         } else {
                         System.out.println("Error al actualizar el empleado.");
                         }
+                        //Asigna a opcion 0 para evitar problemas en menu posteriores
                         opcion = "0";
                     }
                     case "2", "telefono" -> {
@@ -196,6 +205,7 @@ public class EmpleadoVIEW {
 
         } while (!opcion.equalsIgnoreCase("0"));
     }
+    //MEtodo eliminar empleado
     public void eliminarEmpleado() {
         String dni;
         Empleado empleado;
@@ -203,8 +213,10 @@ public class EmpleadoVIEW {
         System.out.print("--> ");
         dni = sc.next();
         sc.nextLine();
+        //Limpia el buffer de entrada de datos
 
         EmpleadoDAO empleadoDAO = new EmpleadoDAO();
+        //Obtiene el objeto empleado segun dni
         empleado = empleadoDAO.buscarMostrar(dni);
 
         if (empleado == null) {
@@ -225,7 +237,7 @@ public class EmpleadoVIEW {
                 sc.nextLine();
                 switch (opcion) {
                     case "1", "si", "SI" -> {
-                        
+                        //En caso de que coincida el dni introducido con el de la DB se elimina y si lo consigue o no muestra una cosa diferente
                         if (empleadoDAO.buscar(dni).equals(dni)) {
                             empleadoDAO.eliminar(dni);
                             System.out.println("Empelado eliminado");
@@ -248,7 +260,7 @@ public class EmpleadoVIEW {
         }
     }
 
-    
+    //MEtodo para mostrar todos los empleados
     public void mostrarEmpleados() {
        EmpleadoDAO empleadoDAO = new EmpleadoDAO();
         array_empleados = empleadoDAO.obtenerTodos(); // Llenar la lista con los clientes de la BD
@@ -262,7 +274,7 @@ public class EmpleadoVIEW {
         } else {
             System.out.println("Clientes: ");
             for (Empleado empleado : array_empleados) {
-                System.out.println(empleado); // `toString()
+                System.out.println(empleado); // `imprime como el toString()
             }
         }
 
