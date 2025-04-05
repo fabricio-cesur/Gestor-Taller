@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 public class Pedido {
 
+    //Atributos
     private int id;
     private String codigo_item; 
     private int cantidad_solicitada;
@@ -17,7 +18,7 @@ public class Pedido {
         this.fecha_pedido = LocalDate.now();
         this.completado = false;
     }
-
+    //gATER Y SETER
     public int getIdPedido() { return this.id; }
     public String getCodigoItem() { return this.codigo_item; }
     public int getCantidadSolicitada() { return this.cantidad_solicitada; }
@@ -28,6 +29,7 @@ public class Pedido {
         this.completado = completado;
     }
 
+    //MEtodo que se utiliza a imprimir el objeto
     @Override
     public String toString() {
         return "Código de pedido: " + this.id + ", código Item=" + this.codigo_item + ", cantidad=" + this.cantidad_solicitada +
