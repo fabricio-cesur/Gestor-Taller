@@ -1,12 +1,13 @@
 package model;
 public class Vehiculo {
-    
+    //Atributos
     public String matricula;
     public String modelo;
     public String marca;
     public String ano;
     public String dni_cliente;
 
+    //Constructor
     public Vehiculo(String matricula, String modelo, String marca, String ano, String dni_cliente) {
         this.matricula = matricula;
         this.modelo = modelo;
@@ -15,6 +16,7 @@ public class Vehiculo {
         this.dni_cliente = dni_cliente;
     }
 
+    //Geter y seter
     public String getMatricula() { return this.matricula; }
     public String getModelo() { return this.modelo; }
     public String getMarca() { return this.marca; }
@@ -27,6 +29,7 @@ public class Vehiculo {
     public void setAno(String ano) { this.ano = ano; }
     public void setDniCliente(String dni_cliente) { this.dni_cliente = dni_cliente; }
 
+    //MEtodo que se utiliza a imprimir el objeto
     @Override
     public String toString() { 
         return "Matricula: " + this.getMatricula() + ", Marca: " + this.getMarca() + ", Modelo: " + this.getModelo() 

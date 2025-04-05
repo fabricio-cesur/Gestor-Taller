@@ -1,16 +1,17 @@
 package model;
 
 public class Empleado {
-    public String dni;
-    public String nombre;
-    public String apellido;
-    public String direccion;
-    public int telefono;
-    public String cuenta_bancaria;
-    public int salario;
-    public String cargo;
+    //Atributos
+    private String dni;
+    private String nombre;
+    private String apellido;
+    private String direccion;
+    private int telefono;
+    private String cuenta_bancaria;
+    private int salario;
+    private String cargo;
     
-    
+    //Constructor
     public Empleado(String dni, String nombre,String apellido, String direccion, int telefono, 
     String cuenta_bancaria, int salario, String cargo){
         this.dni = dni;
@@ -24,9 +25,7 @@ public class Empleado {
 
     }
 
-    //TODO: Mostrar y toString
-    //mostrar() será mostrar todo el empleado con sus datos
-    //toString() será para mostrar el empleado resumido en una sóla línea con sus datos más importantes
+    //get y set
     public String getDni() { return this.dni; }
     public String getNombre() { return this.nombre; }
     public String getApellido() { return this.apellido; }
@@ -45,6 +44,8 @@ public class Empleado {
     public void setCuentaBancaria(String cuenta_bancaria) { this.cuenta_bancaria = cuenta_bancaria; }
     public String setSargo() { return this.cargo; }
    
+    //MEtodo que se utiliza a imprimir el objeto
+
     @Override
     public String toString() { 
         return "DNI: " + this.getDni() + ", Nombre: " + this.getNombre() + ", Apellidos: " + this.getApellido() 

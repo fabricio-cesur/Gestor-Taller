@@ -1,17 +1,16 @@
 package model;
 
-import dao.PedidoDAO;
-
 public class Item {
-    
-    public String nombre;
-    public int id_proveedor;
-    public int minimo;
-    public double precio;
-    public int cantidad;
-    public boolean restock;
+    //Atributos
+    private String nombre;
+    private int id_proveedor;
+    private int minimo;
+    private double precio;
+    private int cantidad;
+    private boolean restock;
     private final int REPOSICION = 10;
 
+    //Constructor
     public Item(String nombre, int id_proveedor, int minimo, int cantidad, double precio) {
         
         this.nombre = nombre;
@@ -23,7 +22,7 @@ public class Item {
     }
 
     
-    
+    //Geter y seter
     public String getNombre() { return this.nombre; }
     public int getIdProveedor() { return this.id_proveedor; }
     public double getPrecio() { return this.precio; }
@@ -34,9 +33,10 @@ public class Item {
     public void setCantidad(int nuevaCantidad) {
         this.cantidad = nuevaCantidad;
         this.restock = (this.cantidad <= this.minimo);
-        verificarStock();
+        //verificarStock();
     }
-
+/*
+//Metodos para generear automaticamente un pedido segun el stock
     // Método para verificar si se necesita reabastecimiento
     private void verificarStock() {
         if (this.restock) {
@@ -44,11 +44,11 @@ public class Item {
         }
     }
 
-    //REVISAR!!!!!!!!
+    
     private void generarPedido() {
         Pedido pedido = null;
         PedidoDAO pedidoDAO = new PedidoDAO();
-       // pedidoDAO.insertarPedido(pedido);
+       // pedidoDAO.insertar(pedido);
         
     }
 
@@ -58,8 +58,9 @@ public class Item {
         System.out.println(" Pedido recibido para " + this.nombre + ". Nueva cantidad: " + nuevaCantidad);
         this.setCantidad(nuevaCantidad);
     }
+*/
 
-
+    //MEtodo que se utiliza a imprimir el objeto
     @Override
     public String toString() { 
         return "Nombre: " + this.getNombre() + ", Id del proveedor: " + this.getIdProveedor() 
