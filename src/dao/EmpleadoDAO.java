@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import model.Empleado;
 
 public class EmpleadoDAO {
-
+    //Metodo para crear un nuevo empleado e insertarlo en la DB
     public boolean  insertar(Empleado empleado) {
         Connection conexion = ConexionDB.conectar(); 
         if (conexion != null) { 
@@ -34,7 +34,7 @@ public class EmpleadoDAO {
         }
         return false;
     }
-
+    //Metodo para actualizar un empleado actualiza cualquier columna segun el dato que recibe
     public boolean actualizar(String columna, String dni, String valor ) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
@@ -51,7 +51,7 @@ public class EmpleadoDAO {
         }
         return false;
     }
-
+    //Metodo para eliminar un empleado segun el DNI
     public boolean  eliminar(String dni) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
@@ -67,7 +67,7 @@ public class EmpleadoDAO {
         }
         return false;
     }
-
+    //Metodo para buscar un empleado en la base de datos
     public String buscar(String dni) {
         Connection conexion = ConexionDB.conectar();
         String dni_busqueda = null;
@@ -89,7 +89,7 @@ public class EmpleadoDAO {
         }
         return null; 
     }
-    
+    //Metodo para obtener un objeto Empleado por su dni
     public Empleado buscarMostrar(String dni) {
         Connection conexion = ConexionDB.conectar();
 
@@ -120,7 +120,7 @@ public class EmpleadoDAO {
         }
         return null; 
     }
-
+    //MEtodo para obtener todos los datos de Empleados de la DB
     public ArrayList<Empleado> obtenerTodos() {
         Connection conexion = ConexionDB.conectar();
 

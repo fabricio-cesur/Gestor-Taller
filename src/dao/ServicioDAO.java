@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import model.Servicio;
 
 public class ServicioDAO {
-
+    //Metodo para insertar un nuevo servicio
     public boolean insertar(Servicio servicio) {
         Connection conexion = ConexionDB.conectar(); 
         if (conexion != null) {
@@ -28,7 +28,7 @@ public class ServicioDAO {
         }
         return false;
     }
-    
+    //MEtodo para actualizar un servicio
     public boolean actualizar(String columna, String id, String valor ) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
@@ -45,7 +45,7 @@ public class ServicioDAO {
         }
         return false;
     }
-
+    //Metodo para eliminar un servicio
     public boolean eliminar(String id) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
@@ -62,7 +62,7 @@ public class ServicioDAO {
         }
         return false;
     }
-
+    //Metodo para buscar un servicio en la DB
     public String buscar(String id) {
         Connection conexion = ConexionDB.conectar();
         String id_busqueda = null;
@@ -84,7 +84,7 @@ public class ServicioDAO {
         }
         return null; 
     }
-
+    //Metodo para obtener un objeto servicio 
     public Servicio obtener(String id) {
         Connection conexion = ConexionDB.conectar();
 
@@ -112,7 +112,7 @@ public class ServicioDAO {
         }
         return null; 
     }
-
+    //Metodo para ver todos los servicios
     public ArrayList<Servicio> obtenerTodos() {
         Connection conexion = ConexionDB.conectar();
 

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import model.Vehiculo;
 
 public class VehiculoDAO {
-
+    //MEtodo para insertar un nuevo vehiculo
     public boolean insertar(Vehiculo vehiculo) {
         Connection conexion = ConexionDB.conectar(); 
         if (conexion != null) { 
@@ -30,7 +30,7 @@ public class VehiculoDAO {
         }
         return false;
     }
-
+    //Metodo para actualizar un vehiculo
     public boolean actualizar(String columna, String matricula, String valor ) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
@@ -48,7 +48,7 @@ public class VehiculoDAO {
         }
         return false;
     }
-
+    //Metodo para eliminar un vehiculo
     public boolean eliminar(String matricula) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
@@ -63,7 +63,7 @@ public class VehiculoDAO {
         }
         return false;
     }
-
+    //Metodo para buscar un vehiculo
     public String buscar(String matricula) {
         Connection conexion = ConexionDB.conectar();
         String matricula_busqueda = null;
@@ -90,7 +90,7 @@ public class VehiculoDAO {
         }
         return null; 
     }
-
+    //MEtodo para obtener un objeto vehiculo 
     public Vehiculo buscarMostrar(String matricula) {
         Connection conexion = ConexionDB.conectar();
         
@@ -119,7 +119,7 @@ public class VehiculoDAO {
         }
         return null; 
     }
-
+    //MEtodo para ver todos los vehiculos
     public ArrayList<Vehiculo> obtenerTodos() {
         Connection conexion = ConexionDB.conectar();
         ArrayList<Vehiculo> vehiculos = new ArrayList<>();

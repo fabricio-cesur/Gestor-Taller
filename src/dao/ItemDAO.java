@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import model.Item;
 
 public class ItemDAO {
-
+    //Metodo para insertar en la DB un nuevo item
     public boolean  insertar(Item item) {
         Connection conexion = ConexionDB.conectar(); 
         if (conexion != null) {
@@ -29,7 +29,7 @@ public class ItemDAO {
         }
         return false;
     }
-
+    //MEtodo para actualizar el item
     public boolean actualizar(String columna, String nombre, String valor) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
@@ -46,7 +46,7 @@ public class ItemDAO {
         }
         return false;
     }
-
+    //Metodo para eliminar un item
     public boolean  eliminar(String nombre) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
@@ -62,16 +62,16 @@ public class ItemDAO {
         }
         return false;
     }
-
+    //MEtodo para buscar un nombre en la DB
     public String buscar(String nombre) {
         Connection conexion = ConexionDB.conectar();
         String nombre_busqueda = null;
     
         if (conexion != null) {
-            String query = "SELECT nombre FROM Item WHERE nombre = ?"; // Usamos un parámetro '?'
+            String query = "SELECT nombre FROM Item WHERE nombre = ?"; 
     
             try (PreparedStatement stmt = conexion.prepareStatement(query)) {
-                stmt.setString(1, nombre); // Asignamos el valor del nombre al parámetro
+                stmt.setString(1, nombre); 
                 ResultSet rs = stmt.executeQuery();
     
                 if (rs.next()) {
@@ -84,7 +84,7 @@ public class ItemDAO {
         }
         return null; 
     }
-
+    //Metodo para obtener un objeto ITem segun el nombre de la DB
     public Item buscarMostrar(String nombre) {
         Connection conexion = ConexionDB.conectar();
 
@@ -112,11 +112,10 @@ public class ItemDAO {
         }
         return null; 
     }
-
+    //Metodo para obtener todos los items
     public ArrayList<Item> obtenerTodos() {
         Connection conexion = ConexionDB.conectar();
         ArrayList<Item> items = new ArrayList<>();
-
         if (conexion != null) {
             
             String query = "SELECT * FROM Item";

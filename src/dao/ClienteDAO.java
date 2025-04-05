@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import model.Cliente;
 
 public class ClienteDAO {
-
+    //Metodo crear un nuevo cliente
     public boolean insertar(Cliente cliente) {
         Connection conexion = ConexionDB.conectar(); 
 
@@ -33,7 +33,8 @@ public class ClienteDAO {
         }
         return false;
     }
-
+    //Metodo para actualizar un cliente 
+    // Actualiza cualquier columna segun el dato de columna que venga de Cliente VIEW
     public boolean actualizar(String columna, String dni, String valor ) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
@@ -50,7 +51,7 @@ public class ClienteDAO {
         }
         return false;
     }
-
+    //Metodo para eliminar un cliente
     public boolean  eliminar(String dni) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
@@ -66,7 +67,7 @@ public class ClienteDAO {
         }
         return false;
     }
-
+    //Metodo para buscar un DNI en la Base de datos
     public String buscar(String dni) {
         Connection conexion = ConexionDB.conectar();
         String dni_busqueda = null;
@@ -89,7 +90,7 @@ public class ClienteDAO {
         }
         return null; 
     }
-
+    //Metodo para obtener un Cliente mediante el DNI
     public Cliente buscarMostrar(String dni) {
         Connection conexion = ConexionDB.conectar();
 
@@ -118,7 +119,7 @@ public class ClienteDAO {
         }
         return null; 
     }
-
+    //Metodo para obtener todos los Clientes
     public ArrayList<Cliente> obtenerTodos() {
         Connection conexion = ConexionDB.conectar();
         ArrayList<Cliente> clientes = new ArrayList<>();
