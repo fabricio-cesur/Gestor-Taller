@@ -12,6 +12,7 @@ public class VehiculoVIEW {
 
     Scanner sc = new Scanner(System.in);
 
+    //Menu principal de la clase vehiculo
     public void menu() {
         String opcion;
         
@@ -39,6 +40,7 @@ public class VehiculoVIEW {
         } while (!opcion.equalsIgnoreCase("0"));
     }
 
+    //MEtodo para introducir un nuevo vehiculo
     public void registrarVehiculo() {
         String matricula;
         String modelo;
@@ -57,10 +59,12 @@ public class VehiculoVIEW {
         ano = sc.nextLine();
         System.out.print("Ingrese el DNI del propietario: ");
         dni_cliente = sc.nextLine();
+
+        //Crea un nuevo objeto y lo introduce en la DB
         vehiculo = new Vehiculo(matricula, modelo, marca, ano, dni_cliente);
         VehiculoDAO vehiculoDAO = new VehiculoDAO();
 
-        //TODO: Revisar que se inserte dos veces
+        
         if (vehiculoDAO.insertar(vehiculo)) {
             System.out.println("Vehículo introducido correctamente");
         } else {
@@ -68,6 +72,7 @@ public class VehiculoVIEW {
         }
     }
 
+    //Metodo para modificar un vehiculo
     public void modificarVehiculo() {
         String opcion;
         String columna;
@@ -82,7 +87,9 @@ public class VehiculoVIEW {
             System.out.print(">>> ");
             opcion = sc.next();
             sc.nextLine();
+            //Limpia el buffer de entrada de datos
 
+            //En caso de que se introduzca 0 sale del menu y no se ejecuta el codigo restante
             if(opcion.equalsIgnoreCase("0")) {
                 break;
             }
@@ -92,6 +99,7 @@ public class VehiculoVIEW {
             sc.nextLine();
 
             VehiculoDAO vehiculoDAO = new VehiculoDAO();
+            //Obtiene el objeto vehiculo segun la matricula
             vehiculo_modificar = vehiculoDAO.buscarMostrar(matricula);
             
             if (vehiculo_modificar == null) {
@@ -104,8 +112,11 @@ public class VehiculoVIEW {
                         System.out.print("Ingrese el nuevo dni: ");
                         String propietario_nuevo = sc.next();
                         sc.nextLine();
+                        //Limpia el buffer de entrada de datos
+
                         columna = "dni_cliente";
                         valor = propietario_nuevo;
+                        //Actualiza vehiculo y segun si lo consigue o no muestra una cosa u otra
                         boolean actualizado = vehiculoDAO.actualizar(columna, matricula, valor);
                         if (actualizado) {
                         System.out.println("Propietario actualizado correctamente.");
@@ -125,11 +136,15 @@ public class VehiculoVIEW {
 
         } while (!opcion.equalsIgnoreCase("0"));
     }
+
+    //Metodo para eliminar un vehiculo
     public void eliminarVehiculo() {
         String matricula;
         Vehiculo vehiculo;
         System.out.print("Ingrese la matrícula del vehiculo que quiere eliminar: ");
         matricula = sc.next();
+
+        //obtine el objeto vehiculo segun la matricula
         VehiculoDAO vehiculoDAO = new VehiculoDAO();
         vehiculo = vehiculoDAO.buscarMostrar(matricula);
 
@@ -152,6 +167,7 @@ public class VehiculoVIEW {
                 switch (opcion) {
                     case "1", "si", "SI" -> {
                         
+                        //Compara la matricula introducida con la de la DB y la elimina
                         if (vehiculoDAO.buscar(matricula).equals(matricula)) {
                             vehiculoDAO.eliminar(matricula);
                             System.out.println("Vehiculo eliminado correctamente");
@@ -171,6 +187,8 @@ public class VehiculoVIEW {
             } while (seguir);
         }
     }
+
+    //Metodo para mostrar todos los vehiculos
     public void mostrarVehiculos() {
         VehiculoDAO vehiculoDAO = new VehiculoDAO();
         array_vehiculos = vehiculoDAO.obtenerTodos(); 
@@ -183,7 +201,7 @@ public class VehiculoVIEW {
         } else {
             System.out.println("Vehiculos: ");
             for (Vehiculo vehiculo : array_vehiculos) {
-                System.out.println(vehiculo); // `toString()
+                System.out.println(vehiculo); // imprime los vehiculos con la plantilla `toString()
             }
         }
     }

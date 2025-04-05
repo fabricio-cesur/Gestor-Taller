@@ -9,6 +9,7 @@ public class ClienteVIEW {
 
     public ArrayList<Cliente> array_clientes = new ArrayList<>();
 
+    //Menu principal de la clase cliente
     public void menu() {
 
         String opcion;
@@ -29,13 +30,13 @@ public class ClienteVIEW {
                 case "2", "modificar" -> { modificarCliente(); }
                 case "3", "eliminar" -> { eliminarCliente(); }
                 case "4", "mostrar" -> { mostrarClientes(); }
-                case "0" -> { System.out.println("Volviendo al menu anterior. ");}
+                case "0" -> { System.out.println("Volviendo al menu anterior. ");} //Vuelve al menu anterior
                 default -> { System.out.println("ERR0R: No se reconoció esa opción"); }
             }
 
         } while (!opcion.equalsIgnoreCase("0"));
     }
-    // public Validacion val = new Validacion();
+    
 
     Scanner sc = new Scanner(System.in);
     public void registrarCliente() {
@@ -60,11 +61,14 @@ public class ClienteVIEW {
         System.out.print("Ingrese el número de cuenta bancaria: ");
         cuenta_bancaria = sc.nextLine();
         
-        int telefono = Integer.parseInt(phone);
+        //Cambia el tipo de dato para poder introducirlo en la DB y crear el objeto cliente
+        int telefono = Integer.parseInt(phone); 
  
         cliente = new Cliente(dni, nombre, apellido, direccion, telefono, cuenta_bancaria);
        
         ClienteDAO clienteDAO = new ClienteDAO();
+
+        //Inserta el dato en laDB y muestra segun si lo consigue o no
         if (clienteDAO.insertar(cliente)) {
             System.out.println("Cliente registrado correctamente");
         } else {
@@ -78,6 +82,8 @@ public class ClienteVIEW {
         String valor;
 
         Cliente cliente_modificar;
+
+        //Menu interno de modificar
         do {
             System.out.println("Qué desea modificar?");
             System.out.println("1. Nombre");
@@ -89,19 +95,23 @@ public class ClienteVIEW {
             System.out.print(">>> ");
             opcion = sc.next();
             sc.nextLine();
+            //Limpia el buffer de entrada de datos
 
+            //Si es 0 la entrada, sale al menu anterior y no sigue ejecutando el codigo
             if(opcion.equalsIgnoreCase("0")) {
                 break;
             }
             
-            //TODO: Validar que el DNI exista
+            
             System.out.println("Ingrese el DNI del cliente a modificar: ");
             System.out.print("--> ");
             dni = sc.next();
             sc.nextLine();
-            
+            //Limpia el buffer de entrada de datos
+
 
             ClienteDAO clienteDAO = new ClienteDAO();
+            //Obtiene el objeto cliente
             cliente_modificar = clienteDAO.buscarMostrar(dni);
             
             if (cliente_modificar == null) {
@@ -109,20 +119,24 @@ public class ClienteVIEW {
                 break;
             } else {
                 switch (opcion) {
-                    //TODO: Añadir validaciones
+                    
                    
                     case "1", "nombre" -> {
                         System.out.print("Ingrese el nuevo nombre: ");
                         String nombre_nuevo = sc.next();
                         sc.nextLine();
+                        //Limpia el buffer de entrada de datos
+
                         columna = "nombre";
                         valor = nombre_nuevo;
+                        //Actualiza cliente segun la columna
                         boolean actualizado = clienteDAO.actualizar(columna, dni, valor);
                         if (actualizado) {
                             System.out.println("Nombre actualizado correctamente.");
                         } else {
                             System.out.println("Error al actualizar el nombre.");
                         }
+                        //Asigna la opcion 0 para evitar problemas en menus posteriores
                         opcion = "0";
                     }
                     case "2", "apellido" -> {
@@ -192,13 +206,17 @@ public class ClienteVIEW {
 
 
     }
+    //Metodo para eliminar un cliente
     public void eliminarCliente() {
         String dni;
         Cliente cliente;
         System.out.print("Ingrese el DNI del cliente que quiere eliminar: ");
         dni = sc.next();
         sc.nextLine();
+        //Limpia el buffer de entrada de datos
+
         ClienteDAO clienteDAO = new ClienteDAO();
+        //Obtiene el objeto cliente
         cliente = clienteDAO.buscarMostrar(dni);
 
         if (cliente == null) {
@@ -211,6 +229,7 @@ public class ClienteVIEW {
             System.out.println("Cuenta Bancaria: " + cliente.getCuentaBancaria());
             System.out.println("---¿Está seguro?---");
             String opcion;
+            //Atributo para pasar al siguiente menu o no
             boolean seguir = true;
             do { 
                 System.out.println("1. SI / 2. NO");
@@ -218,6 +237,7 @@ public class ClienteVIEW {
                 sc.nextLine();
                 switch (opcion) {
                     case "1", "si", "SI" -> {
+                        //En caso de que coincida el Dni introducido con uno de la DB se elimina
                         if (clienteDAO.buscar(dni).equals(dni)) {
                             clienteDAO.eliminar(dni);
                             System.out.println("Cliente eliminado");
@@ -252,7 +272,7 @@ public class ClienteVIEW {
         } else {
             System.out.println("Clientes: ");
             for (Cliente cliente : array_clientes) {
-                System.out.println(cliente); // toString()
+                System.out.println(cliente); // imprime el toString()
                 
             }
             System.out.println(" ");

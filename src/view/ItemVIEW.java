@@ -11,6 +11,7 @@ public class ItemVIEW {
     
     Scanner sc = new Scanner(System.in);
 
+    //Menu principal de la clase item
     public void menu() {
         String opcion;
         do { 
@@ -23,7 +24,8 @@ public class ItemVIEW {
             System.out.print(">>> ");
             opcion = sc.next();
             sc.nextLine();
-            
+            //Limpia el buffer de entrada de datos
+
             
             switch (opcion) {
                 case "1", "registrar" -> { registrarItem(); }
@@ -53,6 +55,8 @@ public class ItemVIEW {
         System.out.print("Ingrese el id del proveedor: ");
         id_proveedor = sc.nextInt();
         sc.nextLine();
+        //Limpia el buffer de entrada de datos
+
         System.out.print("Ingrese la cantidad mínima que quiere en el almacen: ");
         minimo = sc.nextInt();
         sc.nextLine();
@@ -63,6 +67,7 @@ public class ItemVIEW {
         precio = sc.nextDouble();
         sc.nextLine();
          
+        //Creacion del objeto item para introducirlo en la DB
         item = new Item( nombre, id_proveedor, minimo, cantidad, precio);
        
         ItemDAO itemDAO = new ItemDAO();
@@ -72,13 +77,16 @@ public class ItemVIEW {
             System.out.println("No se ha podido registrar el item");
         }
     }
+
+    //MEtodo modifiar item
     public void modificarItem() {
         String opcion;
         String columna;
         String valor;
         String nombre;
-
         Item codigo_modificar;
+
+        //Menu de modificar item
         do {
             System.out.println("Qué desea modificar?");
             System.out.println("1. Nombre");
@@ -89,6 +97,7 @@ public class ItemVIEW {
             System.out.print(">>> ");
             opcion = sc.nextLine();
 
+            //En caso de qe sea 0 sale del menu y no se ejecuta el resto del codigo
             if(opcion.equalsIgnoreCase("0")) {
                 break;
             }
@@ -98,6 +107,7 @@ public class ItemVIEW {
             nombre = sc.nextLine();
 
             ItemDAO itemDAO = new ItemDAO();
+            //Obtiene el objeto item filtrando por el nombre
             codigo_modificar = itemDAO.buscarMostrar(nombre);
             
             
@@ -112,12 +122,14 @@ public class ItemVIEW {
                         sc.nextLine();
                         columna = "nombre";
                         valor = nombre_nuevo;
+                        //Segun si consigue actualizar o no muestra una cosa u otra
                         boolean actualizado = itemDAO.actualizar(columna, nombre, valor);
                         if (actualizado) {
                             System.out.println("Nombre actualizado correctamente.");
                         } else {
                             System.out.println("Error al actualizar el nombre.");
                         }
+                        //Se asigna opcion 0 para evitar problemas en menu posteriores
                         opcion = "0";
 
                     }
@@ -174,12 +186,15 @@ public class ItemVIEW {
         } while (!opcion.equalsIgnoreCase("0"));
 
     }
+
+    //MEtodo para eliminar Item
     public void eliminarItem() {
         String nombre;
         Item item;
         System.out.print("Ingrese el nombre del item que quiere eliminar: ");
         nombre = sc.nextLine();
         ItemDAO itemDAO = new ItemDAO();
+        //Obtiene el objeto item
         item = itemDAO.buscarMostrar(nombre);
 
         if (item == null) {
@@ -197,6 +212,7 @@ public class ItemVIEW {
                 sc.nextLine();
                 switch (opcion) {
                     case "1", "si", "SI" -> {
+                        //Si coincide el nombre introducido con el que hay en la DB y es eliminado o no muestra una cosa u otra
                         if (itemDAO.buscar(nombre).equals(nombre)) {
                             itemDAO.eliminar(nombre);
                             System.out.println("Item eliminado");
@@ -218,6 +234,8 @@ public class ItemVIEW {
             } while (seguir);
         }
     }
+
+    //Metodo para mostrar todos los Item de la DB
     public void mostrarItems() {
         ItemDAO itemDAO = new ItemDAO();
         array_items = itemDAO.obtenerTodos(); // Llenar la lista con los clientes de la BD
@@ -231,7 +249,7 @@ public class ItemVIEW {
         } else {
             System.out.println("Items: ");
             for (Item item : array_items) {
-                System.out.println(item); // `toString()
+                System.out.println(item); // imprime los items con el `toString()
             }
         }
     }    
