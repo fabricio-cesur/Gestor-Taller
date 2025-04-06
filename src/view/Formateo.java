@@ -9,14 +9,17 @@ public class Formateo {
     
     //Formatear y devolver el mismo tipo o nulo
     public String matricula(String matricula) {
-        if (matricula == null) {
-            System.out.println("La matrícula está vacía");
-            return null;
-        }
         matricula = quitarEspacios(matricula);
         matricula = quitarEspeciales(matricula);
+        matricula = quitarVocales(matricula, "amb");
         matricula = matricula.toUpperCase();
         return matricula;
+    }
+    public String id(String id) {
+        id = quitarEspacios(id);
+        id = quitarEspecialesExcepto(id, ".,");
+        id = quitarLetras(id, "amb");
+        return id;
     }
     public String fecha(String fecha) {
         if (fecha == null || fecha.trim().isEmpty()) {
@@ -100,8 +103,47 @@ public class Formateo {
     public String quitarEspacios(String cadena) {
         return cadena.trim().replaceAll("\\s+", "");
     }
+    public String quitarNumeros(String cadena) {
+        return cadena.replaceAll("[0-9]", "");
+    }
+    public String quitarLetras(String cadena, String opcion) {
+        opcion = opcion.toLowerCase();
+        switch (opcion) {
+            case "mayusculas", "may" -> {
+                return cadena.replaceAll("[A-Z]", "");
+            }
+            case "minusculas", "min" -> {
+                return cadena.replaceAll("[a-z]", "");
+            }
+            case "ambas", "amb" -> {
+                return cadena.replaceAll("[a-zA-Z]", "");
+            }
+            default -> {
+                System.out.println("ERR0R: No se reconoció el tipo de letra que quieres quitar al formatear");
+                return cadena;
+            }
+        }
+    }
+    public String quitarVocales(String cadena, String opcion) {
+        opcion = opcion.toLowerCase();
+        switch (opcion) {
+            case "mayusculas", "may" -> {
+                return cadena.replaceAll("[AEIOU]", "");
+            }
+            case "minusculas", "min" -> {
+                return cadena.replaceAll("[aeiou]", "");
+            }
+            case "ambas", "amb" -> {
+                return cadena.replaceAll("(?i)[aeiou]", "");
+            }
+            default -> {
+                System.out.println("ERR0R: No se reconoció el tipo de v que quieres quitar al formatear");
+                return cadena;
+            }
+        }
+    }
     public String quitarEspeciales(String cadena) {
-        return cadena.replaceAll("[@·#~$%&¬()=,;.:-_¨{ç}^`+*!|\\\\ºª?¿¡/]", "");
+        return cadena.replaceAll("[@·#~$%&¬()=,;.:\\-_¨{ç}^`+*!|\\\\ºª?¿¡/]", "");
     }
     public String quitarEspecialesExcepto(String cadena, String excepciones) {
         String especiales = "[@·#~$%&¬()=,;.:-_¨{ç}^`+*!|\\\\ºª?¿¡/]";
