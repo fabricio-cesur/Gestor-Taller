@@ -1,14 +1,16 @@
 package view;
 
-import dao.ServicioDAO;
-import dao.VehiculoDAO;
+import java.util.ArrayList;
+import model.*;
+import dao.*;
 
 public class Validacion {
     Formateo formatear = new Formateo();
     VehiculoDAO vehiculoDAO = new VehiculoDAO();
     ServicioDAO servicioDAO = new ServicioDAO();
+    EncargoDAO encargoDAO = new EncargoDAO();
     
-    public boolean validarId(String id, String clase) {
+    public boolean validarId(String id, String clase, boolean buscar) {
         if (id == null) {
             System.out.println("El ID no puede estar vacío");
             return false;
@@ -23,10 +25,7 @@ public class Validacion {
             System.err.println("El ID no es un número entero");
             return false;
         }
-        //TODO: añadir métodos de buscar u obtener de cada clase para verificar que exista
         switch (clase) {
-            // case "cliente" -> {}
-            // case "vehiculo" -> {}
             case "servicio" -> {
                 if (servicioDAO.buscar(id) == null) {
                     System.out.println("No existe un servicio con este ID");
@@ -34,14 +33,37 @@ public class Validacion {
                 }
                 return true;
             }
-            // case "encargo" -> {}
-            // case "cita" -> {}
-            // case "item" -> {}
-            // case "empleado" -> {}
-            default -> {
-                System.out.println("ERR0R: No se reconoció la clase de ID que quieres validar");
-                return true;
+            default -> { return true; }
+        }
+    }
+    public boolean validarIdAuxiliar(String id, int id_principal, String clase) {
+        int num_id;
+        if (id == null) {
+            System.out.println("El ID no puede estar vacío");
+            return false;
+        }
+        try {
+            num_id = Integer.parseInt(id);
+            if (num_id < 0) {
+                System.out.println("El ID es menor a 0");
+                return false;
             }
+        } catch (NumberFormatException e) {
+            System.err.println("El ID no es un número entero");
+            return false;
+        }
+        switch (clase) {
+            case "servicio_encargo" -> {
+                ArrayList<Servicio> servicios_encargo = encargoDAO.obtenerServicios(id_principal);
+                for (Servicio servicio : servicios_encargo) {
+                    if (num_id == servicio.getId()) {
+                        return true;
+                    }
+                }
+                System.out.println("Ese ID no pertene a un servicio de ese encargo");
+                return false;
+            }
+            default -> { return true; }
         }
     }
     public boolean validarDNI(String dni) {
@@ -67,7 +89,7 @@ public class Validacion {
             return true;
         }
     }
-    public boolean validarMatricula(String matricula) {
+    public boolean validarMatricula(String matricula, boolean buscar) {
         //Se asegura de estar todo bien escrito, para ello la entrada se debió formatear con anterioridad
         if (matricula == null) {
             System.out.println("La matrícula ingresada está vacía");
@@ -98,9 +120,11 @@ public class Validacion {
         //         return false;
         //     }
         // }
-        if (vehiculoDAO.buscar(matricula) == null) {
-            System.out.println("No se encontró la matrícula " + matricula + " en la base de datos");
-            return false;
+        if (buscar) {
+            if (vehiculoDAO.buscar(matricula) == null) {
+                System.out.println("No se encontró la matrícula " + matricula + " en la base de datos");
+                return false;
+            }
         }
         return true;
     }

@@ -28,10 +28,9 @@ public class EncargoDAO {
         }
         return false;
     }
-    //TODO: Cambiar los id a int
     public boolean insertarServicio(int id_encargo, int id_servicio) {
         Connection conexion = ConexionDB.conectar(); 
-        if (conexion != null) { 
+        if (conexion != null) {
             String query = "INSERT INTO Servicio_Encargo (id_encargo, id_servicio) VALUES (?, ?);";
             try (PreparedStatement stmt = conexion.prepareStatement(query)) { 
                 stmt.setInt(1, id_encargo);
@@ -61,6 +60,7 @@ public class EncargoDAO {
         }
         return false;
     }
+    //Este método actualiza cualquier dato
     public boolean actualizar(String columna, int id, String valor ) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
@@ -78,7 +78,19 @@ public class EncargoDAO {
         }
         return false;
     }
-
+    //Este método actualiza el precio total según los servicios que tenga el encargo
+    public boolean actualizarPrecioTotal(int id_encargo) {
+        ArrayList<Servicio> servicios_encargo = obtenerServicios(id_encargo);
+        Double precio_total = 0.0;
+        for (Servicio servicio : servicios_encargo) {
+            precio_total += servicio.getPrecio();
+        }
+        if (actualizar("precio_total", id_encargo, String.valueOf(precio_total))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     public boolean eliminar(int id) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
