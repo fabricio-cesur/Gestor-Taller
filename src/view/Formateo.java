@@ -3,6 +3,7 @@ package view;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.regex.Pattern;
 
 public class Formateo {
     public DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -11,7 +12,9 @@ public class Formateo {
     public String matricula(String matricula) {
         matricula = quitarEspacios(matricula);
         matricula = quitarEspeciales(matricula);
-        matricula = quitarVocales(matricula, "amb");
+        /*No quitar vocales porque las matrículas 
+        de prueba de la base de datos tienen vocales*/
+        // matricula = quitarVocales(matricula, "amb");
         matricula = matricula.toUpperCase();
         return matricula;
     }
@@ -143,12 +146,10 @@ public class Formateo {
         }
     }
     public String quitarEspeciales(String cadena) {
-        return cadena.replaceAll("[@·#~$%&¬()=,;.:\\-_¨{ç}^`+*!|\\\\ºª?¿¡/]", "");
+        return cadena.replaceAll("[^a-zA-Z0-9]", "");
     }
     public String quitarEspecialesExcepto(String cadena, String excepciones) {
-        String especiales = "[@·#~$%&¬()=,;.:-_¨{ç}^`+*!|\\\\ºª?¿¡/]";
-        especiales = especiales.replaceAll("[" + excepciones + "]", "");
-
-        return cadena.replaceAll(especiales, "");
+        String especiales = "a-zA-Z0-9"+ Pattern.quote(excepciones).replaceAll("[\\\\Q\\\\E]", ""); 
+        return cadena.replaceAll("[^"+especiales+"]", "");
     }
 }

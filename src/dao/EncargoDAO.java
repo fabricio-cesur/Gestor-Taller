@@ -28,10 +28,9 @@ public class EncargoDAO {
         }
         return false;
     }
-    //TODO: Cambiar los id a int
     public boolean insertarServicio(int id_encargo, int id_servicio) {
         Connection conexion = ConexionDB.conectar(); 
-        if (conexion != null) { 
+        if (conexion != null) {
             String query = "INSERT INTO Servicio_Encargo (id_encargo, id_servicio) VALUES (?, ?);";
             try (PreparedStatement stmt = conexion.prepareStatement(query)) { 
                 stmt.setInt(1, id_encargo);
@@ -61,6 +60,7 @@ public class EncargoDAO {
         }
         return false;
     }
+    //Este método actualiza cualquier dato
     public boolean actualizar(String columna, int id, String valor ) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
@@ -78,16 +78,37 @@ public class EncargoDAO {
         }
         return false;
     }
-
+    //Este método actualiza el precio total según los servicios que tenga el encargo
+    public boolean actualizarPrecioTotal(int id_encargo) {
+        ArrayList<Servicio> servicios_encargo = obtenerServicios(id_encargo);
+        Double precio_total = 0.0;
+        for (Servicio servicio : servicios_encargo) {
+            precio_total += servicio.getPrecio();
+        }
+        if (actualizar("precio_total", id_encargo, String.valueOf(precio_total))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     public boolean eliminar(int id) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
+            //Primero elimina de la tabla auxiliar
+            String query_auxiliar = "DELETE FROM Servicio_Encargo WHERE id_encargo = " + id;
+            try (PreparedStatement stmt = conexion.prepareStatement(query_auxiliar)) {
+                stmt.executeUpdate();
+            } catch (SQLException e) {
+                System.out.println("Error al eliminar encargo: " + e.getMessage());
+                return false;
+            }
+            //Luego elimina el encargo
             String query = "DELETE FROM Encargo WHERE id = " + id;
             try (PreparedStatement stmt = conexion.prepareStatement(query)) {
                 
                 int filas_afectadas = stmt.executeUpdate();
                 
-                return filas_afectadas == 1;
+                return filas_afectadas > 0;
             } catch (SQLException e) {
                 System.out.println("Error al eliminar encargo: " + e.getMessage());
             }
@@ -106,26 +127,24 @@ public class EncargoDAO {
                 ResultSet rs = stmt.executeQuery();
 
                 if (rs.next()) {
-                    if (rs.next()) {
-                        encargo = new Encargo(rs.getString("matricula_coche"));
-                        if (rs.getString("id") != null) {
-                            encargo.setId(rs.getInt("id"));
-                        }
-                        if (rs.getString("precio_total") != null) {
-                            encargo.setPrecioTotal(rs.getDouble("precio_total"));
-                        }
-                        if (rs.getString("fecha_inicio") != null) {
-                            encargo.setFechaInicio(format.stringToDate(rs.getString("fecha_inicio")));
-                        }
-                        if (rs.getString("fecha_finalizado") != null) {
-                            encargo.setFechaFinalizado(format.stringToDate(rs.getString("fecha_finalizado")));
-                        }
-                        // O será false por default o lo habrán cambiado a completado
-                        encargo.setCompletado(rs.getBoolean("completado"));
+                    encargo = new Encargo(rs.getString("matricula_coche"));
+                    if (rs.getString("id") != null) {
+                        encargo.setId(rs.getInt("id"));
                     }
+                    if (rs.getString("precio_total") != null) {
+                        encargo.setPrecioTotal(rs.getDouble("precio_total"));
+                    }
+                    if (rs.getString("fecha_inicio") != null) {
+                        encargo.setFechaInicio(format.stringToDate(rs.getString("fecha_inicio")));
+                    }
+                    if (rs.getString("fecha_finalizado") != null) {
+                        encargo.setFechaFinalizado(format.stringToDate(rs.getString("fecha_finalizado")));
+                    }
+                    // O será false por default o lo habrán cambiado a completado
+                    encargo.setCompletado(rs.getBoolean("completado"));
                 }
             } catch (SQLException e) {
-                System.out.println("Error al buscar encargo por Matricula: " + e.getMessage());
+                System.out.println("Error al buscar encargo por Id: " + e.getMessage());
             }
             
             return encargo; 

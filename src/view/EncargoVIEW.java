@@ -32,6 +32,7 @@ public class EncargoVIEW {
             System.out.println("0. Atrás");
             System.out.print(">>> ");
             opcion = sc.next();
+            sc.nextLine();
 
             switch (opcion) {
                 case "1" -> { registrar(); }
@@ -49,16 +50,14 @@ public class EncargoVIEW {
 
     public void registrar() {
         String matricula_vehiculo;
-        Double precio_total = 0.0;
         Encargo encargo;
 
         //Bucle que no sale hasta que la matricula ingresada sea correcta y exista
         do {
             System.out.print("Ingrese la matricula: ");
-            matricula_vehiculo = sc.next();
-            sc.nextLine();
+            matricula_vehiculo = sc.nextLine();
             matricula_vehiculo = form.matricula(matricula_vehiculo);
-        } while (!val.validarMatricula(matricula_vehiculo));
+        } while (!val.validarMatricula(matricula_vehiculo, true));
         //Se crea un encargo y se inserta en la base de datos para crear su id
         encargo = new Encargo(matricula_vehiculo);
         if (!dao.insertar(encargo)) {
@@ -76,13 +75,15 @@ public class EncargoVIEW {
         ArrayList<Integer> servicios_añadidos = new ArrayList<>();
         //Bucle para que agregue servicios hasta que ponga "0"
         do {
-            //Bucle hasta que ingrese uan id de servicio válida
+            //Bucle hasta que ingrese una id de servicio válida
             do {
                 System.out.print("--> ");
-                id_servicio = sc.next();
-                sc.nextLine();
+                id_servicio = sc.nextLine();
+                if (id_servicio.equalsIgnoreCase("0")) {
+                    break;
+                }
                 id_servicio = form.id(id_servicio);
-            } while (!val.validarId(id_servicio, "servicio"));
+            } while (!val.validarId(id_servicio, "servicio", true));
             int int_id = Integer.parseInt(id_servicio);
             if (!id_servicio.equals("0")) {
                 //Revisa que el servicio no haya sido añadido ya
@@ -90,7 +91,6 @@ public class EncargoVIEW {
                     System.out.println("Este servicio ya se ha añadido");
                 } else {
                     //Suma el precio del servicio al total e inserta el servicio en la tabla auxiliar
-                    precio_total += serdao.obtener(id_servicio).getPrecio();
                     dao.insertarServicio(encargo.getId(), int_id);
                     num_servicios++;
                     servicios_añadidos.add(int_id);
@@ -100,7 +100,7 @@ public class EncargoVIEW {
             }
         } while (!id_servicio.equals("0") || num_servicios == 0);
         //Cuando tenga todos los servicios en la tabla auxiliar junto con el precio total lo agrega a la base de datos
-        dao.actualizar("precio_total", encargo.getId(), Double.toString(precio_total));
+        dao.actualizarPrecioTotal(encargo.getId());
 
         //Pregunta para establecer el día en el que se empieza el encargo
         System.out.println("El encargo empezará ahora?");
@@ -138,7 +138,7 @@ public class EncargoVIEW {
         Encargo encargo_modificar;
         do {
             System.out.println("Qué desea modificar?");
-            System.out.println("1. Matricula");
+            System.out.println("1. Matrícula");
             System.out.println("2. Servicios");
             System.out.println("3. Fecha Inicio");
             System.out.println("4. Completado");
@@ -146,57 +146,85 @@ public class EncargoVIEW {
             System.out.print(">>> ");
             opcion = sc.next().toLowerCase();
             sc.nextLine();
+            //Revisando si es 0 antes de preguntar la matrícula
+            if (opcion.equals("0")) {
+                System.out.println("Volviendo al menu anterior.");
+                break;
+            }
+            //Revisando que se reconozca la opción, de forma que no sea así se vuelve a iterar el do-while
+            if (!(opcion.equals("1") || opcion.equals("2") || opcion.equals("3") || opcion.equals("4"))) {
+                System.out.println("No se reconoció esa opción");
+                continue;
+            }
             System.out.println("Ingrese la matrícula del encargo a modificar");
             //Bucle que valida que la matrícula esté bien escrita y exista
             do {
                 System.out.print("--> ");
-                matricula = sc.next();
-                sc.nextLine();
-                matricula = form.matricula(matricula);
-            } while (!val.validarMatricula(matricula));
+                matricula = form.matricula(sc.nextLine());
+            } while (!val.validarMatricula(matricula, true));
             encargo_modificar = dao.obtenerUltimo(matricula);
-            
-            String alternativa;
             if (encargo_modificar == null) {
                 System.out.println("ERR0R: No se encontró el encargo");
                 return;
             } else {
+                int id_encargo = encargo_modificar.getId();
+                String alternativa; //variable para no tener que usar opcion
+                boolean alternativa_valida;
                 switch (opcion) {
-                    //TODO: Añadir validaciones
                     case "1", "matricula" -> {
-                        System.out.print("Ingrese la nueva matrícula: ");
-                        String matricula_nueva = sc.next();
+                        String matricula_nueva;
+                        //Valida que la nueva matrícula esté bien escrita, pero no revisa si existe
+                        do {
+                            System.out.print("Ingrese la nueva matrícula: ");
+                            matricula_nueva = form.matricula(sc.nextLine());
+                        } while (!val.validarMatricula(matricula_nueva, true));
                         valor = matricula_nueva;
-                        columna = "matricula";
-                        
+                        columna = "matricula_coche";
                         if (dao.actualizar(columna, encargo_modificar.getId(), valor)) {
-                        System.out.println("DNI actualizado correctamente.");
+                            System.out.println("Matrícula actualizada correctamente.");
                         } else {
-                        System.out.println("Error al actualizar el DNI.");
+                            System.out.println("Error al actualizar la Matrícula.");
                         }
                     }
                     case "2", "servicios" -> {
-                        mostrarServiciosEncargo(encargo_modificar.getId());
+                        mostrarServiciosEncargo(id_encargo);
                         System.out.println("Qué quiere hacer?");
                         System.out.println("1. Quitar Servicio");
                         System.out.println("2. Añadir Servicio");
-                        System.out.print("--> ");
-                        alternativa = sc.next().toLowerCase();
-                        switch (alternativa) {
-                            case "1", "quitar" -> {
-                                System.out.println("Cuál quiere quitar?");
-                                System.out.print("--> ");
-                                int id_servicio = sc.nextInt();
-                                dao.quitarServicio(encargo_modificar.getId(), id_servicio);
+                        do {
+                            System.out.print("--> ");
+                            alternativa = sc.next().toLowerCase();
+                            switch (alternativa) {
+                                case "1", "quitar" -> {
+                                    System.out.println("Cuál quiere quitar?");
+                                    String id_servicio;
+                                    do {
+                                        System.out.print("--> ");
+                                        id_servicio = sc.next();
+                                        id_servicio = form.id(id_servicio);
+                                    } while (!val.validarIdAuxiliar(id_servicio, id_encargo, "servicio_encargo"));
+                                    dao.quitarServicio(id_encargo, Integer.parseInt(id_servicio));
+                                    dao.actualizarPrecioTotal(id_encargo);
+                                    alternativa_valida = true;
+                                }
+                                case "2", "añadir" -> {
+                                    String id_servicio;
+                                    System.out.println("Qué servicio quiere añadir?");
+                                    do {
+                                        System.out.print("--> ");
+                                        id_servicio = sc.next();
+                                        id_servicio = form.id(id_servicio);
+                                    } while (val.validarId(id_servicio, "servicio", true));
+                                    dao.insertarServicio(id_encargo, Integer.parseInt(id_servicio));
+                                    dao.actualizarPrecioTotal(id_encargo);
+                                    alternativa_valida = true;
+                                }
+                                default -> {
+                                    System.out.println("No se reconoce esa opcion");
+                                    alternativa_valida = false;
+                                }
                             }
-                            case "2", "añadir" -> {
-                                System.out.println("Cuál quiere añadir?");
-                                System.out.print("--> ");
-                                int id_servicio = sc.nextInt();
-                                dao.insertarServicio(encargo_modificar.getId(), id_servicio);
-                            }
-                            default -> {}
-                        }
+                        } while (!alternativa_valida);
                     }
                     case "3", "fecha incio", "fecha", "inicio" -> {
                         System.out.println("El encargo empezará ahora?");
@@ -247,20 +275,43 @@ public class EncargoVIEW {
                             }
                         }
                     }
-                    case "0" -> { System.out.println("Volviendo al menu anterior. ");}
-                    default -> {
-                        System.out.println("No se reconoció esa opción");
-                    }
+                    default -> {}
                 }
             }
         } while (!opcion.equalsIgnoreCase("0"));
     }
     public void eliminar() {
-        System.out.println("Ingrese la matrícula del encargo a eliminar");
-        System.out.print("--> ");
-        String matricula = sc.nextLine();
+        System.out.println("Quiere seleccionar encargo por 1. matrícula o 2. ID?");
+        String decision;
+        Encargo encargo = null;
+        do {
+            System.out.print(">>> ");
+            decision = sc.nextLine();
+            switch (decision) {
+                case "1", "matricula" -> {
+                    System.out.println("Ingrese la matrícula del encargo a eliminar");
+                    String matricula;
+                    do {
+                        System.out.print("--> ");
+                        matricula = form.matricula(sc.nextLine());
+                    } while (!val.validarMatricula(matricula, true));
+                    encargo = dao.obtenerUltimo(matricula);
+                }
+                case "2", "id" -> {
+                    System.out.println("Ingrese el id del encargo a eliminar");
+                    String id;
+                    do {
+                        System.out.print("--> ");
+                        id = form.id(sc.nextLine());
+                    } while (!val.validarId(id, "encargo", true));
+                    encargo = dao.obtenerPorID(Integer.parseInt(id));
+                }
+                default -> {
+                    System.out.println("No se reconoció esa opción");
+                }
+            }
+        } while (encargo == null);
 
-        Encargo encargo = dao.obtenerUltimo(matricula);
         int id_encargo = encargo.getId();
         System.out.println("Está por eliminar al siguiente encargo: ");
         System.out.println("ID: " + encargo.getId() + " Matrícula: " + encargo.getMatricula());
@@ -273,9 +324,10 @@ public class EncargoVIEW {
         do { 
             System.out.println("1. SI / 2. NO");
             opcion = sc.next().toLowerCase();
+            sc.nextLine();
             switch (opcion) {
                 case "1", "si" -> {
-                    if (dao.obtenerUltimo(matricula).getId() == id_encargo) {
+                    if (dao.obtenerPorID(encargo.getId()).getId() == id_encargo) {
                         dao.eliminar(id_encargo);
                         System.out.println("Encargo eliminado");
                         seguir = false;
@@ -312,11 +364,17 @@ public class EncargoVIEW {
     }    
     public void mostrarServiciosMenu() {
         System.out.println("Ingrese la matrícula del encargo");
-        System.out.print("--> ");
-        String matricula = sc.next();
-        sc.nextLine();
-    
-        Encargo encargo = dao.obtenerUltimo(matricula);
+        String matricula;
+        Encargo encargo = null;
+        do {
+            do {
+                System.out.print("--> ");
+                matricula = form.matricula(sc.nextLine());
+            } while (!val.validarMatricula(matricula, true));
+            if (dao.obtenerUltimo(matricula) != null) {
+                encargo = dao.obtenerUltimo(matricula);
+            }
+        } while (encargo == null || !val.validarId(Integer.toString(encargo.getId()), "encargo", true));
         int id_encargo = encargo.getId();
 
         mostrarServiciosEncargo(id_encargo);
