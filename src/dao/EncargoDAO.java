@@ -16,10 +16,9 @@ public class EncargoDAO {
     public boolean insertar(Encargo encargo) {
         Connection conexion = ConexionDB.conectar(); 
         if (conexion != null) { 
-            String query = "INSERT INTO Encargo (matricula_coche) VALUES (" 
-            + encargo.getMatricula() + ");";
+            String query = "INSERT INTO Encargo (matricula_coche) VALUES (?);";
             try (PreparedStatement stmt = conexion.prepareStatement(query)) { 
-               
+               stmt.setString(1, encargo.getMatricula());
                 stmt.executeUpdate(); // Ejecuta la consulta de inserción 
 
                 return true; 
@@ -65,9 +64,10 @@ public class EncargoDAO {
     public boolean actualizar(String columna, int id, String valor ) {
         Connection conexion = ConexionDB.conectar();
         if (conexion != null) {
-            String query = "UPDATE Encargo SET " + columna + "=" + valor + " WHERE id = " + id; 
+            String query = "UPDATE Encargo SET " + columna + " = ? WHERE id = ?"; 
             try (PreparedStatement stmt = conexion.prepareStatement(query)) {
-                                
+                stmt.setString(1, valor);
+                stmt.setInt(2, id);
                 int filas_afectadas = stmt.executeUpdate();
 
                 return filas_afectadas == 1;
