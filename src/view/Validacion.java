@@ -15,8 +15,9 @@ public class Validacion {
             System.out.println("El ID no puede estar vacío");
             return false;
         }
+        int num_id;
         try {
-            int num_id = Integer.parseInt(id);
+            num_id = Integer.parseInt(id);
             if (num_id < 0) {
                 System.out.println("El ID es menor a 0");
                 return false;
@@ -25,16 +26,26 @@ public class Validacion {
             System.err.println("El ID no es un número entero");
             return false;
         }
-        switch (clase) {
-            case "servicio" -> {
-                if (servicioDAO.buscar(id) == null) {
-                    System.out.println("No existe un servicio con este ID");
-                    return false;
+        if (buscar) {
+            switch (clase) {
+                case "encargo" -> {
+                    if (encargoDAO.obtenerPorID(num_id) == null) {
+                        return false;
+                    } else {
+                        return true;
+                    }
                 }
-                return true;
+                case "servicio" -> {
+                    if (servicioDAO.buscar(id) == null) {
+                        System.out.println("No existe un servicio con este ID");
+                        return false;
+                    }
+                    return true;
+                }
+                default -> { return true; }
             }
-            default -> { return true; }
         }
+        return true;
     }
     public boolean validarIdAuxiliar(String id, int id_principal, String clase) {
         int num_id;

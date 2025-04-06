@@ -281,11 +281,37 @@ public class EncargoVIEW {
         } while (!opcion.equalsIgnoreCase("0"));
     }
     public void eliminar() {
-        System.out.println("Ingrese la matrícula del encargo a eliminar");
-        System.out.print("--> ");
-        String matricula = sc.nextLine();
+        System.out.println("Quiere seleccionar encargo por 1. matrícula o 2. ID?");
+        String decision;
+        Encargo encargo = null;
+        do {
+            System.out.print(">>> ");
+            decision = sc.nextLine();
+            switch (decision) {
+                case "1", "matricula" -> {
+                    System.out.println("Ingrese la matrícula del encargo a eliminar");
+                    String matricula;
+                    do {
+                        System.out.print("--> ");
+                        matricula = form.matricula(sc.nextLine());
+                    } while (!val.validarMatricula(matricula, true));
+                    encargo = dao.obtenerUltimo(matricula);
+                }
+                case "2", "id" -> {
+                    System.out.println("Ingrese el id del encargo a eliminar");
+                    String id;
+                    do {
+                        System.out.print("--> ");
+                        id = form.id(sc.nextLine());
+                    } while (!val.validarId(id, "encargo", true));
+                    encargo = dao.obtenerPorID(Integer.parseInt(id));
+                }
+                default -> {
+                    System.out.println("No se reconoció esa opción");
+                }
+            }
+        } while (encargo == null);
 
-        Encargo encargo = dao.obtenerUltimo(matricula);
         int id_encargo = encargo.getId();
         System.out.println("Está por eliminar al siguiente encargo: ");
         System.out.println("ID: " + encargo.getId() + " Matrícula: " + encargo.getMatricula());
@@ -298,9 +324,10 @@ public class EncargoVIEW {
         do { 
             System.out.println("1. SI / 2. NO");
             opcion = sc.next().toLowerCase();
+            sc.nextLine();
             switch (opcion) {
                 case "1", "si" -> {
-                    if (dao.obtenerUltimo(matricula).getId() == id_encargo) {
+                    if (dao.obtenerPorID(encargo.getId()).getId() == id_encargo) {
                         dao.eliminar(id_encargo);
                         System.out.println("Encargo eliminado");
                         seguir = false;
@@ -337,11 +364,17 @@ public class EncargoVIEW {
     }    
     public void mostrarServiciosMenu() {
         System.out.println("Ingrese la matrícula del encargo");
-        System.out.print("--> ");
-        String matricula = sc.next();
-        sc.nextLine();
-    
-        Encargo encargo = dao.obtenerUltimo(matricula);
+        String matricula;
+        Encargo encargo = null;
+        do {
+            do {
+                System.out.print("--> ");
+                matricula = form.matricula(sc.nextLine());
+            } while (!val.validarMatricula(matricula, true));
+            if (dao.obtenerUltimo(matricula) != null) {
+                encargo = dao.obtenerUltimo(matricula);
+            }
+        } while (encargo == null || !val.validarId(Integer.toString(encargo.getId()), "encargo", true));
         int id_encargo = encargo.getId();
 
         mostrarServiciosEncargo(id_encargo);
