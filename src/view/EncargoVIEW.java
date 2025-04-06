@@ -12,9 +12,10 @@ public class EncargoVIEW {
 
     public ArrayList<Encargo> array_encargos = new ArrayList<>();
     public EncargoDAO dao = new EncargoDAO();
-    public Formateo formateo = new Formateo();
+    public Formateo form = new Formateo();
     public ServicioVIEW serview = new ServicioVIEW();
     public ServicioDAO serdao = new ServicioDAO();
+    public Validacion val = new Validacion();
     
     Scanner sc = new Scanner(System.in);
 
@@ -39,7 +40,9 @@ public class EncargoVIEW {
                 case "4" -> { mostrarEncargos(); }
                 case "5" -> { mostrarServiciosMenu(); }
                 case "0" -> { System.out.println("Volviendo al menu anterior. ");}
-                default -> {}
+                default -> {
+                    System.out.println("No se reconoció esa opción");
+                }
             }
         } while (!opcion.equalsIgnoreCase("0"));
     }
@@ -49,12 +52,20 @@ public class EncargoVIEW {
         Double precio_total = 0.0;
         Encargo encargo;
 
-        System.out.print("Ingrese la matricula: ");
-        matricula_vehiculo = sc.next();
-        sc.nextLine();
+        //Bucle que no sale hasta que la matricula ingresada sea correcta y exista
+        do {
+            System.out.print("Ingrese la matricula: ");
+            matricula_vehiculo = sc.next();
+            sc.nextLine();
+            matricula_vehiculo = form.matricula(matricula_vehiculo);
+        } while (!val.validarMatricula(matricula_vehiculo));
+        //Se crea un encargo y se inserta en la base de datos para crear su id
         encargo = new Encargo(matricula_vehiculo);
-        //TODO: Revisar que el vehiculo exista primero
-        dao.insertar(encargo);
+        if (!dao.insertar(encargo)) {
+            System.out.println("ERR0R: La inserción del encargo falló");
+            return;
+        }
+        //Se obtiene el id del encargo que se acaba de hacer
         encargo.setId(dao.obtenerUltimo(matricula_vehiculo).getId());
         
         System.out.println("Cuáles servicios quiere añadir?");
@@ -62,34 +73,60 @@ public class EncargoVIEW {
         serview.mostrarServicios();
         String id_servicio;
         int num_servicios = 0;
+        ArrayList<Integer> servicios_añadidos = new ArrayList<>();
+        //Bucle para que agregue servicios hasta que ponga "0"
         do {
-            //TODO: Validar que no agregue varios servicios del mismo tipo
-            //Tal vez añadiendo el id_servicio a un String más largo
-            System.out.print("--> ");
-            id_servicio = sc.next();
+            //Bucle hasta que ingrese uan id de servicio válida
+            do {
+                System.out.print("--> ");
+                id_servicio = sc.next();
+                sc.nextLine();
+                id_servicio = form.id(id_servicio);
+            } while (!val.validarId(id_servicio, "servicio"));
+            int int_id = Integer.parseInt(id_servicio);
             if (!id_servicio.equals("0")) {
-                precio_total += serdao.obtener(id_servicio).getPrecio();
-                dao.insertarServicio(encargo.getId(), Integer.parseInt(id_servicio));
-                num_servicios++;
+                //Revisa que el servicio no haya sido añadido ya
+                if (servicios_añadidos.contains(int_id)) {
+                    System.out.println("Este servicio ya se ha añadido");
+                } else {
+                    //Suma el precio del servicio al total e inserta el servicio en la tabla auxiliar
+                    precio_total += serdao.obtener(id_servicio).getPrecio();
+                    dao.insertarServicio(encargo.getId(), int_id);
+                    num_servicios++;
+                    servicios_añadidos.add(int_id);
+                }
+            } else if (num_servicios == 0) {
+                System.out.println("Debe añadir al menos 1 servicio");
             }
-        } while (!id_servicio.equals("0") && num_servicios > 0);
+        } while (!id_servicio.equals("0") || num_servicios == 0);
+        //Cuando tenga todos los servicios en la tabla auxiliar junto con el precio total lo agrega a la base de datos
         dao.actualizar("precio_total", encargo.getId(), Double.toString(precio_total));
 
+        //Pregunta para establecer el día en el que se empieza el encargo
         System.out.println("El encargo empezará ahora?");
         System.out.println("1. SI / 2. NO");
-        System.out.print("--> ");
-        String opcion = sc.next().toLowerCase();
-        switch (opcion) {
-            case "1", "si" -> {
-                LocalDate fecha_inicio = LocalDate.now();
-                dao.actualizar("fecha_inicio", encargo.getId(), formateo.dateToString(fecha_inicio));
+        String opcion;
+        boolean opcion_valida;
+        //Bucle hasta que el usuario de una opción válida
+        do {
+            System.out.print("--> ");
+            opcion = sc.next().toLowerCase();
+            switch (opcion) {
+                case "1", "si" -> {
+                    LocalDate fecha_inicio = LocalDate.now();
+                    dao.actualizar("fecha_inicio", encargo.getId(), form.dateToString(fecha_inicio));
+                    opcion_valida = true;
+                }
+                case "2", "no" -> {
+                    System.out.println("Marque cuando cuando el encargo empiece");
+                    opcion_valida = true;
+                }
+                default -> {
+                    System.out.println("No se reconoció esa opción");
+                    opcion_valida = false;
+                }
             }
-            case "2", "no" -> {/*TODO: Añadir mensaje?*/}
-            default -> {
-                System.out.println("No se reconoció esa opción");
-            }
-        }
-
+        } while (!opcion_valida);
         System.out.println("Encargo registrado.");
     }
     public void modificar() {
@@ -107,17 +144,22 @@ public class EncargoVIEW {
             System.out.println("4. Completado");
             System.out.println("0. Atrás");
             System.out.print(">>> ");
-            opcion = sc.nextLine().toLowerCase();
-            //TODO: Validar que el Encargo exista
+            opcion = sc.next().toLowerCase();
+            sc.nextLine();
             System.out.println("Ingrese la matrícula del encargo a modificar");
-            System.out.print("--> ");
-            matricula = sc.nextLine();
-
+            //Bucle que valida que la matrícula esté bien escrita y exista
+            do {
+                System.out.print("--> ");
+                matricula = sc.next();
+                sc.nextLine();
+                matricula = form.matricula(matricula);
+            } while (!val.validarMatricula(matricula));
             encargo_modificar = dao.obtenerUltimo(matricula);
             
             String alternativa;
             if (encargo_modificar == null) {
                 System.out.println("ERR0R: No se encontró el encargo");
+                return;
             } else {
                 switch (opcion) {
                     //TODO: Añadir validaciones
@@ -165,7 +207,7 @@ public class EncargoVIEW {
                             case "1", "si" -> {
                                 LocalDate fecha_inicio = LocalDate.now();
                                 columna = "fecha_inicio";
-                                valor = formateo.dateToString(fecha_inicio);
+                                valor = form.dateToString(fecha_inicio);
                                 if (dao.actualizar(columna, encargo_modificar.getId(), valor)) {
                                     System.out.println("Fecha de inicio actualizada correctamente.");
                                 } else {
@@ -190,7 +232,7 @@ public class EncargoVIEW {
                             case "1", "si" -> {
                                 columna = "fecha_finalizado";
                                 fecha_finalizado = LocalDate.now();
-                                valor = formateo.dateToString(fecha_finalizado);
+                                valor = form.dateToString(fecha_finalizado);
                                 if (dao.actualizar(columna, encargo_modificar.getId(), valor)) {
                                     System.out.println("Encargo terminado el " + fecha_finalizado);
                                 } else {

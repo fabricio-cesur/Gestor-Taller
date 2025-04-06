@@ -1,9 +1,54 @@
 package view;
 
+import dao.ServicioDAO;
+import dao.VehiculoDAO;
+
 public class Validacion {
+    Formateo formatear = new Formateo();
+    VehiculoDAO vehiculoDAO = new VehiculoDAO();
+    ServicioDAO servicioDAO = new ServicioDAO();
     
+    public boolean validarId(String id, String clase) {
+        if (id == null) {
+            System.out.println("El ID no puede estar vacío");
+            return false;
+        }
+        try {
+            int num_id = Integer.parseInt(id);
+            if (num_id <= 0) {
+                System.out.println("El ID es menor o igual a 0");
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            System.err.println("El ID no es un número entero");
+            return false;
+        }
+        //TODO: añadir métodos de buscar u obtener de cada clase para verificar que exista
+        switch (clase) {
+            // case "cliente" -> {}
+            // case "vehiculo" -> {}
+            case "servicio" -> {
+                if (servicioDAO.buscar(id) == null) {
+                    System.out.println("No existe un servicio con este ID");
+                    return false;
+                }
+                return true;
+            }
+            // case "encargo" -> {}
+            // case "cita" -> {}
+            // case "item" -> {}
+            // case "empleado" -> {}
+            default -> {
+                System.out.println("ERR0R: No se reconoció la clase de ID que quieres validar");
+                return true;
+            }
+        }
+    }
     public boolean validarDNI(String dni) {
-        if (dni.length() != 9) {
+        if (dni == null) {
+            System.out.println("El DNI no puede estar vacío");
+            return false;
+        } else if (dni.length() != 9) {
             System.out.println("El DNI debe tener 9 carácteres");
             return false;
         } else if (Character.isDigit(dni.charAt(8))) {
@@ -22,14 +67,48 @@ public class Validacion {
             return true;
         }
     }
-
-    public boolean validarTelefono(String telefono) {
-        if (telefono.length() != 9) {
+    public boolean validarMatricula(String matricula) {
+        //Se asegura de tener mayúsculas, eliminar espacios y carácteres especiales
+        if (matricula == null) {
+            System.out.println("La matrícula ingresada está vacía");
+            return false;
+        }
+        if (matricula.length() != 7) {
+            System.out.println("La matrícula " + matricula + " debe tener 7 carácteres");
+            return false;
+        }
+        for (int i = 0; i < 4; i++) {
+            if (Character.isAlphabetic(matricula.charAt(i))) {
+                System.out.println("Los primeros 4 carácteres deben ser numéricos");
+                return false;
+            }
+        }
+        for (int i = 4; i < 7; i++) {
+            if (!Character.isAlphabetic(matricula.charAt(i))) {
+                System.out.println("Los últimos 3 carácteres deben ser letras");
+                return false;
+            }
+        }
+        char[] letras_excluidas = {'I', 'O', 'U', 'Ñ'};
+        for (char letra : letras_excluidas) {
+            if (matricula.contains(String.valueOf(letra))) {
+                System.out.println("El DNI no puede tener la letra O, U, Ñ o I");
+                return false;
+            }
+        }
+        if (vehiculoDAO.buscar(matricula) == null) {
+            System.out.println("No se encontró la matrícula " + matricula + " en la base de datos");
+            return false;
+        }
+        return true;
+    }
+    public boolean validarTelefono(String matricula) {
+        if (matricula.length() != 9) {
             System.out.println("El número de teléfono debe tener 9 dígitos");
             return false;
         } else {
-            for (int i = 0; i < telefono.length(); i++) {
-                if (Character.isAlphabetic(telefono.charAt(i))) {
+            for (int i = 0; i < matricula.length(); i++) {
+                if (Character.isAlphabetic(matricula.charAt(i))) {
                     System.out.println("El número de teléfono sólo debe tener números");
                     return false;
                 }
@@ -37,7 +116,6 @@ public class Validacion {
             return true;
         }
     }
-
     public boolean validarIBAN(String iban) {
         //Formato de cuenta bancaria ESXX XXXX XXXX XXXX XXXX
         //Revisa que tenga o 24 carácteres de los dígitos sin espacio
