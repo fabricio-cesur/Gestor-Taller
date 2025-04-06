@@ -32,6 +32,7 @@ public class EncargoVIEW {
             System.out.println("0. Atrás");
             System.out.print(">>> ");
             opcion = sc.next();
+            sc.nextLine();
 
             switch (opcion) {
                 case "1" -> { registrar(); }
@@ -55,8 +56,7 @@ public class EncargoVIEW {
         //Bucle que no sale hasta que la matricula ingresada sea correcta y exista
         do {
             System.out.print("Ingrese la matricula: ");
-            matricula_vehiculo = sc.next();
-            sc.nextLine();
+            matricula_vehiculo = sc.nextLine();
             matricula_vehiculo = form.matricula(matricula_vehiculo);
         } while (!val.validarMatricula(matricula_vehiculo));
         //Se crea un encargo y se inserta en la base de datos para crear su id
@@ -79,8 +79,10 @@ public class EncargoVIEW {
             //Bucle hasta que ingrese uan id de servicio válida
             do {
                 System.out.print("--> ");
-                id_servicio = sc.next();
-                sc.nextLine();
+                id_servicio = sc.nextLine();
+                if (id_servicio.equalsIgnoreCase("0")) {
+                    break;
+                }
                 id_servicio = form.id(id_servicio);
             } while (!val.validarId(id_servicio, "servicio"));
             int int_id = Integer.parseInt(id_servicio);

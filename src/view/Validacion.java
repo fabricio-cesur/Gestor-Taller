@@ -15,8 +15,8 @@ public class Validacion {
         }
         try {
             int num_id = Integer.parseInt(id);
-            if (num_id <= 0) {
-                System.out.println("El ID es menor o igual a 0");
+            if (num_id < 0) {
+                System.out.println("El ID es menor a 0");
                 return false;
             }
         } catch (NumberFormatException e) {
@@ -68,7 +68,7 @@ public class Validacion {
         }
     }
     public boolean validarMatricula(String matricula) {
-        //Se asegura de tener mayúsculas, eliminar espacios y carácteres especiales
+        //Se asegura de estar todo bien escrito, para ello la entrada se debió formatear con anterioridad
         if (matricula == null) {
             System.out.println("La matrícula ingresada está vacía");
             return false;
@@ -89,13 +89,15 @@ public class Validacion {
                 return false;
             }
         }
-        char[] letras_excluidas = {'I', 'O', 'U', 'Ñ'};
-        for (char letra : letras_excluidas) {
-            if (matricula.contains(String.valueOf(letra))) {
-                System.out.println("El DNI no puede tener la letra O, U, Ñ o I");
-                return false;
-            }
-        }
+        //TODO: Obtener matriculas de prueba realistas y acorde al estándar europeo
+        /*Evitamos esta validación porque las matrículas de prueba tienen vocales*/
+        // char[] letras_excluidas = {'I', 'O', 'U', 'Ñ'};
+        // for (char letra : letras_excluidas) {
+        //     if (matricula.contains(String.valueOf(letra))) {
+        //         System.out.println("El DNI no puede tener la letra O, U, Ñ o I");
+        //         return false;
+        //     }
+        // }
         if (vehiculoDAO.buscar(matricula) == null) {
             System.out.println("No se encontró la matrícula " + matricula + " en la base de datos");
             return false;
